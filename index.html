@@ -38,7 +38,7 @@
   --ok:#82BD97; --ok-soft:#173026; --warn:#E8B55A; --warn-soft:#322711; --bad:#EC8C78; --bad-soft:#3A1E19; color-scheme:dark}
 
 *{box-sizing:border-box}
-body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;padding:0 16px}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;padding:0 16px;word-break:keep-all;overflow-wrap:anywhere}
 .wrap{max-width:1080px;margin:0 auto;padding-block:20px 56px}
 h1,h2,h3{font-family:var(--f-display);font-weight:500;text-wrap:balance;line-height:1.3;margin:0}
 h4,.acard h4,tbody th{font-family:var(--f-body);font-weight:600}
@@ -46,7 +46,7 @@ a{color:var(--stamp)}
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--stamp);outline-offset:2px}
 .mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
 .muted{color:var(--muted)}
-.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-family:var(--f-mono)}
+.eyebrow{font-size:12.5px;letter-spacing:.02em;color:var(--muted);font-family:var(--f-body);font-weight:500}
 
 /* masthead */
 .mast{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px;padding-bottom:16px;border-bottom:1px solid var(--line)}
@@ -118,7 +118,7 @@ ol.tl li:last-child .dot{background:var(--stamp)}
 .meter i{width:14px;height:6px;border-radius:2px;background:var(--line)}
 .meter i.on{background:var(--ink)}
 .meter.d5 i.on,.meter.d4 i.on{background:var(--bad)}
-.ccard .lead{font-family:var(--f-mono);font-size:13px}
+.ccard .lead{font-size:13.5px;font-variant-numeric:tabular-nums}
 .ccard p{margin:0;font-size:13.5px;color:var(--muted)}
 
 .detail-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:flex-end;margin-bottom:16px}
@@ -295,7 +295,7 @@ input[type=text]{font:inherit;padding:9px 10px;border:1px solid var(--line);bord
       const g=rows.filter(x=>x.tier===t); if(!g.length) return '';
       return `<section><h3 class="section-h" style="margin-top:4px"><span class="pill ${tone}">${g.length}</span> ${title}</h3><div class="alist">${g.map(({a,r,fee})=>`
         <article class="acard">
-          <div class="row"><h4>${esc(a.name)}</h4><span class="mono" style="font-weight:600">${esc(fee.num?fee.num.toLocaleString('ko-KR')+'원':'')}</span></div>
+          <div class="row"><h4>${esc(a.name)}</h4><span class="mono" style="font-weight:500;white-space:nowrap">${esc(fee.num?fee.num.toLocaleString('ko-KR')+'원':'')}</span></div>
           ${a.banner?`<p class="hint" style="color:var(--warn)">${esc(a.banner)}</p>`:''}
           <div class="row"><span>기내</span>${yn(r.cabin)}</div><div class="row"><span>위탁</span>${yn(r.checked)}</div>
           ${r.reason.length?`<p class="hint">${esc(r.reason.join(' · '))}</p>`:''}
@@ -398,7 +398,7 @@ input[type=text]{font:inherit;padding:9px 10px;border:1px solid var(--line);bord
       <a class="back" href="#countries">← 국가 목록</a>
       <div class="detail-head">
         <div><div class="eyebrow">${c.code} · ${esc(c.status)} · ${regionName[c.region]}</div><h2>${esc(c.name)}</h2></div>
-        <div style="display:flex;gap:10px;align-items:center">${meter(c.difficulty)}<span class="chip mono">최소 ${c.leadDays<=1?'즉시':c.leadDays+'일'}</span></div>
+        <div style="display:flex;gap:10px;align-items:center">${meter(c.difficulty)}<span class="chip" style="font-variant-numeric:tabular-nums">최소 ${c.leadDays<=1?'즉시':c.leadDays+'일'}</span></div>
       </div>
       <p style="max-width:68ch;margin:0 0 16px">${esc(c.summary)}</p>
       <div class="dgrid">
