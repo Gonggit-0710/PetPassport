@@ -21,6 +21,19 @@
 <link rel="apple-touch-icon" href="media/apple-touch-icon.png">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<!-- Google Analytics 4 (G-6G8CX7W76G): 실제 도메인에서만 로드. 페이지뷰는 탭 이동마다 직접 전송 -->
+<script>
+(function(){
+  var ID='G-6G8CX7W76G', H=location.hostname;
+  window.dataLayer=window.dataLayer||[];
+  window.gtag=function(){dataLayer.push(arguments);};
+  if(!/(^|\.)pawtrip\.us$/.test(H)) return;          // 로컬·미리보기·공유 페이지는 기록 안 함
+  var s=document.createElement('script'); s.async=true; s.src='https://www.googletagmanager.com/gtag/js?id='+ID;
+  document.head.appendChild(s);
+  gtag('js',new Date());
+  gtag('config',ID,{send_page_view:false});
+})();
+</script>
 <!--
   광고: AdSense 승인 후
   1) <html data-ads="off"> 를 data-ads="on" 으로 변경
@@ -497,7 +510,15 @@ table.cmp .dots{font-size:13px}
     card.querySelector('.card-head').setAttribute('aria-expanded', open);
     const b = card.querySelector('.card-body'); open ? b.removeAttribute('inert') : b.setAttribute('inert','');
   }
-  app.addEventListener('click', e => { const h = e.target.closest('.card-head'); if(h) toggle(h.closest('.card')); });
+  app.addEventListener('click', e => {
+    const h = e.target.closest('.card-head');
+    if(h){ const card = h.closest('.card'); toggle(card);
+      if(card.classList.contains('is-open')){ const id = card.dataset.id || ''; track('card_open', {card_type: id.startsWith('a-') ? 'airline' : 'country', item_id: id.slice(2)}); } }
+    const tel = e.target.closest('a[href^="tel:"]');
+    if(tel) track('contact_call', {phone: tel.getAttribute('href').slice(4), item_id: (tel.closest('.card')||{dataset:{}}).dataset.id || location.hash.slice(1)});
+    const src = e.target.closest('a.link[target="_blank"]');
+    if(src) track('source_click', {link_url: src.href, item_id: (src.closest('.card')||{dataset:{}}).dataset.id || location.hash.slice(1)});
+  });
   const openIds = () => [...app.querySelectorAll('.card.is-open')].map(c=>c.dataset.id);
   const reopen = ids => ids.forEach(id => { const c = app.querySelector(`.card[data-id="${id}"]`); if(c) toggle(c,true); });
   function insertAds(root, positions){
@@ -523,8 +544,8 @@ table.cmp .dots{font-size:13px}
       <p class="hint" style="margin-top:20px">요금은 한국 출발 편도, 케이지 포함 32kg 이하 기준입니다. 이 노선을 실제로 운항하는지는 예약 전에 항공사에 확인하세요. 검역 일정은 <a href="#plan">일정 계산</a>에서 볼 수 있습니다.</p>`;
     const f=id=>document.getElementById(id);
     f('fform').addEventListener('submit',e=>e.preventDefault());
-    f('fdest').addEventListener('change',e=>{state.fdest=e.target.value;state.dest=e.target.value;save();renderFlights();});
-    f('fwt').addEventListener('input',e=>{state.weight=e.target.value;save();renderFlights();});
+    f('fdest').addEventListener('change',e=>{state.fdest=e.target.value;state.dest=e.target.value;save();renderFlights();trackSearch();});
+    f('fwt').addEventListener('input',e=>{state.weight=e.target.value;save();renderFlights();trackSearch();});
     f('fbrachy').addEventListener('change',e=>{state.brachy=e.target.checked;save();renderFlights();});
     f('fbreed').addEventListener('input',e=>{state.breed=e.target.value;const hit=isBrachyBreed(state.breed);if(hit&&hit.length){state.brachy=true;f('fbrachy').checked=true;}save();renderFlights();});
     renderFlights.warm = false;
@@ -612,7 +633,7 @@ table.cmp .dots{font-size:13px}
       </div>`;
     const f = id => document.getElementById(id);
     const bind = (id,key,prop='value') => f(id).addEventListener('input',e=>{ state[key]= prop==='checked'?e.target.checked:e.target.value; if(id==='titer') f('bloodwrap').hidden=!state.titer; save(); renderResult(); });
-    bind('dest','dest'); bind('dep','dep'); bind('wt','weight'); bind('chip','chip','checked'); bind('brachy','brachy','checked'); bind('titer','titer','checked'); bind('blood','blood');
+    bind('dest','dest'); bind('dep','dep'); ['dest','dep'].forEach(id=>f(id).addEventListener('change',trackPlan)); bind('wt','weight'); bind('chip','chip','checked'); bind('brachy','brachy','checked'); bind('titer','titer','checked'); bind('blood','blood');
     f('dest').addEventListener('change',e=>{state.dest=e.target.value;save();renderResult();});
     f('pform').addEventListener('submit',e=>e.preventDefault());
     renderResult();
@@ -783,6 +804,19 @@ table.cmp .dots{font-size:13px}
 
   // ---------- 라우터 ----------
   const TABS = ['flights','plan','countries','airlines','return','about'];
+  // ---------- 분석(GA4) ----------
+  const TAB_TITLE = {flights:'항공편 선택',plan:'일정 계산',countries:'국가별 규정',airlines:'항공사 비교',return:'귀국 검역',about:'기준과 출처'};
+  const track = (name, params) => { try{ window.gtag('event', name, params||{}); }catch(e){} };
+  const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+  const trackSearch = debounce(() => {
+    const c = DATA.countries.find(x=>x.id===(state.fdest||state.dest)); if(!c) return;
+    track('search_route', {destination: c.id, destination_name: c.name, weight_kg: Number(state.weight)||0, brachy: !!state.brachy});
+  }, 1500);
+  const trackPlan = debounce(() => {
+    const dep = parse(state.dep);
+    track('plan_calculate', {destination: state.dest, days_to_departure: dep ? diff(dep, today) : null, has_titer: !!state.titer});
+  }, 1500);
+
   function route(){
     const h = (location.hash||'#flights').slice(1);
     const c = DATA.countries.find(x=>x.id===h);
@@ -794,6 +828,8 @@ table.cmp .dots{font-size:13px}
     if(c) viewCountry(c); else ({flights:viewFlights,plan:viewPlan,countries:viewCountries,airlines:viewAirlines,return:viewReturn,about:viewAbout})[tab]();
     if(route.ran && tab!=='flights') window.scrollTo({top:0});
     route.ran = true;
+    const vpath = c ? '/countries/'+c.id : '/'+tab;
+    track('page_view', {page_location: location.origin + vpath, page_path: vpath, page_title: 'PawTrip · ' + (c ? c.name + ' 입국 규정' : TAB_TITLE[tab])});
   }
 
   // 히어로 영상: 끊김 없는 반복. 움직임 줄이기 설정이면 첫 장면(정지 화면)만
