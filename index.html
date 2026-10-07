@@ -499,6 +499,8 @@ table.cmp .dots{font-size:13px}
     if(n[c.region]==null) return {num:null,text:'해당 노선 없음'};
     return {num:n[c.region], text:f[c.region]||won(n[c.region])+'원'};
   }
+  const noRoute = (a,r,fee) => a.status!=='pending' && !r.blocked && fee.num==null;
+  const airFlags = (a,r,fee) => noRoute(a,r,fee) ? flag('warn','노선 확인 필요') : yn(r.cabin,'기내')+yn(r.checked,'위탁');
   const isBrachyBreed = q => { q=(q||'').replace(/\s/g,''); if(!q) return null; return DATA.airlines.filter(a=>a.brachyList&&a.brachyList.some(b=>{b=b.replace(/\s/g,'');return b.includes(q)||q.includes(b);})).map(a=>a.name); };
   const contacts = a => (a.contact||[]).length ? `<dl class="kv">${a.contact.map(p=>`<dt>${esc(p.label)}</dt><dd><a class="tel" href="tel:${esc(p.tel)}">${esc(p.tel)}</a>${p.alt?` / <span class="tel">${esc(p.alt)}</span>`:''}${p.hours?`<br><span class="hint">${esc(p.hours)}</span>`:''}</dd>`).join('')}</dl>` : '';
   const meter = d => `<span class="meter${d>=4?' hard':''}" role="img" aria-label="검역 난이도 5단계 중 ${d}">${[1,2,3,4,5].map(i=>`<i class="${i<=d?'on':''}"></i>`).join('')}</span>`;
@@ -563,11 +565,11 @@ table.cmp .dots{font-size:13px}
     const cabinTxt = a.cabin && a.cabin.maxKg ? `${a.cabin.maxKg}<small>kg</small>` : '<span class="x">—</span>';
     const chkTxt = a.checked && a.checked.allowed ? `${a.checked.maxKg}<small>kg</small>` : a.checked && a.checked.allowed===false ? '<span class="x">운송 안 함</span>' : '<span class="x">—</span>';
     const feeTxt = fee.num!=null ? `${won(fee.num)}<small>원</small>` : `<span class="x">${esc(fee.text)}</span>`;
-    const summary = [r.reason.join(' · '), a.banner].filter(Boolean).join(' · ') || (a.checked && a.checked.allowed ? '기내와 위탁(화물칸) 모두 운송' : '기내 동반만 운송');
+    const summary = [noRoute(a,r,fee)?'이 노선 요금표가 없어 운항·반려동물 운송 여부를 항공사에 확인해야 합니다':'', r.reason.join(' · '), a.banner].filter(Boolean).join(' · ') || (a.checked && a.checked.allowed ? '기내와 위탁(화물칸) 모두 운송' : '기내 동반만 운송');
     const hd = `
       <span class="badge" aria-hidden="true">${esc(a.id.toUpperCase())}</span>
       <span><span class="card-title"><h3>${esc(a.name)}</h3><span class="sub">${esc(a.type||'')}</span></span>
-        <span class="flags">${yn(r.cabin,'기내')}${yn(r.checked,'위탁')}</span></span>
+        <span class="flags">${airFlags(a,r,fee)}</span></span>
       <span class="chev" aria-hidden="true">${ICON.chev}</span>
       <p class="card-summary">${esc(summary)}</p>
       <dl class="stats">
@@ -655,7 +657,7 @@ table.cmp .dots{font-size:13px}
     const base = dep && dep>=earl ? dep : earl;
     const tl = c.timeline.map(s=>{ const d=addDays(base,s.d); const past=d<today; return `<li class="${past?'past':''}"><span class="dt">${fmt(d)}</span><span class="dot"></span><span>${esc(s.t)}${past?' '+flag('bad','이미 지남'):''}</span></li>`; }).join('');
     const air = DATA.airlines.map(a=>{ const r=airlineFor(a,c); const fee=feeFor(a,c,r);
-      return `<div class="mini"><h4>${esc(a.name)}</h4><div class="flags" style="margin:0">${yn(r.cabin,'기내')}${yn(r.checked,'위탁')}</div>
+      return `<div class="mini"><h4>${esc(a.name)}</h4><div class="flags" style="margin:0">${airFlags(a,r,fee)}</div>
         <div class="row"><span>${regionName[c.region]} 요금</span><b>${fee.num!=null?won(fee.num)+'원':esc(fee.text)}</b></div>
         ${r.reason.length?`<p class="hint">${esc(r.reason.join(' · '))}</p>`:''}</div>`; }).join('');
     const warns = [];
@@ -754,7 +756,7 @@ table.cmp .dots{font-size:13px}
         <td>${ch}${a.checked.note?`<p class="note">${esc(a.checked.note)}</p>`:''}</td>
         <td>${a.brachyChecked===false?flag('bad','위탁 불가'):'해당 규정 없음'}</td>
         <td>${f.short?`<div>단 ${esc(f.short)}</div><div>중 ${esc(f.mid)}</div><div>장 ${esc(f.long)}</div>${f.heavy?`<p class="note">${esc(f.heavy)}</p>`:''}`:'—'}</td>
-        <td>${a.banner?`<p class="note" style="margin:0 0 8px"><b>참고</b> ${esc(a.banner)}</p>`:''}<ul class="dots">${(a.notes||[]).map(n=>`<li>${esc(n)}</li>`).join('')}</ul>${contacts(a)?`<div style="margin-top:10px">${contacts(a)}</div>`:''}<div class="links" style="margin-top:10px"><a class="link" href="${esc(a.source.url)}" target="_blank" rel="noopener">공식 페이지 ${ICON.ext}</a></div></td></tr>`;
+        <td>${a.banner?`<p class="note" style="margin:0 0 8px"><b>참고</b> ${esc(a.banner)}</p>`:''}<ul class="dots">${(a.notes||[]).map(n=>`<li>${esc(n)}</li>`).join('')}</ul>${contacts(a)?`<div style="margin-top:10px">${contacts(a)}</div>`:''}<div class="links" style="margin-top:10px"><a class="link" href="${esc(a.source.url)}" target="_blank" rel="noopener">공식 페이지 ${ICON.ext}</a>${a.source2?`<a class="link" href="${esc(a.source2.url)}" target="_blank" rel="noopener">${esc(a.source2.title)} ${ICON.ext}</a>`:''}</div></td></tr>`;
     }).join('');
     app.innerHTML = head('04 · 항공사 비교','항공사 규정 한눈에 비교','기내·위탁 한도, 단두종 제한, 구간별 요금을 나란히 놓았습니다. 표는 옆으로 밀어서 볼 수 있습니다.') + `
       <div class="panel" style="margin-bottom:16px"><div class="field" style="max-width:420px"><label for="breed">견종 이름으로 단두종 여부 확인</label><input type="text" id="breed" placeholder="예: 치와와, 시추, 푸들" value="${esc(state.breed||'')}"></div><p class="hint" id="breedOut" style="margin-top:10px"></p></div>
