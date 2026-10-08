@@ -26,6 +26,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="features.css?v=1">
 <!-- Google Analytics 4 (G-6G8CX7W76G): 실제 도메인에서만 로드. 페이지뷰는 탭 이동마다 직접 전송 -->
 <script>
 (function(){
@@ -364,9 +365,12 @@ table.cmp .dots{font-size:13px}
   <nav class="tabs" aria-label="메뉴">
     <a href="#flights" data-tab="flights">항공편 선택</a>
     <a href="#plan" data-tab="plan">일정 계산</a>
+    <a href="#prep" data-tab="prep">준비 루틴</a>
     <a href="#countries" data-tab="countries">국가별 규정</a>
     <a href="#airlines" data-tab="airlines">항공사 비교</a>
     <a href="#return" data-tab="return">귀국 검역</a>
+    <a href="#wallet" data-tab="wallet">내 반려견</a>
+    <a href="#trips" data-tab="trips">여행 기록</a>
     <a href="#about" data-tab="about">기준과 출처</a>
   </nav>
 </header>
@@ -378,9 +382,12 @@ table.cmp .dots{font-size:13px}
       <ol>
         <li><a href="#flights" data-tab="flights"><span class="dot"></span>항공편 선택</a></li>
         <li><a href="#plan" data-tab="plan"><span class="dot"></span>일정 계산</a></li>
+        <li><a href="#prep" data-tab="prep"><span class="dot"></span>준비 루틴</a></li>
         <li><a href="#countries" data-tab="countries"><span class="dot"></span>국가별 규정</a></li>
         <li><a href="#airlines" data-tab="airlines"><span class="dot"></span>항공사 비교</a></li>
         <li><a href="#return" data-tab="return"><span class="dot"></span>귀국 검역</a></li>
+        <li><a href="#wallet" data-tab="wallet"><span class="dot"></span>내 반려견</a></li>
+        <li><a href="#trips" data-tab="trips"><span class="dot"></span>여행 기록</a></li>
         <li><a href="#about" data-tab="about"><span class="dot"></span>기준과 출처</a></li>
       </ol>
     </nav>
@@ -415,6 +422,7 @@ table.cmp .dots{font-size:13px}
     <main id="app" tabindex="-1"><p class="page-head">규정 데이터를 불러오는 중입니다…</p></main>
     <footer class="foot">
       <p>PawTrip은 공식 출처를 요약한 참고 자료입니다. 각국 검역당국과 항공사는 규정을 예고 없이 바꿉니다. 출국 전 각 항목의 출처 링크에서 최신 내용을 다시 확인하세요. 입국 거부·격리에 대한 책임은 지지 않습니다.</p>
+      <div id="alertRow" hidden></div>
       <p class="install-row" id="installRow" hidden><button class="btn" type="button" id="installBtn">PawTrip 앱으로 설치</button><span>홈 화면에서 바로 열고, 인터넷이 없어도 저장된 규정을 볼 수 있어요.</span></p>
       <p><a href="privacy.html"><strong>개인정보처리방침</strong></a> · 문의 <a href="mailto:help@pawtrip.us">help@pawtrip.us</a></p>
       <p>© PawTrip · pawtrip.us</p>
@@ -438,9 +446,11 @@ table.cmp .dots{font-size:13px}
   </li>
 </template>
 
+<script src="features.js?v=1"></script>
 <script>
 (function(){
   const app = document.getElementById('app');
+  const PTX = window.PTX || {views:{}, alertBox:()=>'', hasAlerts:()=>false, wallet:()=>({})};
   const ADS_ON = document.documentElement.dataset.ads === 'on';
   let DATA = null;
   const state = { dest:'jp', dep:'', weight:6, brachy:false, chip:true, titer:false, blood:'' };
@@ -651,6 +661,7 @@ table.cmp .dots{font-size:13px}
           <label class="check"><input type="checkbox" id="brachy" ${state.brachy?'checked':''}><span>단두종 또는 단두종 교배종<br><span class="hint">시추·퍼그·치와와 등. 목록은 항공사 비교에서 확인</span></span></label>
           <label class="check"><input type="checkbox" id="titer" ${state.titer?'checked':''}><span>광견병 항체가 검사 채혈 완료 (0.5 IU/ml 이상)</span></label>
           <div class="field" id="bloodwrap" ${state.titer?'':'hidden'}><label for="blood">채혈일</label><input type="date" id="blood" value="${esc(state.blood)}"></div>
+          ${(()=>{ const w=PTX.wallet(); return (w.chip||w.titerDate)?'<button class="link" type="button" id="fromWallet">내 반려견 정보로 칩·채혈일 채우기</button>':''; })()}
         </form>
         <section class="panel" id="result" aria-live="polite"></section>
       </div>`;
@@ -659,6 +670,7 @@ table.cmp .dots{font-size:13px}
     bind('dest','dest'); bind('dep','dep'); ['dest','dep'].forEach(id=>f(id).addEventListener('change',trackPlan)); bind('wt','weight'); bind('chip','chip','checked'); bind('brachy','brachy','checked'); bind('titer','titer','checked'); bind('blood','blood');
     f('dest').addEventListener('change',e=>{state.dest=e.target.value;save();renderResult();});
     f('pform').addEventListener('submit',e=>e.preventDefault());
+    const fw=f('fromWallet'); if(fw) fw.addEventListener('click',()=>{ const w=PTX.wallet(); if(w.chip) state.chip=true; if(w.titerDate){ state.titer=true; state.blood=w.titerDate; } save(); viewPlan(); track('plan_from_wallet',{}); });
     renderResult();
   }
   function renderResult(){
@@ -669,7 +681,9 @@ table.cmp .dots{font-size:13px}
     else if(dep>=earl){ st=flag('ok','일정 가능'); big=fmt(dep); sub='여유 '+diff(dep,earl)+'일 · 가장 빠른 날 '+fmt(earl); }
     else { st=flag('bad','일정 불가'); big=fmt(earl); sub='희망일보다 '+diff(earl,dep)+'일 늦은 날이 가장 빠른 출국일'; }
     const base = dep && dep>=earl ? dep : earl;
-    const tl = c.timeline.map(s=>{ const d=addDays(base,s.d); const past=d<today; return `<li class="${past?'past':''}"><span class="dt">${fmt(d)}</span><span class="dot"></span><span>${esc(s.t)}${past?' '+flag('bad','이미 지남'):''}</span></li>`; }).join('');
+    const steps = [...c.timeline]; if(PTX.TRAIN_START!=null && !cargoOnly(c.id)) steps.push({d:PTX.TRAIN_START, t:'켄넬 적응 훈련 시작 (PawTrip 권장 · 준비 루틴 참고)'});
+    steps.sort((a,b)=>a.d-b.d);
+    const tl = steps.map(s=>{ const d=addDays(base,s.d); const past=d<today; return `<li class="${past?'past':''}"><span class="dt">${fmt(d)}</span><span class="dot"></span><span>${esc(s.t)}${past?' '+flag('bad','이미 지남'):''}</span></li>`; }).join('');
     const air = DATA.airlines.map(a=>{ const r=airlineFor(a,c); const fee=feeFor(a,c,r);
       return `<div class="mini"><h4>${esc(a.name)}</h4><div class="flags" style="margin:0">${airFlags(a,r,fee)}</div>
         <div class="row"><span>${regionName[c.region]} 요금</span><b>${fee.num!=null?won(fee.num)+'원':esc(fee.text)}</b></div>
@@ -686,7 +700,9 @@ table.cmp .dots{font-size:13px}
       <p class="hint" style="margin-top:8px">날짜는 출국일에서 거꾸로 계산한 권장 시점입니다. <a href="#${c.id}">${esc(c.name)} 전체 요건 보기</a></p>
       <h3 class="sec-h">이 노선에서 탈 수 있는 항공사 <span class="hint" style="font-weight:400">(${esc(state.weight)}kg 기준)</span></h3>
       <div class="mini-list">${air}</div>
-      <div class="callout info" style="margin-top:14px"><strong>돌아올 때</strong>${esc(c.returnNote)} <a href="#return">귀국 검역 보기</a></div>`;
+      <div class="callout info" style="margin-top:14px"><strong>돌아올 때</strong>${esc(c.returnNote)} <a href="#return">귀국 검역 보기</a></div>
+      <div class="links"><a class="link" href="#prep">켄넬 훈련·짐 싸기</a><a class="link" href="#wallet">내 반려견 카드 만들기</a></div>
+      ${PTX.alertBox('plan', esc(c.name)+' 검역 규정이나 항공사 규정이 바뀌면 카카오톡 채널로 알려드립니다. 출국 전까지 받아 보세요.')}`;
   }
 
   // ---------- 국가별 규정 ----------
@@ -724,7 +740,7 @@ table.cmp .dots{font-size:13px}
     if(sort==='hard') list.sort((a,b)=>b.difficulty-a.difficulty);
     const inView = !!app.querySelector('#country-list'); const keep = inView ? openIds() : []; const keepAnim = !inView;
     const b = (k,v,t,cur)=>`<button class="chip" type="button" data-${k}="${v}" aria-pressed="${cur===v}">${t}</button>`;
-    app.innerHTML = head('03 · 국가별 입국 규정','나라마다 다른 입국 조건','최소 준비 기간과 난이도를 먼저 보고, 필요한 나라만 펼쳐서 확인하세요.') + `
+    app.innerHTML = head('04 · 국가별 입국 규정','나라마다 다른 입국 조건','최소 준비 기간과 난이도를 먼저 보고, 필요한 나라만 펼쳐서 확인하세요.') + `
       <div class="chips" role="group" aria-label="지역">${b('region','all','전체 지역',region)}${b('region','short','단거리',region)}${b('region','mid','중거리',region)}${b('region','long','장거리',region)}</div>
       <div class="chips" role="group" aria-label="정렬" style="margin-bottom:20px">${b('sort','default','기본 순서',sort)}${b('sort','easy','쉬운 순',sort)}${b('sort','hard','어려운 순',sort)}${b('sort','lead','준비 기간 짧은 순',sort)}</div>
       <ol class="list${keepAnim?'':' still'}" id="country-list">${list.map(countryCard).join('')}</ol>`;
@@ -772,7 +788,7 @@ table.cmp .dots{font-size:13px}
         <td>${f.short?`<div>단 ${esc(f.short)}</div><div>중 ${esc(f.mid)}</div><div>장 ${esc(f.long)}</div>${f.heavy?`<p class="note">${esc(f.heavy)}</p>`:''}`:'—'}</td>
         <td>${a.banner?`<p class="note" style="margin:0 0 8px"><b>참고</b> ${esc(a.banner)}</p>`:''}<ul class="dots">${(a.notes||[]).map(n=>`<li>${esc(n)}</li>`).join('')}</ul>${contacts(a)?`<div style="margin-top:10px">${contacts(a)}</div>`:''}<div class="links" style="margin-top:10px"><a class="link" href="${esc(a.source.url)}" target="_blank" rel="noopener">공식 페이지 ${ICON.ext}</a>${a.source2?`<a class="link" href="${esc(a.source2.url)}" target="_blank" rel="noopener">${esc(a.source2.title)} ${ICON.ext}</a>`:''}</div></td></tr>`;
     }).join('');
-    app.innerHTML = head('04 · 항공사 비교','항공사 규정 한눈에 비교','기내·위탁 한도, 단두종 제한, 구간별 요금을 나란히 놓았습니다. 표는 옆으로 밀어서 볼 수 있습니다.') + `
+    app.innerHTML = head('05 · 항공사 비교','항공사 규정 한눈에 비교','기내·위탁 한도, 단두종 제한, 구간별 요금을 나란히 놓았습니다. 표는 옆으로 밀어서 볼 수 있습니다.') + `
       <div class="panel" style="margin-bottom:16px"><div class="field" style="max-width:420px"><label for="breed">견종 이름으로 단두종 여부 확인</label><input type="text" id="breed" placeholder="예: 치와와, 시추, 푸들" value="${esc(state.breed||'')}"></div><p class="hint" id="breedOut" style="margin-top:10px"></p></div>
       <div class="tablewrap"><table class="cmp"><thead><tr><th>항공사</th><th>기내 동반</th><th>위탁 수하물</th><th>단두종</th><th>요금 (편도·32kg 이하)</th><th>주의 · 연락처</th></tr></thead><tbody>${rows}</tbody></table></div>
       <p class="hint" style="margin-top:12px">요금은 한국 출발 편도, 각 항공사 공식 페이지 기준 (확인일 ${esc(DATA.meta.verified)}). 운항 노선은 항공사마다 다르니 예약 전 확인하세요.</p>`;
@@ -788,7 +804,7 @@ table.cmp .dots{font-size:13px}
   // ---------- 귀국 검역 ----------
   function viewReturn(){
     const r = DATA.returnToKorea;
-    app.innerHTML = head('05 · 귀국 검역', esc(r.title), '') + `
+    app.innerHTML = head('06 · 귀국 검역', esc(r.title), '') + `
       <div class="dgrid">
         <section class="panel"><h3 class="sec-h" style="margin-top:0">알아둘 것</h3><ul class="checks">${r.points.map(p=>`<li>${esc(p)}</li>`).join('')}</ul></section>
         <section class="panel"><h3 class="sec-h" style="margin-top:0">한 번에 끝내는 순서</h3>
@@ -804,7 +820,7 @@ table.cmp .dots{font-size:13px}
 
   // ---------- 기준과 출처 ----------
   function viewAbout(){
-    app.innerHTML = head('06 · 기준과 출처','이 사이트의 기준','') + `
+    app.innerHTML = head('09 · 기준과 출처','이 사이트의 기준','') + `
       <div class="dgrid">
         <section class="panel"><h3 class="sec-h" style="margin-top:0">정리 기준</h3><ul class="checks">
           <li>출발지는 대한민국으로 고정했습니다.</li>
@@ -819,7 +835,12 @@ table.cmp .dots{font-size:13px}
           <li>안드로이드(크롬): 주소창 메뉴 ⋮ → <b>앱 설치</b> 또는 <b>홈 화면에 추가</b>${installEvt?' · 아래 화면 하단의 <b>PawTrip 앱으로 설치</b> 버튼도 쓸 수 있어요':''}</li>
           <li>아이폰(사파리): 공유 버튼 → <b>홈 화면에 추가</b></li>
           <li>한 번 열어 두면 공항·기내처럼 인터넷이 안 될 때도 마지막으로 저장된 규정을 볼 수 있어요. 오프라인일 때는 화면 위에 안내가 나옵니다.</li></ul>
-          <h3 class="sec-h">다음 업데이트</h3><ul class="dots"><li>여행지에서 반려견과 함께 가기 좋은 곳</li><li>규정 변경 알림 신청</li></ul></section>
+          <h3 class="sec-h">이 기기에만 저장되는 기능</h3><ul class="dots">
+          <li><b>내 반려견</b>·<b>준비 루틴</b>·<b>여행 기록</b>에 넣은 정보와 사진은 이 브라우저에만 저장되고 PawTrip으로 전송되지 않습니다. 기기를 바꿀 때는 내 반려견 → 백업·복원을 쓰세요.</li>
+          <li>SOS 카드는 고정 문구와 선택형 항목만 영어·일본어·중국어로 번역했고, 직접 쓴 내용은 원문 그대로 보여줍니다.</li>
+          <li>켄넬 훈련 단계는 AKC·SPCA 뉴질랜드 가이드, 비행 당일 안내는 IATA·AVMA·아시아나 공식 안내를 따릅니다. 훈련 시작 시점(출국 8주 전)은 PawTrip 권장값입니다.</li>
+          <li>여행 기록의 공항 좌표는 OurAirports 공개 데이터, 거리는 공항 간 대권 거리입니다.</li></ul>
+          <h3 class="sec-h">다음 업데이트</h3><ul class="dots"><li>여행지에서 반려견과 함께 가기 좋은 곳</li>${PTX.hasAlerts()?'':'<li>규정 변경 알림 신청</li>'}</ul>${PTX.alertBox('about')}</section>
       </div>`;
   }
 
@@ -830,9 +851,9 @@ table.cmp .dots{font-size:13px}
   function saveChecks(id,v){ try{ localStorage.setItem('pp3c-'+id, JSON.stringify(v)); }catch(e){} }
 
   // ---------- 라우터 ----------
-  const TABS = ['flights','plan','countries','airlines','return','about'];
+  const TABS = ['flights','plan','prep','countries','airlines','return','wallet','trips','about'];
   // ---------- 분석(GA4) ----------
-  const TAB_TITLE = {flights:'항공편 선택',plan:'일정 계산',countries:'국가별 규정',airlines:'항공사 비교',return:'귀국 검역',about:'기준과 출처'};
+  const TAB_TITLE = {flights:'항공편 선택',plan:'일정 계산',prep:'준비 루틴',countries:'국가별 규정',airlines:'항공사 비교',return:'귀국 검역',wallet:'내 반려견',trips:'여행 기록',about:'기준과 출처'};
   let installEvt = null;
   const APP_MODE = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone ? 'standalone' : 'browser';
   const track = (name, params) => { try{ window.gtag('event', name, params||{}); }catch(e){} };
@@ -854,7 +875,8 @@ table.cmp .dots{font-size:13px}
     const act = document.querySelector('.tabs [aria-current="page"]');
     if(act){ const bar=act.parentElement; bar.scrollTo({left:act.offsetLeft-(bar.clientWidth-act.offsetWidth)/2}); }
     const hero=document.getElementById('hero'); hero.hidden = tab!=='flights';
-    if(c) viewCountry(c); else ({flights:viewFlights,plan:viewPlan,countries:viewCountries,airlines:viewAirlines,return:viewReturn,about:viewAbout})[tab]();
+    const views = {flights:viewFlights,plan:viewPlan,countries:viewCountries,airlines:viewAirlines,return:viewReturn,about:viewAbout};
+    if(c) viewCountry(c); else (views[tab] || PTX.views[tab] || viewFlights)();
     if(route.ran && tab!=='flights') window.scrollTo({top:0});
     route.ran = true;
     const vpath = c ? '/countries/'+c.id : '/'+tab;
@@ -887,6 +909,7 @@ table.cmp .dots{font-size:13px}
 
   load();
   if(!state.dep) state.dep = iso(addMonths(today,8));
+  if(PTX.init) PTX.init({app, state, save, esc, flag, head, track, ICON, data: () => DATA});
   fetch('data.json').then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); })
     .then(d=>{ DATA=d;
       document.querySelectorAll('.vdate').forEach(x=>x.textContent=d.meta.verified);
