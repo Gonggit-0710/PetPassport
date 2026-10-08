@@ -3,7 +3,7 @@
    - 아이콘·이미지·글꼴은 저장본을 먼저 보여 주고 뒤에서 갱신
    - 히어로 영상(1MB 이상)과 GA·광고 요청은 건드리지 않음
    배포 때 규정만 바뀌면 VERSION을 안 올려도 됩니다(네트워크 우선이라 자동 갱신). sw.js나 저장 목록을 바꿀 때만 올리세요. */
-const VERSION = 'pawtrip-v2';
+const VERSION = 'pawtrip-v3';
 const CORE = ['./', 'index.html', 'data.json'];
 const EXTRA = ['privacy.html', 'manifest.webmanifest', 'media/mark.svg', 'media/hero-poster.jpg',
   'media/icon-192.png', 'media/icon-512.png', 'media/apple-touch-icon.png'];
