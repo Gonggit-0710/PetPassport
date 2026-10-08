@@ -521,13 +521,21 @@ function gc(a, b){ // 대권 거리(km), 지구 평균 반지름 6371km
 }
 const EARTH = 40075; // 적도 둘레 km
 let tripYear = 'all';
+// 국내 공항 → 지역 이름 (김포·인천은 같은 수도권으로 묶음)
+const KR_REGION = {GMP:'서울', ICN:'서울', CJU:'제주', PUS:'부산', CJJ:'청주', TAE:'대구', KWJ:'광주', MWX:'무안', RSU:'여수', USN:'울산', KPO:'포항', HIN:'사천', KUV:'군산', WJU:'원주', YNY:'양양'};
+const KR_CODE = {'제주':'JEJU','부산':'BUSAN','청주':'CJJ','대구':'DAEGU','광주':'KWJ','무안':'MWX','여수':'YEOSU','울산':'ULSAN','포항':'KPO','사천':'HIN','군산':'KUV','원주':'WJU','양양':'YNY','서울':'SEOUL'};
 function tripStats(trips){
   const legs = trips.map(t => { const a = apt(t.from), b = apt(t.to); return {...t, a, b, km: a&&b ? gc(a,b) : 0}; });
   const km = legs.reduce((s,l)=>s+l.km, 0);
   const countries = [...new Set(legs.flatMap(l => [l.b&&l.b[3], l.a&&l.a[3]]).filter(c => c && c!=='KR'))];
+  // 국내 여행지: 국내 도착지 중 '집'(가장 먼저 기록한 구간의 출발 지역)이 아닌 곳
+  const first = [...legs].sort((x,y)=>(x.date||'9999').localeCompare(y.date||'9999') || (x.seq||0)-(y.seq||0))[0];
+  const home = first && first.a && first.a[3]==='KR' ? (KR_REGION[first.from]||first.from) : '서울';
+  const domestic = [...new Set(legs.filter(l => l.b && l.b[3]==='KR').map(l => KR_REGION[l.to]||l.to).filter(r => r!==home))];
   const airports = new Set(legs.flatMap(l=>[l.from,l.to]));
-  return {legs, km, countries, airports: airports.size};
+  return {legs, km, countries, domestic, airports: airports.size};
 }
+const stampList = s => [...s.countries.map(c => ({code:c, name:CNAME[c]||''})), ...s.domestic.map(r => ({code:KR_CODE[r]||r, name:r, dom:true}))];
 PTX.views.trips = async function(){
   const app = PT.app;
   app.innerHTML = PT.head('08 · 여행 기록','우리 개가 함께 날아간 길','비행 구간을 기록하면 함께 이동한 거리와 다녀온 나라가 쌓이고, 인스타그램 스토리 크기의 결산 카드를 만들 수 있어요.') + '<p class="hint">공항 목록을 불러오는 중…</p>';
@@ -544,11 +552,12 @@ PTX.views.trips = async function(){
       <section class="panel">
         <h3 class="sec-h" style="margin-top:0">비행 구간 추가</h3>
         <form class="form-grid" id="legForm" autocomplete="off">
-          <div class="field"><label for="lgDate">날짜</label><input type="date" id="lgDate" value="${todayIso()}" required></div>
+          <div class="field"><label for="lgDate">날짜 (모르면 비워 두기)</label><input type="date" id="lgDate" value="${todayIso()}"><p class="hint">날짜가 없는 구간은 '전체' 결산에만 들어가고 연도별 결산에서는 빠집니다.</p></div>
           <div class="field"><label for="lgFrom">출발 공항</label><input type="search" id="lgFrom" list="aptList" placeholder="ICN 또는 인천" value="ICN · 한국 Seoul · Incheon International Airport" required></div>
           <div class="field"><label for="lgTo">도착 공항</label><input type="search" id="lgTo" list="aptList" placeholder="NRT, 도쿄, Narita…" required><p class="hint">공항 코드 세 글자나 도시 영문 이름으로 찾을 수 있어요.</p></div>
           <label class="check"><input type="checkbox" id="lgBack"><span>같은 노선으로 돌아오는 편도 함께 추가</span></label>
           <div class="field" id="backWrap" hidden><label for="lgBackDate">돌아온 날짜</label><input type="date" id="lgBackDate"></div>
+          <div class="field" style="max-width:220px"><label for="lgTimes">같은 여정을 몇 번 다녀왔나요</label><input type="number" id="lgTimes" min="1" max="50" step="1" value="1" inputmode="numeric"><p class="hint">예: 김포↔제주 왕복 10번이면 왕복 체크 + 10</p></div>
           <datalist id="aptList">${opt}</datalist>
           <p class="save-state" id="lgSt" aria-live="polite"></p>
           <div><button class="btn btn-primary btn-sm" type="submit">구간 추가</button></div>
@@ -559,12 +568,13 @@ PTX.views.trips = async function(){
         <div class="stats-row">
           <div class="stat-tile"><b>${Math.round(s.km).toLocaleString('ko-KR')}</b><span>km 함께 이동</span></div>
           <div class="stat-tile"><b>${s.legs.length}</b><span>번 비행</span></div>
-          <div class="stat-tile"><b>${s.countries.length}</b><span>개 나라</span></div>
-          <div class="stat-tile"><b>${(s.km/EARTH).toFixed(2)}</b><span>바퀴 (지구 둘레 기준)</span></div>
+          <div class="stat-tile"><b>${s.countries.length}</b><span>개 나라 (해외)</span></div>
+          <div class="stat-tile"><b>${s.domestic.length}</b><span>곳 (국내)</span></div>
         </div>
-        ${s.countries.length?`<div class="stamps" aria-label="다녀온 나라">${s.countries.map(c=>`<span class="stamp"><span><b>${c}</b>${PT.esc(CNAME[c]||'')}</span></span>`).join('')}</div>`:''}
+        <p class="hint" style="margin:8px 0 0">지구 둘레 기준 ${(s.km/EARTH).toFixed(2)}바퀴</p>
+        ${stampList(s).length?`<div class="stamps" aria-label="다녀온 곳">${stampList(s).map(x=>`<span class="stamp"><span><b${x.dom&&x.code.length>3?' style="font-size:12px"':''}>${PT.esc(x.code)}</b>${PT.esc(x.name)}</span></span>`).join('')}</div>`:''}
         <h3 class="sec-h">기록한 구간</h3>
-        <ul class="legs">${s.legs.length ? s.legs.map(l=>`<li><span class="hint">${fmtDot(l.date)}</span><span><span class="route">${PT.esc(l.from)} → ${PT.esc(l.to)}</span><br><span class="km">${l.a&&l.b?PT.esc((l.a[2]||l.a[1]))+' → '+PT.esc((l.b[2]||l.b[1]))+' · '+Math.round(l.km).toLocaleString('ko-KR')+'km':'공항 정보 없음'}</span></span><button class="icon-btn" type="button" data-rmleg="${l.id}" aria-label="${PT.esc(l.from)}→${PT.esc(l.to)} 구간 삭제" title="삭제">${SVG.del}</button></li>`).join('') : '<li style="display:block"><span class="hint">아직 기록한 비행이 없어요. 첫 비행을 추가해 보세요.</span></li>'}</ul>
+        <ul class="legs">${s.legs.length ? s.legs.map(l=>`<li><span class="hint">${l.date?fmtDot(l.date):'날짜 없음'}</span><span><span class="route">${PT.esc(l.from)} → ${PT.esc(l.to)}</span><br><span class="km">${l.a&&l.b?PT.esc((l.a[2]||l.a[1]))+' → '+PT.esc((l.b[2]||l.b[1]))+' · '+Math.round(l.km).toLocaleString('ko-KR')+'km':'공항 정보 없음'}</span></span><button class="icon-btn" type="button" data-rmleg="${l.id}" aria-label="${PT.esc(l.from)}→${PT.esc(l.to)} 구간 삭제" title="삭제">${SVG.del}</button></li>`).join('') : '<li style="display:block"><span class="hint">아직 기록한 비행이 없어요. 첫 비행을 추가해 보세요.</span></li>'}</ul>
         <h3 class="sec-h">결산 카드</h3>
         <div class="form-grid two">
           <div class="field"><label for="rcName">반려견 이름</label><input type="text" id="rcName" value="${PT.esc(w.name||'')}" placeholder="내 반려견에서 불러옴"></div>
@@ -582,8 +592,10 @@ PTX.views.trips = async function(){
     const f = code($('#lgFrom').value), t = code($('#lgTo').value), d = $('#lgDate').value, st = $('#lgSt');
     if(!f || !t){ st.textContent = '공항을 목록에서 골라 주세요. 공항 코드(예: NRT)로 찾으면 정확합니다.'; return; }
     if(f===t){ st.textContent = '출발과 도착 공항이 같아요.'; return; }
-    const list = LS.get('pt-trips', []); list.push({id:uid(), date:d, from:f, to:t});
-    if($('#lgBack').checked) list.push({id:uid(), date:$('#lgBackDate').value || d, from:t, to:f});
+    const times = Math.max(1, Math.min(50, parseInt($('#lgTimes').value,10) || 1));
+    const list = LS.get('pt-trips', []); let seq = list.reduce((m,x)=>Math.max(m, x.seq||0), 0);
+    for(let k=0;k<times;k++){ list.push({id:uid(), seq:++seq, date:d, from:f, to:t});
+      if($('#lgBack').checked) list.push({id:uid(), seq:++seq, date:$('#lgBackDate').value || d, from:t, to:f}); }
     LS.set('pt-trips', list); persistOnce(); PT.track('trip_add', {legs: list.length}); PTX.views.trips(); });
   $$('[data-rmleg]', app).forEach(b => b.addEventListener('click', () => { if(!confirm('이 구간 기록을 삭제할까요?')) return; LS.set('pt-trips', LS.get('pt-trips', []).filter(x=>x.id!==b.dataset.rmleg)); PTX.views.trips(); }));
   $$('[data-year]', app).forEach(b => b.addEventListener('click', () => { tripYear = b.dataset.year; PTX.views.trips(); }));
@@ -626,18 +638,18 @@ async function drawRecap(s, name, title){
   // 큰 숫자
   g.fillStyle = CORAL; g.font = `800 170px ${F}`; g.fillText(Math.round(s.km).toLocaleString('ko-KR'), cx, 1040);
   g.fillStyle = INK; g.font = `700 46px ${F}`; g.fillText('km 함께 날았어요', cx, 1110);
-  g.font = `500 34px ${F}`; g.fillStyle = '#5A5B60'; g.fillText(`지구 ${(s.km/EARTH).toFixed(2)}바퀴 · 비행 ${s.legs.length}번 · 나라 ${s.countries.length}곳`, cx, 1175);
+  g.font = `500 34px ${F}`; g.fillStyle = '#5A5B60'; g.fillText(`지구 ${(s.km/EARTH).toFixed(2)}바퀴 · 비행 ${s.legs.length}번 · 해외 ${s.countries.length}곳 · 국내 ${s.domestic.length}곳`, cx, 1175);
   // 스탬프
-  const cs = s.countries.slice(0, 8); const per = Math.min(4, cs.length) || 1; const sr = 92, gap = 40;
+  const all = stampList(s); const cs = all.slice(0, 8); const per = Math.min(4, cs.length) || 1; const sr = 92, gap = 40;
   cs.forEach((c, i) => { const row = Math.floor(i/4), col = i%4; const n = Math.min(4, cs.length - row*4);
     const x = cx - (n*(2*sr) + (n-1)*gap)/2 + sr + col*(2*sr+gap), y = 1370 + row*(2*sr+50);
     const col1 = i%2 ? NAVY : CORAL;
     g.save(); g.translate(x, y); g.rotate((i%2? 6 : -7)*Math.PI/180);
     g.lineWidth = 6; g.strokeStyle = col1; g.setLineDash([14,9]); g.beginPath(); g.arc(0,0,sr,0,Math.PI*2); g.stroke(); g.setLineDash([]);
     g.lineWidth = 3; g.beginPath(); g.arc(0,0,sr-16,0,Math.PI*2); g.stroke();
-    g.fillStyle = col1; g.font = `800 46px ${F}`; g.fillText(c, 0, 4); g.font = `700 26px ${F}`; g.fillText(CNAME[c]||'', 0, 42);
+    g.fillStyle = col1; g.font = `800 ${c.code.length>3?34:46}px ${F}`; g.fillText(c.code, 0, 4); g.font = `700 26px ${F}`; g.fillText(c.name, 0, 42);
     g.restore(); });
-  if(s.countries.length > 8){ g.fillStyle = NAVY; g.font = `600 30px ${F}`; g.fillText(`외 ${s.countries.length-8}곳`, cx, 1370 + 2*(2*sr+50) - 40); }
+  if(all.length > 8){ g.fillStyle = NAVY; g.font = `600 30px ${F}`; g.fillText(`외 ${all.length-8}곳`, cx, 1370 + 2*(2*sr+50) - 40); }
   // 하단
   g.fillStyle = NAVY; g.fillRect(0, H-150, W_, 150);
   g.fillStyle = '#FFFFFF'; g.font = `700 40px ${F}`; g.fillText('pawtrip.us', cx, H-82);
