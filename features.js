@@ -125,12 +125,14 @@ const L = {
       owner:'主人', tel:'电话', emer:'紧急联系人', vet:'常去的宠物医院（韩国）', note:'主人备注', orig:'主人填写（原文）'}
 };
 // 현지 동물병원 검색어 (구글 지도 검색 링크용). 중국 본토는 구글 지도가 막혀 있어 현지 지도 앱 안내
+// place: 도시를 안 넣었을 때 붙이는 나라 이름 (검색 지역을 그 나라로 고정), ex: 도시 입력 예시
 const VET_SEARCH = {
-  jp:{q:'動物病院 夜間救急', lang:'ja'}, cn:{q:'24小时宠物医院', lang:'zh', cnMaps:true},
-  us:{q:'24 hour emergency vet', lang:'en'}, ca:{q:'24 hour emergency vet', lang:'en'}, gb:{q:'24 hour emergency vet', lang:'en'},
-  au:{q:'24 hour emergency vet', lang:'en'}, sg:{q:'24 hour emergency vet', lang:'en'}, ph:{q:'24 hour emergency vet', lang:'en'},
-  fr:{q:'urgences vétérinaires', lang:'en'}, de:{q:'Tierarzt Notdienst', lang:'en'},
-  th:{q:'โรงพยาบาลสัตว์ 24 ชั่วโมง', lang:'en'}, vn:{q:'bệnh viện thú y 24h', lang:'en'}
+  jp:{q:'動物病院 夜間救急', lang:'ja', place:'日本', ex:'東京, 大阪, Fukuoka'}, cn:{q:'24小时宠物医院', lang:'zh', cnMaps:true},
+  us:{q:'24 hour emergency vet', lang:'en', place:'USA', ex:'San Francisco, Los Angeles'}, ca:{q:'24 hour emergency vet', lang:'en', place:'Canada', ex:'Vancouver, Toronto'},
+  gb:{q:'24 hour emergency vet', lang:'en', place:'United Kingdom', ex:'London'}, au:{q:'24 hour emergency vet', lang:'en', place:'Australia', ex:'Sydney, Melbourne'},
+  sg:{q:'24 hour emergency vet', lang:'en', place:'Singapore', ex:'Orchard'}, ph:{q:'24 hour emergency vet', lang:'en', place:'Philippines', ex:'Manila, Cebu'},
+  fr:{q:'urgences vétérinaires', lang:'fr', place:'France', ex:'Paris'}, de:{q:'Tierarzt Notdienst', lang:'de', place:'Deutschland', ex:'Berlin, Frankfurt'},
+  th:{q:'โรงพยาบาลสัตว์ 24 ชั่วโมง', lang:'th', place:'Thailand', ex:'Bangkok'}, vn:{q:'bệnh viện thú y 24h', lang:'vi', place:'Việt Nam', ex:'Hà Nội, Đà Nẵng'}
 };
 const DOC_TYPES = ['광견병 접종증명서','항체가 검사 결과서','건강증명서(영문)','동물검역증명서(한국 발급)','목적지 수입허가·사전신고','동물등록증','기타'];
 
@@ -277,8 +279,9 @@ function renderSos(el){
     <section class="panel" style="margin-top:20px">
       <h3 class="sec-h" style="margin-top:0">현지 동물병원 찾기</h3>
       <div class="field" style="max-width:360px"><label for="vetC">지금 있는 나라</label><select id="vetC">${countries.map(c=>`<option value="${c.id}" ${c.id===destId?'selected':''}>${PT.esc(c.name)}</option>`).join('')}</select></div>
+      <div class="field" style="max-width:360px;margin-top:12px"><label for="vetCity">도시·지역 (선택)</label><input type="text" id="vetCity" autocomplete="off"><p class="hint" id="vetEx"></p></div>
       <div id="vetOut" style="margin-top:12px"></div>
-      <p class="hint" style="margin-top:12px">병원 목록은 PawTrip이 검증해 올린 것이 아니라 지도 검색 결과입니다. 진료 시간과 응급 진료 가능 여부는 전화로 먼저 확인하세요.</p>
+      <p class="hint" style="margin-top:12px">병원 목록은 PawTrip이 검증해 올린 것이 아니라 지도 검색 결과입니다. 진료 시간과 응급 진료 가능 여부는 전화로 먼저 확인하세요. '내 위치 주변'을 누르면 위치가 구글 지도로만 전달되고 PawTrip에는 저장되지 않습니다.</p>
     </section>
     <p class="hint" style="margin-top:12px">카드의 고정 문구와 선택형 항목만 번역했습니다. 직접 입력한 메모·약 이름은 잘못 번역될 위험이 있어 원문 그대로 보여줍니다.</p>`;
   const draw = lang => {
@@ -305,14 +308,36 @@ function renderSos(el){
         ${w.vet?`<dt>${t.vet}</dt><dd>${PT.esc(w.vet)}${w.vetTel?`<br>${PT.esc(w.vetTel)}`:''}</dd>`:''}
       </dl></article>`;
   };
+  // 검색 지역을 꼭 함께 넘김: 검색어만 넘기면 구글이 '접속 위치'(예: 한국) 주변에서 찾아 버림
   const vet = () => { const id = $('#vetC').value; const v = VET_SEARCH[id]; const out = $('#vetOut'); if(!v){ out.innerHTML=''; return; }
-    const url = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(v.q);
+    const city = $('#vetCity').value.trim();
+    $('#vetEx').textContent = v.ex ? '예: ' + v.ex + ' · 비우면 ' + PT.data().countries.find(c=>c.id===id).name + ' 전체에서 찾습니다' : '';
+    $('#vetCity').closest('.field').hidden = !!v.cnMaps;
+    const q = v.q + ' ' + (city || v.place || '');
+    const url = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q.trim());
     out.innerHTML = `<p style="margin:0 0 10px">현지 검색어: <b lang="${v.lang}">${PT.esc(v.q)}</b></p>` + (v.cnMaps
       ? `<div class="callout">중국 본토에서는 구글 지도를 쓸 수 없습니다. 가오더지도(高德地图)나 바이두지도(百度地图) 앱에서 위 검색어로 찾으세요.</div>`
-      : `<a class="link solid" href="${url}" target="_blank" rel="noopener">지도에서 가까운 동물병원 찾기 ${PT.ICON.ext}</a>`); };
+      : `<div class="row-btns" style="margin-top:0"><button class="btn btn-primary btn-sm" type="button" id="vetNear">내 위치 주변에서 찾기</button>
+          <a class="btn btn-sm" href="${url}" target="_blank" rel="noopener" id="vetPlace">${PT.esc(city || PT.data().countries.find(c=>c.id===id).name)}에서 찾기 ${PT.ICON.ext}</a></div>
+         <p class="save-state" id="vetSt" aria-live="polite"></p>`);
+    const near = $('#vetNear'); if(!near) return;
+    $('#vetPlace').addEventListener('click', () => PT.track('vet_search', {mode: city ? 'city' : 'country', country:id}));
+    near.addEventListener('click', () => {
+      const st = $('#vetSt');
+      if(!navigator.geolocation){ st.textContent = '이 브라우저는 위치 확인을 지원하지 않아요. 도시 이름을 넣고 오른쪽 버튼을 눌러 주세요.'; return; }
+      st.textContent = '현재 위치를 확인하는 중…';
+      const win = window.open('', '_blank'); // 팝업 차단을 피하려고 클릭 시점에 창을 먼저 엶
+      navigator.geolocation.getCurrentPosition(pos => {
+        const lat = pos.coords.latitude.toFixed(5), lng = pos.coords.longitude.toFixed(5);
+        const u = 'https://www.google.com/maps/search/' + encodeURIComponent(v.q) + '/@' + lat + ',' + lng + ',14z';
+        if(win) win.location.href = u; else location.href = u;
+        st.textContent = ''; PT.track('vet_search', {mode:'near', country:id});
+      }, () => { if(win) win.close(); st.textContent = '위치를 확인하지 못했어요(권한 거부 또는 신호 없음). 도시 이름을 넣고 오른쪽 버튼을 눌러 주세요.'; },
+      {enableHighAccuracy:false, timeout:10000, maximumAge:300000});
+    }); };
   draw(def); vet();
   $$('[data-lang]', el).forEach(b => b.addEventListener('click', () => { $$('[data-lang]', el).forEach(x=>x.setAttribute('aria-pressed', x===b)); LS.set('pt-sos-lang', b.dataset.lang); draw(b.dataset.lang); PT.track('sos_lang', {lang:b.dataset.lang}); }));
-  $('#vetC').addEventListener('change', vet);
+  $('#vetC').addEventListener('change', vet); $('#vetCity').addEventListener('input', vet);
   $('#sosFull').addEventListener('click', () => { const a = $('#sosArt'); if(a && a.requestFullscreen) a.requestFullscreen().catch(()=>{}); else if(a) a.scrollIntoView({behavior:'smooth'}); PT.track('sos_open', {}); });
 }
 
