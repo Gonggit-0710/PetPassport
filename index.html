@@ -583,6 +583,8 @@
   load();
   if(!state.dep) state.dep = iso(addMonths(today,8));
   if(PTX.init) PTX.init({app, state, save, esc, flag, head, track, ICON, data: () => DATA});
+  // 메뉴는 규정 데이터와 상관없이 먼저 그림 (data.json을 못 불러와도 메뉴는 보이게)
+  if(window.PTNav){ const h0=(location.hash||'#flights').slice(1); PTNav.render(TABS.includes(h0)?h0:(h0.length===2?'countries':'flights')); }
   fetch('data.json').then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); })
     .then(d=>{ DATA=d;
       document.querySelectorAll('.vdate').forEach(x=>x.textContent=d.meta.verified);

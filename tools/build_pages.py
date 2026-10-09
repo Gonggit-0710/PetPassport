@@ -46,7 +46,7 @@ SHELL = '''<!doctype html>
   window.dataLayer=window.dataLayer||[]; window.gtag=function(){{dataLayer.push(arguments);}};
   if(!/(^|\\.)pawtrip\\.us$/.test(H)) return;
   var s=document.createElement('script'); s.async=true; s.src='https://www.googletagmanager.com/gtag/js?id='+ID; document.head.appendChild(s);
-  gtag('js',new Date()); gtag('config',ID);
+  gtag('js',new Date()); gtag('config',ID,{{send_page_view:false}});
 }})();
 </script>
 <style>
@@ -120,7 +120,7 @@ D_AIR = [
    [('https://www.koreanair.com/contents/plan-your-travel/special-assistance/travel-with-pets/guide','대한항공 반려동물 동반 안내')]),
   ('아시아나항공', '케이지 포함 7kg 이하', '32×45×21cm 이내 (소프트 높이 26cm, 눌러서 21cm)',
    '가능 · 케이지 포함 45kg 이하 (세 변 합 285cm·높이 84cm)',
-   '32kg 이하 30,000원 · 32~45kg 60,000원 (2022-05-01 발권분)', '출발 24시간 전(영업일 기준)까지 예약센터 1588-8000 확약',
+   '32kg 이하 30,000원 · 32kg 초과~45kg 60,000원 (2022-05-01 발권분)', '출발 24시간 전(영업일 기준)까지 예약센터 1588-8000 확약',
    ['1인당 기내 1마리 또는 위탁 2마리', '단두종 위탁 중단 (2019-07-01부)', '김포·제주·광주·여수·대구·청주 공항 카운터에서 케이지 구매 가능 (아시아나 탑승 45,000원)'],
    [('https://flyasiana.com/C/KR/KO/contents/traveling-with-pets','아시아나항공 반려동물 동반')]),
   ('제주항공', '케이지 포함 9kg 이하', '세 변 합 100cm 이하, 가로 37cm·높이 23cm 이하 (소프트 높이 28cm)',
@@ -150,7 +150,7 @@ def domestic_body():
         <ul class="dots" style="margin-top:10px">{''.join(f'<li>{html.escape(x)}</li>' for x in nt)}</ul><div class="links" style="margin-top:10px">{''.join(ext(u,t) for u,t in src)}</div></section>''' for n,c,cs,ck,fee,ap,nt,src in D_AIR)
     return f'''
       <nav class="toc" aria-label="이 페이지 목차"><a class="link" href="#air">국내선 항공</a><a class="link" href="#rail">KTX·SRT</a><a class="link" href="#etc">버스·여객선</a></nav>
-      <div class="callout info"><strong>먼저 알아둘 것</strong>국내선은 대부분 <b>케이지 포함 7~9kg</b>까지만 기내에 함께 탈 수 있고, 위탁(화물칸)을 받는 항공사는 대한항공·아시아나·진에어(B777)·에어부산뿐입니다. 모든 항공사가 <b>사전 신청·확약</b>을 요구하며, 확약 없이 공항에 가면 탑승할 수 없습니다.</div>
+      <div class="callout info"><strong>먼저 알아둘 것</strong>국내선은 대부분 <b>케이지 포함 7~9kg</b>까지만 기내에 함께 탈 수 있고, 확인한 6개 항공사 중 위탁(화물칸)을 받는 곳은 대한항공·아시아나·진에어(B777 운항편)·에어부산입니다. 모든 항공사가 <b>사전 신청·확약</b>을 요구하며, 확약 없이 공항에 가면 탑승할 수 없습니다.</div>
       <h2 id="air">국내선 항공사 (김포·제주 등)</h2>
       <div class="air-grid">{rows}</div>
       <p class="hint">요금은 각 항공사 공식 페이지 기준 반려동물 운송 요금이며 항공권·수하물 요금과 별개입니다. 무게는 모두 케이지를 포함한 총무게입니다.</p>
@@ -180,7 +180,7 @@ def domestic_body():
 # ------------------------------------------------------------------ 항체가 검사
 def titer_body():
     return f'''
-      <div class="callout info"><strong>왜 중요한가</strong>일본·EU(프랑스·독일)·영국·싱가포르·호주·중국은 광견병 항체가(중화항체) 검사 결과를 요구하고, 나라에 따라 채혈 뒤 정해진 기간을 기다려야 입국할 수 있습니다. 그래서 항체가 검사 날짜가 전체 준비 일정을 결정합니다. 한국으로 돌아올 때도 도착 전 24개월 이내 채혈한 0.5 IU/ml 이상 결과가 필요합니다(광견병 비발생 지역에서 오는 경우 제외).</div>
+      <div class="callout info"><strong>왜 중요한가</strong>일본·EU(프랑스·독일)·영국·싱가포르·호주는 광견병 항체가(중화항체) 검사 결과를 요구하고, 나라에 따라 채혈 뒤 정해진 기간을 기다려야 입국할 수 있습니다. 중국은 결과가 없으면 30일 격리 대상이 됩니다. 그래서 항체가 검사 날짜가 전체 준비 일정을 결정합니다. 한국으로 돌아올 때도 도착 전 24개월 이내 채혈한 0.5 IU/ml 이상 결과가 필요합니다(광견병 비발생 지역에서 오는 경우 제외).</div>
       <h2>국내에서 검사하는 방법</h2>
       <ol class="timeline">
         <li><b>1</b><span>동물병원에서 마이크로칩 번호를 확인하고 채혈합니다. 개는 개체 사진도 찍습니다.</span></li>
@@ -337,7 +337,7 @@ COST_JS = r'''<script>
 PAGES = [
   dict(slug='domestic', tab='domestic', group='규정 · 국내 이동', title='반려견과 국내 이동: 제주 국내선·KTX·SRT',
        desc='김포-제주 등 국내선 항공사별 반려동물 기내·위탁 무게, 케이지 크기, 요금과 KTX·SRT 반려견 동반 기준을 공식 출처로 정리했습니다.',
-       lead='국내선 항공사 6곳과 SRT·코레일의 반려동물 동반 기준을 공식 페이지 그대로 옮겼습니다.', body=domestic_body),
+       lead='국내선 항공사 6곳과 SRT·코레일의 반려동물 동반 기준을 공식 페이지와 운송약관 기준으로 정리했습니다.', body=domestic_body),
   dict(slug='titer', tab='titer', group='준비하기 · 항체가 검사', title='광견병 항체가 검사: 국내 검사 방법과 기간',
        desc='일본·EU·영국행에 필요한 광견병 항체가 검사를 국내에서 받는 방법, 처리 기간(15일), 일본 지정 검사기관(농림축산검역본부)을 정리했습니다.',
        lead='해외 입국 일정을 결정하는 항체가 검사를 언제, 어디서, 어떻게 받는지 정리했습니다.', body=titer_body),
