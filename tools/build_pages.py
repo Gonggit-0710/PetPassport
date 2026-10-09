@@ -65,6 +65,11 @@ SHELL = '''<!doctype html>
 #cOut .fees th{{width:auto;text-align:left;font-weight:600}}
 #cOut .fees .hint{{font-weight:400}}
 #cOut .fees td{{white-space:nowrap;text-align:right;vertical-align:top}}
+.chg-list{{margin-top:24px;border-left:2px solid var(--line);padding-left:20px}}
+.chg{{position:relative;padding-bottom:20px}}
+.chg::before{{content:'';position:absolute;left:-27px;top:8px;width:12px;height:12px;border-radius:50%;background:var(--coral)}}
+.doc h2.chg-d{{margin:0 0 8px;font-size:17px}}
+.chg .dots li{{margin-bottom:4px}}
 .toc{{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}}
 .updated{{font-size:var(--t-small)}}
 </style>
@@ -255,10 +260,11 @@ CHANGES = [
   ('2026-09-29', ['PawTrip 공개 (12개국 입국 규정, 6개 국적 항공사)']),
 ]
 def changes_body():
-    items = ''.join(f'<li><b>{d}</b><span><ul class="dots">{"".join(f"<li>{html.escape(x)}</li>" for x in xs)}</ul></span></li>' for d, xs in CHANGES)
+    # 날짜마다 소제목 + 목록 (중첩 timeline 목록은 바깥 칸 나누기 스타일이 안쪽에 번져 글자가 세로로 깨짐)
+    items = ''.join(f'<section class="chg" id="d{d}"><h2 class="chg-d"><time datetime="{d}">{d.replace("-", ".")}</time></h2><ul class="dots">{"".join(f"<li>{html.escape(x)}</li>" for x in xs)}</ul></section>' for d, xs in CHANGES)
     return f'''
       <p>규정 수치를 바꾸거나 바로잡을 때마다 날짜와 내용을 기록합니다. 각 항목의 근거는 해당 페이지의 공식 출처 링크에 있습니다.</p>
-      <ol class="timeline" style="margin-top:20px">{items}</ol>
+      <div class="chg-list">{items}</div>
       <div class="links" style="margin-top:20px"><a class="link solid" href="/#countries">국가별 규정</a><a class="link" href="/#airlines">항공사 비교</a><a class="link" href="/domestic/">국내 이동</a></div>'''
 
 # ------------------------------------------------------------------ 비용 계산
@@ -370,7 +376,7 @@ def sections(p, body):
     out.append({'t': p['title'], 'u': base, 'g': p['group'], 'x': p['desc'] + ' ' + text_of(parts[0])})
     for i in range(1, len(parts), 2):
         m = re.match(r'<h2(?: id="([^"]+)")?[^>]*>(.*?)</h2>', parts[i], re.S)
-        out.append({'t': text_of(m.group(2)), 'u': base + ('#' + m.group(1) if m.group(1) else ''), 'g': p['group'], 'x': text_of(parts[i+1] if i+1 < len(parts) else '')})
+        out.append({'t': (p['title'] + ' · ' if p['slug'] == 'changes' else '') + text_of(m.group(2)), 'u': base + ('#' + m.group(1) if m.group(1) else ''), 'g': p['group'], 'x': text_of(parts[i+1] if i+1 < len(parts) else '')})
     return out
 
 def build():
