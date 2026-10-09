@@ -163,16 +163,17 @@ async function loadPhoto(){
   return photoUrl;
 }
 PTX.views.wallet = function(){
-  const app = PT.app; if(wTab==='sos') wTab = 'card';
-  const tabs = [['card','펫 카드'],['edit','정보 입력'],['sos','SOS 카드'],['docs','서류 사본'],['backup','백업·복원']];
-  app.innerHTML = PT.head('내 반려견 · 펫 카드','공항·호텔·동물병원에서 바로 꺼내는 카드',
-      '마이크로칩 번호, 접종·항체가 날짜, 지병과 알레르기를 한 화면에 모았습니다. 홈 화면에 설치해 두면 인터넷이 없어도 열립니다.') + `
-    <div class="callout bad" style="margin-bottom:16px"><strong>원본 서류를 대신하지 않습니다</strong>공항 검역과 항공사 카운터는 수의사가 서명한 원본 증명서와 검역증명서를 확인합니다. 이 카드는 빠른 확인용 요약이니 원본은 반드시 챙기세요.</div>
-    <div class="chips" role="tablist" aria-label="내 반려견 메뉴" style="margin-bottom:20px">${tabs.map(([k,t])=>`<button class="chip" type="button" role="tab" data-wtab="${k}" aria-selected="${wTab===k}" aria-pressed="${wTab===k}">${t}</button>`).join('')}</div>
+  // 한 화면 구성: 펫 카드(오른쪽 위 '정보 고치기') → 서류 사본 → 백업·복원(접힘). SOS는 상단 SOS 버튼·메뉴에서
+  const app = PT.app; const editing = wTab === 'edit'; wTab = 'card'; // 편집 모드는 한 번만 (다른 메뉴 갔다 오면 카드로)
+  app.innerHTML = PT.head('내 반려견 · 펫 카드', editing ? '반려견 정보 입력' : '공항·호텔·동물병원에서 바로 꺼내는 카드',
+      editing ? '입력하는 즉시 이 기기에 저장됩니다. 다 넣었으면 아래 완료를 누르세요.' : '마이크로칩 번호, 접종·항체가 날짜, 지병과 알레르기를 한 화면에 모았습니다. 홈 화면에 설치해 두면 인터넷이 없어도 열립니다.') +
+    (editing ? '' : `<div class="callout bad" style="margin-bottom:16px"><strong>원본 서류를 대신하지 않습니다</strong>공항 검역과 항공사 카운터는 수의사가 서명한 원본 증명서와 검역증명서를 확인합니다. 이 카드는 빠른 확인용 요약이니 원본은 반드시 챙기세요.</div>`) + `
     <div id="wbody"></div>
-    <p class="hint" style="margin-top:16px">입력한 정보와 사진은 이 기기 브라우저에만 저장되고 PawTrip으로 전송되지 않습니다. 기기를 바꾸거나 사이트 데이터를 지우면 사라지니 <b>백업·복원</b>에서 파일로 보관하세요.</p>`;
-  $$('[data-wtab]', app).forEach(b => b.addEventListener('click', () => { if(b.dataset.wtab==='sos'){ location.hash = 'sos'; return; } wTab = b.dataset.wtab; PTX.views.wallet(); }));
-  ({card:renderCard, edit:renderEdit, sos:renderSos, docs:renderDocs, backup:renderBackup})[wTab]($('#wbody'));
+    ${editing ? '' : `<div id="wdocs" class="wsec"></div>
+    <details class="panel wsec" id="wbk"><summary>기기를 바꿀 때: 백업·복원</summary><div id="wbkBody" style="margin-top:14px"></div></details>`}
+    <p class="hint" style="margin-top:16px">입력한 정보와 사진은 이 기기 브라우저에만 저장되고 PawTrip으로 전송되지 않습니다. 기기를 바꾸거나 사이트 데이터를 지우면 사라지니 백업 파일로 보관하세요.</p>`;
+  if(editing){ renderEdit($('#wbody')); window.scrollTo({top:0}); return; }
+  renderCard($('#wbody')); renderDocs($('#wdocs')); renderBackup($('#wbkBody'));
 };
 
 PTX.views.sos = function(){
@@ -202,7 +203,7 @@ async function renderCard(el){
     <section class="panel">
       <div class="pet-card">
         <div class="pet-photo">${ph?`<img src="${ph}" alt="${PT.esc(w.name||'반려견')} 사진">`:SVG.paw}</div>
-        <div><h3 class="pet-name">${PT.esc(w.name||'이름 미입력')}</h3>
+        <div><div class="pet-top"><h3 class="pet-name">${PT.esc(w.name||'이름 미입력')}</h3><button class="btn btn-sm" type="button" id="goEdit">정보 고치기</button></div>
           <p class="pet-sub">${[w.breed, sex + (w.neut?' · 중성화':''), w.dob?fmtDot(w.dob)+' 생':'', w.weight?w.weight+'kg':''].filter(Boolean).map(PT.esc).join(' · ')}</p></div>
       </div>
       <h4 class="sec-h">마이크로칩 번호</h4>
@@ -227,9 +228,8 @@ async function renderCard(el){
         ${w.emer?`<dt>비상 연락처</dt><dd>${PT.esc(w.emer)}</dd>`:''}
         ${w.vet?`<dt>주치 동물병원</dt><dd>${PT.esc(w.vet)}${w.vetTel?` · <a class="tel" href="tel:${PT.esc(w.vetTel)}">${PT.esc(w.vetTel)}</a>`:''}</dd>`:''}
       </dl>
-      <div class="row-btns"><button class="btn btn-sm" type="button" data-go="edit">정보 고치기</button><button class="btn btn-sm" type="button" data-go="sos">SOS 카드 열기</button><button class="btn btn-sm" type="button" data-go="docs">서류 사본 보기</button></div>
     </section>`;
-  $$('[data-go]', el).forEach(b => b.addEventListener('click', () => { if(b.dataset.go==='sos'){ location.hash = 'sos'; return; } wTab = b.dataset.go; PTX.views.wallet(); }));
+  $('#goEdit').addEventListener('click', () => { wTab = 'edit'; PTX.views.wallet(); });
 }
 
 function renderEdit(el){
@@ -265,7 +265,9 @@ function renderEdit(el){
         ${inp('vet','한국 주치 동물병원')}${inp('vetTel','동물병원 전화','tel','placeholder="+82 2-000-0000"')}
       </div></fieldset>
       <p class="save-state" id="wsaved" aria-live="polite"></p>
+      <div class="row-btns"><button class="btn btn-primary" type="button" data-done>완료하고 카드 보기</button></div>
     </form>`;
+  $$('[data-done]', el).forEach(b => b.addEventListener('click', () => { wTab = 'card'; PTX.views.wallet(); window.scrollTo({top:0}); }));
   const form = $('#wform'); const st = $('#wsaved');
   const commit = () => { const v = W();
     $$('[data-k]', form).forEach(i => { v[i.dataset.k] = i.type==='checkbox' ? i.checked : i.value.trim(); });
@@ -376,7 +378,7 @@ async function renderDocs(el){
       <p class="hint" style="margin:0 0 14px">국제항공운송협회(IATA)는 서류 사본을 따로 보관하라고 안내합니다. 원본을 잃어버렸을 때 재발급 문의나 호텔·애견 시설 확인용으로 쓰세요.</p>
       <div class="form-grid two">
         <div class="field"><label for="docType">서류 종류</label><select id="docType">${DOC_TYPES.map(t=>`<option>${t}</option>`).join('')}</select></div>
-        <div class="field"><label for="docFile">파일 (사진 또는 PDF)</label><input type="file" id="docFile" accept="image/*,application/pdf"></div>
+        <div class="field"><span class="lbl" style="font-weight:600;font-size:14px">파일</span><label class="btn btn-primary btn-sm" for="docFile" style="align-self:flex-start;min-height:48px">사진·PDF 골라서 추가</label><input type="file" id="docFile" class="sr-only" accept="image/*,application/pdf"></div>
       </div>
       <p class="save-state" id="docSt" aria-live="polite"></p>
       <ul class="doc-list" id="docList"></ul>
@@ -419,7 +421,7 @@ async function renderDocs(el){
 
 function renderBackup(el){
   el.innerHTML = `
-    <section class="panel">
+    <section>
       <h3 class="sec-h" style="margin-top:0">파일로 백업하기</h3>
       <p style="margin:0 0 12px">반려견 정보, 사진·서류 사본, 준비 루틴 기록, 짐 목록, 여행 기록을 파일 하나로 내려받습니다. 파일에는 마이크로칩 번호와 연락처가 들어 있으니 안전한 곳에 보관하세요.</p>
       <button class="btn btn-primary btn-sm" type="button" id="bkOut">백업 파일 내려받기</button>
@@ -446,7 +448,11 @@ function renderBackup(el){
     saveW(pack.wallet||{}); if(pack.train) LS.set('pt-train', pack.train); if(pack.pack) LS.set('pt-pack', pack.pack); LS.set('pt-trips', Array.isArray(pack.trips)?pack.trips:[]);
     let n = 0;
     try{ await DB.clear(); for(const x of (pack.files||[])){ const b = await dataUrlToBlob(x.data); await DB.put({id:x.id, kind:x.kind, title:x.title, type:x.type, name:x.name, added:x.added, blob:b}); n++; } }catch(err){}
-    st.textContent = '복원했어요. 사진·서류 ' + n + '개.'; PT.track('backup_import', {files:n}); e.target.value='';
+    PT.track('backup_import', {files:n});
+    // 복원한 내용으로 카드·서류 목록을 다시 그리고, 결과 문구는 백업 칸에 그대로 보여줌
+    wTab = 'card'; PTX.views.wallet();
+    const bk = document.getElementById('wbk'); if(bk) bk.open = true;
+    const st2 = document.getElementById('bkSt'); if(st2) st2.textContent = '복원했어요. 사진·서류 ' + n + '개.';
   });
 }
 

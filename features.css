@@ -151,3 +151,8 @@ html.srch-open{overflow:hidden}
 .srch-empty span{font-size:14px}
 @media (max-width:360px){.topbar-right{gap:8px}}
 .btn svg{width:12px;height:12px;flex:none}
+/* 펫 카드 화면 정리 */
+.pet-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.wsec{margin-top:16px}
+details.wsec summary{cursor:pointer;font-weight:700;font-size:15px;list-style-position:inside}
+details.wsec[open] summary{margin-bottom:4px}
