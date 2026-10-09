@@ -322,18 +322,23 @@ function renderSos(el){
          <p class="save-state" id="vetSt" aria-live="polite"></p>`);
     const near = $('#vetNear'); if(!near) return;
     $('#vetPlace').addEventListener('click', () => PT.track('vet_search', {mode: city ? 'city' : 'country', country:id}));
+    // 위치를 먼저 받고 → 지도 열기 링크를 보여줌 (빈 탭을 미리 열면 크롬 위치 허용 창이 가려져 about:blank만 남음)
     near.addEventListener('click', () => {
       const st = $('#vetSt');
       if(!navigator.geolocation){ st.textContent = '이 브라우저는 위치 확인을 지원하지 않아요. 도시 이름을 넣고 오른쪽 버튼을 눌러 주세요.'; return; }
-      st.textContent = '현재 위치를 확인하는 중…';
-      const win = window.open('', '_blank'); // 팝업 차단을 피하려고 클릭 시점에 창을 먼저 엶
+      near.disabled = true; st.textContent = '현재 위치를 확인하는 중… 브라우저가 위치 권한을 물으면 허용을 눌러 주세요.';
       navigator.geolocation.getCurrentPosition(pos => {
         const lat = pos.coords.latitude.toFixed(5), lng = pos.coords.longitude.toFixed(5);
         const u = 'https://www.google.com/maps/search/' + encodeURIComponent(v.q) + '/@' + lat + ',' + lng + ',14z';
-        if(win) win.location.href = u; else location.href = u;
-        st.textContent = ''; PT.track('vet_search', {mode:'near', country:id});
-      }, () => { if(win) win.close(); st.textContent = '위치를 확인하지 못했어요(권한 거부 또는 신호 없음). 도시 이름을 넣고 오른쪽 버튼을 눌러 주세요.'; },
-      {enableHighAccuracy:false, timeout:10000, maximumAge:300000});
+        near.disabled = false;
+        st.innerHTML = `위치를 확인했어요. <a class="btn btn-primary btn-sm" href="${u}" target="_blank" rel="noopener" id="vetGo" style="margin-left:6px">내 위치 주변 지도 열기 ${PT.ICON.ext}</a>`;
+        const go = $('#vetGo'); go.focus(); go.addEventListener('click', () => PT.track('vet_search', {mode:'near', country:id}));
+      }, err => {
+        near.disabled = false;
+        st.textContent = err && err.code === 1
+          ? '위치 권한이 꺼져 있어요. 주소창 왼쪽 아이콘에서 위치를 허용하거나, 도시 이름을 넣고 오른쪽 버튼을 눌러 주세요.'
+          : '위치를 확인하지 못했어요(신호 없음 또는 시간 초과). 도시 이름을 넣고 오른쪽 버튼을 눌러 주세요.';
+      }, {enableHighAccuracy:false, timeout:15000, maximumAge:300000});
     }); };
   draw(def); vet();
   $$('[data-lang]', el).forEach(b => b.addEventListener('click', () => { $$('[data-lang]', el).forEach(x=>x.setAttribute('aria-pressed', x===b)); LS.set('pt-sos-lang', b.dataset.lang); draw(b.dataset.lang); PT.track('sos_lang', {lang:b.dataset.lang}); }));
