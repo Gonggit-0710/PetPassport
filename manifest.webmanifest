@@ -36,6 +36,16 @@
   ],
   "shortcuts": [
     {
+      "name": "SOS 카드",
+      "url": "/#sos",
+      "icons": [
+        {
+          "src": "media/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
       "name": "항공편 선택",
       "url": "/#flights",
       "icons": [

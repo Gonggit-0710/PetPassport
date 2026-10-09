@@ -148,7 +148,7 @@ async function loadPhoto(){
   return photoUrl;
 }
 PTX.views.wallet = function(){
-  const app = PT.app;
+  const app = PT.app; if(wTab==='sos') wTab = 'card';
   const tabs = [['card','펫 카드'],['edit','정보 입력'],['sos','SOS 카드'],['docs','서류 사본'],['backup','백업·복원']];
   app.innerHTML = PT.head('07 · 내 반려견','공항·호텔·동물병원에서 바로 꺼내는 카드',
       '마이크로칩 번호, 접종·항체가 날짜, 지병과 알레르기를 한 화면에 모았습니다. 홈 화면에 설치해 두면 인터넷이 없어도 열립니다.') + `
@@ -156,8 +156,19 @@ PTX.views.wallet = function(){
     <div class="chips" role="tablist" aria-label="내 반려견 메뉴" style="margin-bottom:20px">${tabs.map(([k,t])=>`<button class="chip" type="button" role="tab" data-wtab="${k}" aria-selected="${wTab===k}" aria-pressed="${wTab===k}">${t}</button>`).join('')}</div>
     <div id="wbody"></div>
     <p class="hint" style="margin-top:16px">입력한 정보와 사진은 이 기기 브라우저에만 저장되고 PawTrip으로 전송되지 않습니다. 기기를 바꾸거나 사이트 데이터를 지우면 사라지니 <b>백업·복원</b>에서 파일로 보관하세요.</p>`;
-  $$('[data-wtab]', app).forEach(b => b.addEventListener('click', () => { wTab = b.dataset.wtab; PTX.views.wallet(); }));
+  $$('[data-wtab]', app).forEach(b => b.addEventListener('click', () => { if(b.dataset.wtab==='sos'){ location.hash = 'sos'; return; } wTab = b.dataset.wtab; PTX.views.wallet(); }));
   ({card:renderCard, edit:renderEdit, sos:renderSos, docs:renderDocs, backup:renderBackup})[wTab]($('#wbody'));
+};
+
+PTX.views.sos = function(){
+  const app = PT.app; const w = W();
+  app.innerHTML = PT.head('SOS','응급 SOS 카드','반려견이 아플 때 현지 동물병원에서 이 화면을 그대로 보여주세요. 인터넷이 없어도 열립니다.') + `
+    ${walletFilled(w) ? '' : '<div class="callout bad" style="margin-bottom:16px"><strong>아직 카드가 비어 있어요</strong>여행 전에 이름·마이크로칩 번호·지병·알레르기를 미리 넣어 두세요. <a href="#wallet" id="sosFill">반려견 정보 입력하기</a></div>'}
+    <div id="wbody"></div>
+    <div class="links"><a class="link" href="#wallet" id="sosEdit">카드 내용 고치기</a></div>`;
+  ['sosFill','sosEdit'].forEach(id => { const a = document.getElementById(id); if(a) a.addEventListener('click', () => { wTab = 'edit'; }); });
+  renderSos(document.getElementById('wbody'));
+  PT.track('sos_open', {source:'page'});
 };
 
 async function renderCard(el){
@@ -191,9 +202,9 @@ async function renderCard(el){
       </dl>
       <h4 class="sec-h">건강</h4>
       <dl class="wallet-kv">
-        <dt>지병</dt><dd>${cond.length?PT.esc(cond.join(', ')):'없음'}${w.condNote?`<br>${PT.esc(w.condNote)}`:''}</dd>
-        <dt>알레르기</dt><dd>${alg.length?PT.esc(alg.join(', ')):'없음'}${w.algNote?`<br>${PT.esc(w.algNote)}`:''}</dd>
-        <dt>복용 약</dt><dd>${w.meds?PT.esc(w.meds):'없음'}</dd>
+        <dt>지병</dt><dd>${cond.length?PT.esc(cond.join(', ')):(w.condNote?'':(w.condNone?'없음':'<span class="hint">미입력</span>'))}${w.condNote?`${cond.length?'<br>':''}${PT.esc(w.condNote)}`:''}</dd>
+        <dt>알레르기</dt><dd>${alg.length?PT.esc(alg.join(', ')):(w.algNote?'':(w.algNone?'없음':'<span class="hint">미입력</span>'))}${w.algNote?`${alg.length?'<br>':''}${PT.esc(w.algNote)}`:''}</dd>
+        <dt>복용 약</dt><dd>${w.meds?PT.esc(w.meds):(w.medsNone?'없음':'<span class="hint">미입력</span>')}</dd>
       </dl>
       <h4 class="sec-h">연락처</h4>
       <dl class="wallet-kv">
@@ -203,7 +214,7 @@ async function renderCard(el){
       </dl>
       <div class="row-btns"><button class="btn btn-sm" type="button" data-go="edit">정보 고치기</button><button class="btn btn-sm" type="button" data-go="sos">SOS 카드 열기</button><button class="btn btn-sm" type="button" data-go="docs">서류 사본 보기</button></div>
     </section>`;
-  $$('[data-go]', el).forEach(b => b.addEventListener('click', () => { wTab = b.dataset.go; PTX.views.wallet(); }));
+  $$('[data-go]', el).forEach(b => b.addEventListener('click', () => { if(b.dataset.go==='sos'){ location.hash = 'sos'; return; } wTab = b.dataset.go; PTX.views.wallet(); }));
 }
 
 function renderEdit(el){
@@ -217,6 +228,7 @@ function renderEdit(el){
         <div class="field"><label for="w-sex">성별</label><select id="w-sex" data-k="sex"><option value="">선택</option><option value="m" ${w.sex==='m'?'selected':''}>수컷</option><option value="f" ${w.sex==='f'?'selected':''}>암컷</option></select></div>
         ${inp('dob','생년월일','date')}${inp('weight','체중 (kg)','number','min="0.1" max="100" step="0.1" inputmode="decimal"')}
         <label class="check" style="align-self:end;padding-bottom:12px"><input type="checkbox" data-k="neut" ${w.neut?'checked':''}><span>중성화 완료</span></label>
+        <div class="field full"><p class="hint" style="margin:0">지병·알레르기·약은 비워 두면 SOS 카드에 '미입력'으로 표시됩니다. '없음'은 직접 확인하고 체크했을 때만 표시됩니다.</p></div>
         <div class="field full"><label for="w-photo">사진</label><input type="file" id="w-photo" accept="image/*"><p class="hint">사진은 작게 줄여 이 기기에만 저장합니다.</p></div>
       </div></fieldset>
       <fieldset><legend>마이크로칩 · 광견병</legend><div class="form-grid two">
@@ -225,11 +237,12 @@ function renderEdit(el){
         ${inp('titerDate','항체가 검사 채혈일','date')}${inp('titerResult','항체가 결과 (IU/ml)','text','inputmode="decimal" placeholder="예: 2.5"')}
         <div class="field full"><label for="w-titerLab">검사기관</label><input type="text" id="w-titerLab" data-k="titerLab" value="${PT.esc(w.titerLab||'')}" placeholder="예: 농림축산검역본부"></div>
       </div></fieldset>
-      <fieldset><legend>지병</legend>${opts(CONDITIONS,'cond')}
+      <fieldset><legend>지병</legend><label class="check" style="margin-bottom:10px"><input type="checkbox" data-k="condNone" ${w.condNone?'checked':''}><span><b>알려진 지병 없음</b> (확인했을 때만 체크)</span></label>${opts(CONDITIONS,'cond')}
         <div class="field" style="margin-top:12px"><label for="w-condNote">기타 지병 (직접 입력)</label><input type="text" id="w-condNote" data-k="condNote" value="${PT.esc(w.condNote||'')}"><p class="hint">직접 쓴 내용은 SOS 카드에 번역 없이 원문 그대로 보입니다. 영어로 쓰면 해외에서 더 잘 통합니다.</p></div></fieldset>
-      <fieldset><legend>알레르기</legend>${opts(ALLERGIES,'alg')}
+      <fieldset><legend>알레르기</legend><label class="check" style="margin-bottom:10px"><input type="checkbox" data-k="algNone" ${w.algNone?'checked':''}><span><b>알려진 알레르기 없음</b> (확인했을 때만 체크)</span></label>${opts(ALLERGIES,'alg')}
         <div class="field" style="margin-top:12px"><label for="w-algNote">기타 알레르기 (약물 포함)</label><input type="text" id="w-algNote" data-k="algNote" value="${PT.esc(w.algNote||'')}"></div></fieldset>
       <fieldset><legend>복용 중인 약</legend>
+        <label class="check" style="margin-bottom:10px"><input type="checkbox" data-k="medsNone" ${w.medsNone?'checked':''}><span><b>복용 중인 약 없음</b> (확인했을 때만 체크)</span></label>
         <div class="field"><label for="w-meds">약 이름 · 용량 · 횟수</label><textarea id="w-meds" data-k="meds" placeholder="예: Pimobendan 1.25mg, twice a day">${PT.esc(w.meds||'')}</textarea><p class="hint">상품명보다 <b>성분명(영문)</b>으로 쓰세요. 나라마다 상품명이 달라 현지 수의사가 못 알아볼 수 있습니다. 처방전이나 약 봉투의 성분명을 그대로 옮기는 것이 가장 정확합니다.</p></div></fieldset>
       <fieldset><legend>연락처</legend><div class="form-grid two">
         ${inp('owner','보호자 이름')}${inp('ownerTel','보호자 전화 (국가번호 포함)','tel','placeholder="+82 10-0000-0000"')}
@@ -284,9 +297,9 @@ function renderSos(el){
         <dt>${t.chip}</dt><dd class="nw">${PT.esc(w.chip||'—')}</dd>
         <dt>${t.rabies}</dt><dd>${w.rabiesDate||'—'}${w.rabiesUntil?` (${t.until} ${w.rabiesUntil})`:''}</dd>
         ${w.titerDate?`<dt>${t.titer}</dt><dd>${w.titerDate}${w.titerResult?' · '+PT.esc(w.titerResult)+' IU/ml':''}</dd>`:''}
-        <dt>${t.cond}</dt><dd>${cond.length?cond.join('<br>'):(w.condNote?'':t.none)}${orig(w.condNote)}</dd>
-        <dt>${t.allergy}</dt><dd>${alg.length?alg.join('<br>'):(w.algNote?'':t.none)}${orig(w.algNote)}</dd>
-        <dt>${t.meds}</dt><dd>${w.meds?orig(w.meds):t.none}</dd>
+        <dt>${t.cond}</dt><dd>${cond.length?cond.join('<br>'):(w.condNote?'':(w.condNone?t.none:'—'))}${orig(w.condNote)}</dd>
+        <dt>${t.allergy}</dt><dd>${alg.length?alg.join('<br>'):(w.algNote?'':(w.algNone?t.none:'—'))}${orig(w.algNote)}</dd>
+        <dt>${t.meds}</dt><dd>${w.meds?orig(w.meds):(w.medsNone?t.none:'—')}</dd>
         <dt>${t.owner}</dt><dd>${PT.esc(w.owner||'—')}${w.ownerTel?`<br>${t.tel} ${PT.esc(w.ownerTel)}`:''}</dd>
         ${w.emer?`<dt>${t.emer}</dt><dd>${orig(w.emer)}</dd>`:''}
         ${w.vet?`<dt>${t.vet}</dt><dd>${PT.esc(w.vet)}${w.vetTel?`<br>${PT.esc(w.vetTel)}`:''}</dd>`:''}
@@ -301,7 +314,6 @@ function renderSos(el){
   $$('[data-lang]', el).forEach(b => b.addEventListener('click', () => { $$('[data-lang]', el).forEach(x=>x.setAttribute('aria-pressed', x===b)); LS.set('pt-sos-lang', b.dataset.lang); draw(b.dataset.lang); PT.track('sos_lang', {lang:b.dataset.lang}); }));
   $('#vetC').addEventListener('change', vet);
   $('#sosFull').addEventListener('click', () => { const a = $('#sosArt'); if(a && a.requestFullscreen) a.requestFullscreen().catch(()=>{}); else if(a) a.scrollIntoView({behavior:'smooth'}); PT.track('sos_open', {}); });
-  if(!walletFilled(w)) $('#sosCard').insertAdjacentHTML('afterbegin', '<div class="callout" style="margin:12px 0">아직 입력한 정보가 없어 빈 카드가 보입니다. <b>정보 입력</b>에서 먼저 채워 주세요.</div>');
 }
 
 async function renderDocs(el){

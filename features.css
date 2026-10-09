@@ -108,3 +108,14 @@ legend{font-weight:700;font-size:15px;margin:0 0 10px;padding:0}
 .stamp b{display:block;font-size:16px}
 .recap-preview{margin-top:16px;max-width:360px}
 .recap-preview img{width:100%;height:auto;border-radius:var(--r-md);border:1px solid var(--line)}
+
+/* SOS 바로가기: 모든 화면 상단(모바일)·왼쪽 메뉴(데스크톱). 다크 모드에서도 같은 색 유지 */
+.topbar-right{display:flex;align-items:center;gap:12px}
+.sos-btn{display:inline-flex;align-items:center;justify-content:center;min-width:52px;height:36px;padding:0 12px;border-radius:var(--r-pill);background:#C92A37;color:#fff;font-size:13px;font-weight:800;letter-spacing:.06em;text-decoration:none;flex:none}
+a.sos-btn:hover{background:#B0222E}
+a.sos-btn[aria-current="page"]{box-shadow:0 0 0 3px var(--coral-soft)}
+.sos-rail{display:flex;align-items:center;gap:12px;margin:20px 0 0;padding:12px;border-radius:var(--r-md);border:1px solid var(--line);text-decoration:none;font-size:12px;line-height:1.4;color:var(--ink)}
+.sos-rail b{display:block;font-size:14px}
+.sos-rail:hover,.sos-rail[aria-current="page"]{background:var(--coral-soft);border-color:transparent}
+@media (max-width:1023px){.sos-rail{display:none}}
+@media (max-width:360px){.topbar .meta{display:none}}
