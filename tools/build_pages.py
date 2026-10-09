@@ -5,7 +5,7 @@
 - 규정 숫자를 바꿀 때는 이 파일의 PAGES 내용을 고친 뒤 다시 실행하세요.
 - 확인일(VERIFIED)은 공식 페이지를 다시 확인한 날로 바꿉니다.
 """
-import os, html, json, datetime
+import os, html, json, datetime, re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 VERIFIED = '2026-10-08'
@@ -39,7 +39,7 @@ SHELL = '''<!doctype html>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="/base.css?v=1">
-<link rel="stylesheet" href="/features.css?v=2">
+<link rel="stylesheet" href="/features.css?v=3">
 <script>
 (function(){{
   var ID='G-6G8CX7W76G', H=location.hostname;
@@ -98,7 +98,8 @@ SHELL = '''<!doctype html>
     </footer>
   </div>
 </div>
-<script src="/nav.js?v=1"></script>
+<script src="/nav.js?v=2"></script>
+<script src="/search.js?v=1"></script>
 <script>
 PTNav.render('{tab}');
 try{{ gtag('event','page_view',{{page_path:location.pathname,page_title:document.title}}); }}catch(e){{}}
@@ -142,10 +143,11 @@ D_AIR = [
    ['1인당 1마리, 창가 좌석 배정'],
    [('https://m.airbusan.com/mc/common/service/customer/animal','에어부산 반려동물 동반 손님')]),
 ]
+AIR_ID = {'대한항공':'ke','아시아나항공':'oz','제주항공':'7c','진에어':'lj','트리니티항공 (구 티웨이)':'tr','에어부산':'bx'}
 D_PENDING = ['이스타항공', '에어로케이', '파라타항공', '에어서울']
 
 def domestic_body():
-    rows = ''.join(f'''<section class="panel air"><h3>{html.escape(n)}</h3>
+    rows = ''.join(f'''<section class="panel air" id="air-{AIR_ID.get(n,'x')}"><h3>{html.escape(n)}</h3>
         <dl class="kv"><dt>기내</dt><dd>{html.escape(c)}<br><span class="hint">{html.escape(cs)}</span></dd><dt>위탁</dt><dd>{html.escape(ck)}</dd><dt>요금</dt><dd><b>{html.escape(fee)}</b></dd><dt>신청</dt><dd>{html.escape(ap)}</dd></dl>
         <ul class="dots" style="margin-top:10px">{''.join(f'<li>{html.escape(x)}</li>' for x in nt)}</ul><div class="links" style="margin-top:10px">{''.join(ext(u,t) for u,t in src)}</div></section>''' for n,c,cs,ck,fee,ap,nt,src in D_AIR)
     return f'''
@@ -181,7 +183,7 @@ def domestic_body():
 def titer_body():
     return f'''
       <div class="callout info"><strong>왜 중요한가</strong>일본·EU(프랑스·독일)·영국·싱가포르·호주는 광견병 항체가(중화항체) 검사 결과를 요구하고, 나라에 따라 채혈 뒤 정해진 기간을 기다려야 입국할 수 있습니다. 중국은 결과가 없으면 30일 격리 대상이 됩니다. 그래서 항체가 검사 날짜가 전체 준비 일정을 결정합니다. 한국으로 돌아올 때도 도착 전 24개월 이내 채혈한 0.5 IU/ml 이상 결과가 필요합니다(광견병 비발생 지역에서 오는 경우 제외).</div>
-      <h2>국내에서 검사하는 방법</h2>
+      <h2 id="how">국내에서 검사하는 방법</h2>
       <ol class="timeline">
         <li><b>1</b><span>동물병원에서 마이크로칩 번호를 확인하고 채혈합니다. 개는 개체 사진도 찍습니다.</span></li>
         <li><b>2</b><span>동물병원 수의사가 <b>광견병 항체검사 신청 시스템</b>에 회원가입 후 신청합니다 (보호자가 직접 신청하는 구조가 아님).</span></li>
@@ -189,7 +191,7 @@ def titer_body():
         <li><b>4</b><span>처리 기간은 <b>접수일로부터 15일</b> (주말·공휴일 제외)입니다.</span></li>
       </ol>
       <p class="hint">마이크로칩 번호와 채혈일은 나중에 고치기 어렵습니다. 신청 전에 동물등록증·접종증명서와 한 글자씩 대조하세요.</p>
-      <h2>일본행: 국내 검사기관 지정</h2>
+      <h2 id="jp">일본행: 국내 검사기관 지정</h2>
       <ul class="checks">
         <li><span>일본 농림수산성이 <b>농림축산검역본부 서울지역본부(전염병검사과)</b>를 광견병 항체가 검사기관으로 지정했습니다 (2025년 8월 21일부터 적용).</span></li>
         <li><span>정부 발표 기준으로, 해외 검사기관에 보낼 때 약 30만 원·약 4주가 걸리던 것이 검역본부 검사로 <b>약 11만 원·약 2주</b>로 줄어들 것으로 기대된다고 밝혔습니다. 실제 청구액은 신청 시스템에서 확인하세요.</span></li>
@@ -201,7 +203,7 @@ def titer_body():
         {ext('https://eiec.kdi.re.kr/policy/materialView.do?num=270032','농림축산식품부 발표 요약 (KDI 경제정보센터, 2025-08-21)')}
         {ext('https://www.gov.kr/portal/service/serviceInfo/PTR000051622','정부24 · 광견병 항체 검사 신청 시스템')}
       </div>
-      <h2>나라별 대기 기간</h2>
+      <h2 id="wait">나라별 대기 기간</h2>
       <p>채혈 후 기다려야 하는 기간과 가장 빠른 출국일은 <a href="/#plan">일정 계산</a>에 채혈일을 넣으면 바로 나옵니다. 나라별 원문 요건은 <a href="/#countries">국가별 규정</a>에서 확인하세요.</p>'''
 
 # ------------------------------------------------------------------ 현지 이동
@@ -352,17 +354,39 @@ PAGES = [
        lead='무엇이, 언제, 어떤 근거로 바뀌었는지 기록합니다.', body=changes_body),
 ]
 
+def text_of(h):
+    h = re.sub(r'<(script|style)[^>]*>.*?</\1>', ' ', h, flags=re.S)
+    h = re.sub(r'<[^>]+>', ' ', h)
+    return re.sub(r'\s+', ' ', html.unescape(h)).strip()
+
+def sections(p, body):
+    # 페이지를 검색 단위로 나눔: h2 구간마다 1개, 국내선 항공사 카드는 항공사마다 1개
+    out = []
+    base = f"/{p['slug']}/"
+    for m in re.finditer(r'<section class="panel air" id="([^"]+)"><h3>(.*?)</h3>(.*?)</section>', body, re.S):
+        out.append({'t': f"{text_of(m.group(2))} 국내선 반려동물", 'u': base + '#' + m.group(1), 'g': p['group'], 'x': text_of(m.group(3))})
+    body2 = re.sub(r'<section class="panel air".*?</section>', ' ', body, flags=re.S)
+    parts = re.split(r'(<h2[^>]*>.*?</h2>)', body2, flags=re.S)
+    out.append({'t': p['title'], 'u': base, 'g': p['group'], 'x': p['desc'] + ' ' + text_of(parts[0])})
+    for i in range(1, len(parts), 2):
+        m = re.match(r'<h2(?: id="([^"]+)")?[^>]*>(.*?)</h2>', parts[i], re.S)
+        out.append({'t': text_of(m.group(2)), 'u': base + ('#' + m.group(1) if m.group(1) else ''), 'g': p['group'], 'x': text_of(parts[i+1] if i+1 < len(parts) else '')})
+    return out
+
 def build():
+    index = []
     for p in PAGES:
         url = f"{SITE}/{p['slug']}/"
         out = SHELL.format(title=html.escape(p['title']), desc=html.escape(p['desc']), url=url, verified=VERIFIED,
                            group=html.escape(p['group']), lead=html.escape(p['lead']), body=p['body'](), tab=p['tab'], extra=p.get('extra',''))
         d = os.path.join(ROOT, p['slug']); os.makedirs(d, exist_ok=True)
         with open(os.path.join(d, 'index.html'), 'w', encoding='utf-8', newline='\n') as f: f.write(out)
+        index += sections(p, p['body']())
+    with open(os.path.join(ROOT, 'search-index.json'), 'w', encoding='utf-8', newline='\n') as f: json.dump(index, f, ensure_ascii=False, separators=(',', ':'))
     urls = [('/', VERIFIED)] + [(f"/{p['slug']}/", VERIFIED) for p in PAGES] + [('/privacy.html', '2026-10-08')]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{SITE}{u}</loc><lastmod>{d}</lastmod></url>\n' for u, d in urls) + '</urlset>\n'
     with open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8', newline='\n') as f: f.write(sm)
-    print('built', [p['slug'] for p in PAGES])
+    print('built', [p['slug'] for p in PAGES], 'search entries', len(index))
 
 if __name__ == '__main__':
     build()
