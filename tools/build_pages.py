@@ -39,7 +39,7 @@ SHELL = '''<!doctype html>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="/base.css?v=1">
-<link rel="stylesheet" href="/features.css?v=3">
+<link rel="stylesheet" href="/features.css?v=4">
 <script>
 (function(){{
   var ID='G-6G8CX7W76G', H=location.hostname;
