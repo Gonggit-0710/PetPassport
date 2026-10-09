@@ -134,6 +134,19 @@ const VET_SEARCH = {
   fr:{q:'urgences vétérinaires', lang:'fr', place:'France', ex:'Paris'}, de:{q:'Tierarzt Notdienst', lang:'de', place:'Deutschland', ex:'Berlin, Frankfurt'},
   th:{q:'โรงพยาบาลสัตว์ 24 ชั่วโมง', lang:'th', place:'Thailand', ex:'Bangkok'}, vn:{q:'bệnh viện thú y 24h', lang:'vi', place:'Việt Nam', ex:'Hà Nội, Đà Nẵng'}
 };
+const VET_CITIES = {
+  jp:[['도쿄','東京'],['오사카','大阪'],['후쿠오카','福岡'],['삿포로','札幌'],['오키나와(나하)','那覇'],['교토','京都'],['나고야','名古屋'],['요코하마','横浜'],['고베','神戸']],
+  us:[['로스앤젤레스','Los Angeles'],['샌프란시스코','San Francisco'],['뉴욕','New York'],['시애틀','Seattle'],['하와이(호놀룰루)','Honolulu'],['라스베이거스','Las Vegas'],['샌디에이고','San Diego'],['시카고','Chicago'],['보스턴','Boston'],['워싱턴 D.C.','Washington DC'],['애틀랜타','Atlanta'],['댈러스','Dallas'],['휴스턴','Houston'],['마이애미','Miami'],['포틀랜드','Portland']],
+  ca:[['밴쿠버','Vancouver'],['토론토','Toronto'],['몬트리올','Montreal'],['캘거리','Calgary'],['빅토리아','Victoria BC']],
+  gb:[['런던','London'],['맨체스터','Manchester'],['에든버러','Edinburgh']],
+  au:[['시드니','Sydney'],['멜버른','Melbourne'],['브리즈번','Brisbane'],['골드코스트','Gold Coast'],['퍼스','Perth']],
+  sg:[['싱가포르','Singapore']],
+  ph:[['마닐라','Manila'],['세부','Cebu'],['마카티','Makati'],['보라카이','Boracay']],
+  fr:[['파리','Paris'],['니스','Nice'],['리옹','Lyon'],['마르세유','Marseille']],
+  de:[['베를린','Berlin'],['프랑크푸르트','Frankfurt'],['뮌헨','München'],['함부르크','Hamburg']],
+  th:[['방콕','Bangkok'],['치앙마이','Chiang Mai'],['푸껫','Phuket'],['파타야','Pattaya']],
+  vn:[['하노이','Hà Nội'],['호찌민','Hồ Chí Minh'],['다낭','Đà Nẵng'],['나트랑','Nha Trang'],['푸꾸옥','Phú Quốc']]
+};
 const DOC_TYPES = ['광견병 접종증명서','항체가 검사 결과서','건강증명서(영문)','동물검역증명서(한국 발급)','목적지 수입허가·사전신고','동물등록증','기타'];
 
 const W = () => LS.get('pt-wallet', {});
@@ -279,7 +292,7 @@ function renderSos(el){
     <section class="panel" style="margin-top:20px">
       <h3 class="sec-h" style="margin-top:0">현지 동물병원 찾기</h3>
       <div class="field" style="max-width:360px"><label for="vetC">지금 있는 나라</label><select id="vetC">${countries.map(c=>`<option value="${c.id}" ${c.id===destId?'selected':''}>${PT.esc(c.name)}</option>`).join('')}</select></div>
-      <div class="field" style="max-width:360px;margin-top:12px"><label for="vetCity">도시·지역 (선택)</label><input type="text" id="vetCity" autocomplete="off"><p class="hint" id="vetEx"></p></div>
+      <div class="field" style="max-width:360px;margin-top:12px"><label for="vetCity">도시·지역 (선택)</label><input type="search" id="vetCity" list="vetCityList" autocomplete="off" placeholder="눌러서 고르거나 직접 입력"><datalist id="vetCityList"></datalist><p class="hint" id="vetEx"></p><div class="chips" id="vetChips" style="margin-top:4px"></div></div>
       <div id="vetOut" style="margin-top:12px"></div>
       <p class="hint" style="margin-top:12px">병원 목록은 PawTrip이 검증해 올린 것이 아니라 지도 검색 결과입니다. 진료 시간과 응급 진료 가능 여부는 전화로 먼저 확인하세요. '내 위치 주변'을 누르면 위치가 구글 지도로만 전달되고 PawTrip에는 저장되지 않습니다.</p>
     </section>
@@ -310,15 +323,24 @@ function renderSos(el){
   };
   // 검색 지역을 꼭 함께 넘김: 검색어만 넘기면 구글이 '접속 위치'(예: 한국) 주변에서 찾아 버림
   const vet = () => { const id = $('#vetC').value; const v = VET_SEARCH[id]; const out = $('#vetOut'); if(!v){ out.innerHTML=''; return; }
-    const city = $('#vetCity').value.trim();
-    $('#vetEx').textContent = v.ex ? '예: ' + v.ex + ' · 비우면 ' + PT.data().countries.find(c=>c.id===id).name + ' 전체에서 찾습니다' : '';
+    const cities = VET_CITIES[id] || [];
+    if($('#vetCityList').dataset.c !== id){ // 나라가 바뀔 때만 목록·버튼 다시 그림
+      $('#vetCityList').dataset.c = id;
+      $('#vetCityList').innerHTML = cities.map(([ko, local]) => `<option value="${PT.esc(ko)}">${PT.esc(local)}</option>`).join('');
+      $('#vetChips').innerHTML = cities.slice(0, 5).map(([ko]) => `<button type="button" class="chip" data-city="${PT.esc(ko)}">${PT.esc(ko)}</button>`).join('');
+    }
+    const typed = $('#vetCity').value.trim();
+    const hit = cities.find(([ko, local]) => ko === typed || local.toLowerCase() === typed.toLowerCase());
+    const city = hit ? hit[1] : typed;  // 목록에서 고르면 현지 이름으로 검색, 직접 쓴 말은 그대로
+    $$('#vetChips [data-city]').forEach(b => b.setAttribute('aria-pressed', !!hit && b.dataset.city === hit[0]));
+    $('#vetEx').textContent = '목록에 없는 도시는 영어나 현지어로 직접 입력하세요 · 비우면 ' + PT.data().countries.find(c=>c.id===id).name + ' 전체에서 찾습니다';
     $('#vetCity').closest('.field').hidden = !!v.cnMaps;
     const q = v.q + ' ' + (city || v.place || '');
     const url = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q.trim());
     out.innerHTML = `<p style="margin:0 0 10px">현지 검색어: <b lang="${v.lang}">${PT.esc(v.q)}</b></p>` + (v.cnMaps
       ? `<div class="callout">중국 본토에서는 구글 지도를 쓸 수 없습니다. 가오더지도(高德地图)나 바이두지도(百度地图) 앱에서 위 검색어로 찾으세요.</div>`
       : `<div class="row-btns" style="margin-top:0"><button class="btn btn-primary btn-sm" type="button" id="vetNear">내 위치 주변에서 찾기</button>
-          <a class="btn btn-sm" href="${url}" target="_blank" rel="noopener" id="vetPlace">${PT.esc(city || PT.data().countries.find(c=>c.id===id).name)}에서 찾기 ${PT.ICON.ext}</a></div>
+          <a class="btn btn-sm" href="${url}" target="_blank" rel="noopener" id="vetPlace">${PT.esc((hit && hit[0]) || typed || PT.data().countries.find(c=>c.id===id).name)}에서 찾기 ${PT.ICON.ext}</a></div>
          <p class="save-state" id="vetSt" aria-live="polite"></p>`);
     const near = $('#vetNear'); if(!near) return;
     $('#vetPlace').addEventListener('click', () => PT.track('vet_search', {mode: city ? 'city' : 'country', country:id}));
@@ -342,7 +364,8 @@ function renderSos(el){
     }); };
   draw(def); vet();
   $$('[data-lang]', el).forEach(b => b.addEventListener('click', () => { $$('[data-lang]', el).forEach(x=>x.setAttribute('aria-pressed', x===b)); LS.set('pt-sos-lang', b.dataset.lang); draw(b.dataset.lang); PT.track('sos_lang', {lang:b.dataset.lang}); }));
-  $('#vetC').addEventListener('change', vet); $('#vetCity').addEventListener('input', vet);
+  $('#vetC').addEventListener('change', () => { $('#vetCity').value = ''; vet(); }); $('#vetCity').addEventListener('input', vet);
+  $('#vetChips').addEventListener('click', e => { const b = e.target.closest('[data-city]'); if(!b) return; $('#vetCity').value = b.dataset.city; vet(); });
   $('#sosFull').addEventListener('click', () => { const a = $('#sosArt'); if(a && a.requestFullscreen) a.requestFullscreen().catch(()=>{}); else if(a) a.scrollIntoView({behavior:'smooth'}); PT.track('sos_open', {}); });
 }
 
