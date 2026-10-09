@@ -150,7 +150,7 @@ async function loadPhoto(){
 PTX.views.wallet = function(){
   const app = PT.app; if(wTab==='sos') wTab = 'card';
   const tabs = [['card','펫 카드'],['edit','정보 입력'],['sos','SOS 카드'],['docs','서류 사본'],['backup','백업·복원']];
-  app.innerHTML = PT.head('07 · 내 반려견','공항·호텔·동물병원에서 바로 꺼내는 카드',
+  app.innerHTML = PT.head('내 반려견 · 펫 카드','공항·호텔·동물병원에서 바로 꺼내는 카드',
       '마이크로칩 번호, 접종·항체가 날짜, 지병과 알레르기를 한 화면에 모았습니다. 홈 화면에 설치해 두면 인터넷이 없어도 열립니다.') + `
     <div class="callout bad" style="margin-bottom:16px"><strong>원본 서류를 대신하지 않습니다</strong>공항 검역과 항공사 카운터는 수의사가 서명한 원본 증명서와 검역증명서를 확인합니다. 이 카드는 빠른 확인용 요약이니 원본은 반드시 챙기세요.</div>
     <div class="chips" role="tablist" aria-label="내 반려견 메뉴" style="margin-bottom:20px">${tabs.map(([k,t])=>`<button class="chip" type="button" role="tab" data-wtab="${k}" aria-selected="${wTab===k}" aria-pressed="${wTab===k}">${t}</button>`).join('')}</div>
@@ -162,7 +162,7 @@ PTX.views.wallet = function(){
 
 PTX.views.sos = function(){
   const app = PT.app; const w = W();
-  app.innerHTML = PT.head('SOS','응급 SOS 카드','반려견이 아플 때 현지 동물병원에서 이 화면을 그대로 보여주세요. 인터넷이 없어도 열립니다.') + `
+  app.innerHTML = PT.head('내 반려견 · SOS','응급 SOS 카드','반려견이 아플 때 현지 동물병원에서 이 화면을 그대로 보여주세요. 인터넷이 없어도 열립니다.') + `
     ${walletFilled(w) ? '' : '<div class="callout bad" style="margin-bottom:16px"><strong>아직 카드가 비어 있어요</strong>여행 전에 이름·마이크로칩 번호·지병·알레르기를 미리 넣어 두세요. <a href="#wallet" id="sosFill">반려견 정보 입력하기</a></div>'}
     <div id="wbody"></div>
     <div class="links"><a class="link" href="#wallet" id="sosEdit">카드 내용 고치기</a></div>`;
@@ -474,7 +474,7 @@ PTX.views.prep = function(){
   const doneN = list.filter(i=>i.on).length;
   const groups = [...new Set(list.map(i=>i.g))];
   const srcLink = s => { if(!s) return ''; if(s==='dest') return c?`<a class="src" href="#${c.id}">${PT.esc(c.name)} 체크리스트</a>`:''; const x = SRC[s]; return x?`<a class="src" href="${x.u}" ${x.u.startsWith('#')?'':'target="_blank" rel="noopener"'}>${x.t}</a>`:''; };
-  app.innerHTML = PT.head('03 · 준비 루틴','켄넬 적응부터 짐 싸기까지','큰 여행 전 매일 조금씩 하는 켄넬 연습과, 한 번 만들어 두고 계속 다시 쓰는 짐 목록입니다.') + `
+  app.innerHTML = PT.head('준비하기 · 준비 루틴','켄넬 적응부터 짐 싸기까지','큰 여행 전 매일 조금씩 하는 켄넬 연습과, 한 번 만들어 두고 계속 다시 쓰는 짐 목록입니다.') + `
     <div class="dgrid">
       <section class="panel">
         <h3 class="sec-h" style="margin-top:0">켄넬 적응 훈련</h3>
@@ -523,7 +523,7 @@ PTX.views.prep = function(){
 // 공항 좌표: OurAirports (퍼블릭 도메인) · 정기편 있는 대형·중형 공항만 추려 airports.json에 저장
 const CNAME = {KR:'한국',JP:'일본',US:'미국',CA:'캐나다',FR:'프랑스',DE:'독일',GB:'영국',CN:'중국',SG:'싱가포르',AU:'호주',TH:'태국',VN:'베트남',PH:'필리핀',GU:'괌',MP:'사이판',TW:'대만',HK:'홍콩',MO:'마카오'};
 let AIRPORTS = null;
-const loadAirports = () => AIRPORTS ? Promise.resolve(AIRPORTS) : fetch('airports.json').then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(a => (AIRPORTS = a));
+const loadAirports = () => AIRPORTS ? Promise.resolve(AIRPORTS) : fetch('/airports.json').then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(a => (AIRPORTS = a));
 const apt = code => AIRPORTS && AIRPORTS.find(a => a[0]===code);
 function gc(a, b){ // 대권 거리(km), 지구 평균 반지름 6371km
   const R = 6371, toR = x => x*Math.PI/180;
@@ -550,7 +550,7 @@ function tripStats(trips){
 const stampList = s => [...s.countries.map(c => ({code:c, name:CNAME[c]||''})), ...s.domestic.map(r => ({code:KR_CODE[r]||r, name:r, dom:true}))];
 PTX.views.trips = async function(){
   const app = PT.app;
-  app.innerHTML = PT.head('08 · 여행 기록','우리 개가 함께 날아간 길','비행 구간을 기록하면 함께 이동한 거리와 다녀온 나라가 쌓이고, 인스타그램 스토리 크기의 결산 카드를 만들 수 있어요.') + '<p class="hint">공항 목록을 불러오는 중…</p>';
+  app.innerHTML = PT.head('내 반려견 · 여행 기록','우리 개가 함께 날아간 길','비행 구간을 기록하면 함께 이동한 거리와 다녀온 나라가 쌓이고, 인스타그램 스토리 크기의 결산 카드를 만들 수 있어요.') + '<p class="hint">공항 목록을 불러오는 중…</p>';
   try{ await loadAirports(); }catch(e){ app.insertAdjacentHTML('beforeend', '<div class="callout bad"><strong>공항 목록을 불러오지 못했어요</strong>인터넷 연결 후 다시 열어 주세요.</div>'); return; }
   const all = LS.get('pt-trips', []).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
   const years = [...new Set(all.map(t=>(t.date||'').slice(0,4)).filter(Boolean))].sort().reverse();
@@ -559,7 +559,7 @@ PTX.views.trips = async function(){
   const s = tripStats(trips);
   const opt = AIRPORTS.map(a => `<option value="${a[0]} · ${PT.esc(CNAME[a[3]]||a[3])} ${PT.esc(a[2]||'')} · ${PT.esc(a[1])}"></option>`).join('');
   const w = W();
-  app.innerHTML = PT.head('08 · 여행 기록','우리 개가 함께 날아간 길','비행 구간을 기록하면 함께 이동한 거리와 다녀온 나라가 쌓이고, 인스타그램 스토리 크기의 결산 카드를 만들 수 있어요.') + `
+  app.innerHTML = PT.head('내 반려견 · 여행 기록','우리 개가 함께 날아간 길','비행 구간을 기록하면 함께 이동한 거리와 다녀온 나라가 쌓이고, 인스타그램 스토리 크기의 결산 카드를 만들 수 있어요.') + `
     <div class="dgrid">
       <section class="panel">
         <h3 class="sec-h" style="margin-top:0">비행 구간 추가</h3>
@@ -633,7 +633,7 @@ async function drawRecap(s, name, title){
   g.fillStyle = NAVY; g.fillRect(0,0,W_,14);
   // 로고
   const loadImg = src => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
-  try{ const logo = await loadImg('media/logo-light.svg'); const lw = 360, lh = lw*logo.height/logo.width || 90; g.drawImage(logo, (W_-lw)/2, 110, lw, lh); }catch(e){
+  try{ const logo = await loadImg('/media/logo-light.svg'); const lw = 360, lh = lw*logo.height/logo.width || 90; g.drawImage(logo, (W_-lw)/2, 110, lw, lh); }catch(e){
     g.fillStyle = NAVY; g.font = `800 64px ${F}`; g.textAlign='center'; g.fillText('PawTrip', W_/2, 180); }
   g.textAlign = 'center';
   // 사진

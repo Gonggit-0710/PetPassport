@@ -26,7 +26,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="features.css?v=1">
+<link rel="stylesheet" href="/features.css?v=2">
 <!-- Google Analytics 4 (G-6G8CX7W76G): 실제 도메인에서만 로드. 페이지뷰는 탭 이동마다 직접 전송 -->
 <script>
 (function(){
@@ -46,313 +46,7 @@
   2) 아래 스크립트 주석 해제, ca-pub 번호 입력
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
 -->
-<style>
-/* =========================================================
-   PawTrip v4 · 넓은 여백 중심 프리미엄 UI
-   - 텍스트 색은 --ink 하나. 위계는 크기·두께로만
-   - 코랄은 그래픽·큰 글자 전용. 작은 코랄 글자는 --coral-ink
-   ========================================================= */
-:root{
-  --bg:#FAFAFA; --cream:#F5F5F0; --cream-2:#EDEBE3; --card:#FFFFFF;
-  --ink:#222326; --line:#E9E7E1; --line-strong:#D9D6CE;
-  --navy:#1D3557; --on-navy:#FFFFFF; --navy-soft:#EEF1F6;
-  --coral:#E63946; --coral-ink:#C92A37; --coral-soft:#FDEEEF;
-  --logo-navy:#1E3A8A; --logo-coral:#FF6B5B; /* 로고 전용 브랜드 색 */
-  --f:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","Segoe UI",Roboto,sans-serif;
-  --t-display:clamp(30px,5vw,50px); --t-h2:clamp(22px,3vw,30px); --t-h3:18px; --t-body:15px; --t-small:13px; --t-micro:12px;
-  --r-xl:28px; --r-lg:22px; --r-md:16px; --r-sm:12px; --r-pill:999px;
-  --shadow:0 1px 2px rgba(34,35,38,.04),0 8px 24px rgba(34,35,38,.05);
-  --shadow-hover:0 2px 4px rgba(34,35,38,.05),0 14px 34px rgba(34,35,38,.08);
-  --ease:cubic-bezier(.2,.7,.2,1);
-  color-scheme:light;
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#141518; --cream:#1D1E22; --cream-2:#26272C; --card:#1A1B1F; --ink:#ECEBE7; --line:#2A2B30; --line-strong:#3A3B41;
-  --navy:#9DB8DD; --on-navy:#141518; --navy-soft:#1F2837; --coral:#F0616B; --coral-ink:#F4939A; --coral-soft:#3A1E21; --logo-navy:#FFFFFF; --logo-coral:#FF6B5B;
-  --shadow:0 1px 2px rgba(0,0,0,.3); --shadow-hover:0 8px 24px rgba(0,0,0,.35); color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#141518; --cream:#1D1E22; --cream-2:#26272C; --card:#1A1B1F; --ink:#ECEBE7; --line:#2A2B30; --line-strong:#3A3B41;
-  --navy:#9DB8DD; --on-navy:#141518; --navy-soft:#1F2837; --coral:#F0616B; --coral-ink:#F4939A; --coral-soft:#3A1E21; --logo-navy:#FFFFFF; --logo-coral:#FF6B5B;
-  --shadow:0 1px 2px rgba(0,0,0,.3); --shadow-hover:0 8px 24px rgba(0,0,0,.35); color-scheme:dark}
-
-*,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:var(--t-body);line-height:1.65;letter-spacing:-.01em;
-  word-break:keep-all;overflow-wrap:anywhere;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
-a{color:inherit;text-underline-offset:3px}
-button,input,select{font:inherit;color:inherit}
-[hidden]{display:none!important}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-:focus-visible{outline:2px solid var(--navy);outline-offset:3px;border-radius:8px}
-.skip{position:absolute;left:16px;top:-60px;z-index:100;background:var(--navy);color:var(--on-navy);padding:10px 16px;border-radius:var(--r-sm);text-decoration:none;font-weight:600}
-.skip:focus{top:12px}
-h1,h2,h3,h4{margin:0;text-wrap:balance}
-
-/* 로고 */
-.logo{display:inline-flex;align-items:center;text-decoration:none;color:var(--ink);line-height:0}
-.logo svg{height:34px;width:auto}
-.rail .logo svg{height:38px}
-
-/* ---------- 모바일 상단 고정 내비 ---------- */
-.topbar{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 88%,transparent);
-  backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)}
-.topbar-row{display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 20px}
-.topbar .meta{font-size:var(--t-micro);font-weight:500}
-.tabs{display:flex;gap:6px;overflow-x:auto;padding:0 20px 12px;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tabs a{flex:none;text-decoration:none;font-size:14px;font-weight:500;padding:8px 14px;border-radius:var(--r-pill);border:1px solid var(--line);background:var(--card);white-space:nowrap;transition:background .2s,border-color .2s}
-.tabs a[aria-current="page"]{background:var(--navy);border-color:var(--navy);color:var(--on-navy);font-weight:600}
-
-/* ---------- 레이아웃 ---------- */
-.rail{display:none}
-.shell{padding:0 20px}
-.hero,.content{max-width:860px;margin:0 auto}
-.ad-display-slot{display:none}
-
-@media (min-width:1024px){
-  .topbar{display:none}
-  .shell{display:grid;gap:0 56px;max-width:1440px;margin:0 auto;padding:0 40px;
-    grid-template-columns:220px minmax(0,1fr);grid-template-areas:"rail hero" "rail content"}
-  .rail{grid-area:rail;display:flex;flex-direction:column;gap:32px;position:sticky;top:0;height:100vh;
-    padding:40px 28px 32px 0;border-right:1px solid var(--line)}
-  .rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
-  .rail nav a{display:flex;align-items:center;gap:12px;text-decoration:none;font-size:15px;padding:10px 12px;border-radius:var(--r-sm);transition:background .2s}
-  .rail nav a:hover{background:var(--cream)}
-  .rail nav a[aria-current="page"]{background:var(--navy-soft);font-weight:700}
-  .rail nav a[aria-current="page"] .dot{background:var(--coral)}
-  .rail .dot{width:6px;height:6px;border-radius:50%;background:var(--line-strong);flex:none}
-  .rail .meta{margin-top:auto;font-size:var(--t-micro);line-height:1.6}
-  .rail .meta strong{display:block;font-size:var(--t-small);font-weight:600}
-  .hero{grid-area:hero;max-width:none;margin:0}
-  .content{grid-area:content;margin:0;max-width:900px}
-}
-/* 우측 디스플레이 광고 레일: 광고가 켜졌을 때만 */
-@media (min-width:1280px){
-  :root[data-ads="on"] .shell{grid-template-columns:220px minmax(0,1fr) 300px;grid-template-areas:"rail hero hero" "rail content ad"}
-  :root[data-ads="on"] .ad-display-slot{grid-area:ad;display:block;position:sticky;top:32px;align-self:start;margin-top:48px}
-}
-
-/* ---------- 히어로 ---------- */
-.hero{padding:40px 0 16px}
-.hero-grid{display:grid;gap:32px;align-items:center}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:var(--t-small);font-weight:600;letter-spacing:.02em}
-.eyebrow::before{content:"";width:18px;height:2px;background:var(--coral);border-radius:2px}
-.hero .h1{isolation:isolate;font-size:var(--t-display);line-height:1.18;font-weight:800;letter-spacing:-.035em;margin:18px 0}
-.hero .h1 em{font-style:normal;position:relative;white-space:nowrap}
-.hero .h1 em::after{content:"";position:absolute;left:-.04em;right:-.04em;bottom:.04em;height:.3em;background:color-mix(in srgb,var(--coral) 22%,transparent);z-index:-1;border-radius:4px}
-.hero .lede{font-size:17px;line-height:1.7;max-width:34em;margin:0}
-.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:600;font-size:15px;
-  padding:13px 22px;border-radius:var(--r-pill);border:1px solid var(--navy);cursor:pointer;transition:transform .2s var(--ease),box-shadow .2s;background:transparent;color:var(--navy)}
-.btn-primary{background:var(--navy);color:var(--on-navy)}
-.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
-.btn-sm{padding:9px 16px;font-size:14px}
-.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:32px 0 0;padding:0;list-style:none}
-.facts li{padding:16px 14px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-md)}
-.facts b{display:block;font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.2}
-.facts span{font-size:var(--t-small)}
-.art{position:relative;margin:0;aspect-ratio:1/1;border-radius:32px;background:var(--cream);overflow:hidden}
-.art video{display:block;width:100%;height:100%;object-fit:cover}
-@media (min-width:768px){.hero{padding:64px 0 24px}.hero-grid{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:56px}}
-@media (max-width:767px){.art{width:100%;max-width:420px;margin:0 auto;border-radius:24px;order:-1}}
-
-
-/* ---------- 섹션 공통 ---------- */
-.content{padding-bottom:0;min-width:0}
-#flights-list{scroll-margin-top:128px}
-@media (min-width:1024px){#flights-list{scroll-margin-top:24px}}
-.page-head{padding:48px 0 24px}
-.page-head .num{font-size:var(--t-small);font-weight:600;letter-spacing:.04em}
-.page-head h2{font-size:var(--t-h2);font-weight:800;letter-spacing:-.03em;line-height:1.3;margin:8px 0 10px}
-.page-head p{margin:0;max-width:42em}
-.back{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;text-decoration:none;margin-bottom:12px}
-.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px}
-.panel + .panel{margin-top:14px}
-.dgrid > .panel + .panel,.plan-grid > .panel + .panel{margin-top:0}
-.group-h{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:700;margin:36px 0 14px}
-.group-h .count{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:var(--r-pill);background:var(--cream);font-size:var(--t-small);font-weight:700}
-.hint{font-size:var(--t-small);margin:0}
-.muted{font-weight:400}
-
-/* 입력 */
-.filters{display:grid;gap:16px}
-@media (min-width:640px){.filters{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (min-width:1100px){.filters.four{grid-template-columns:1.2fr .8fr 1.4fr}.filters.four .check-field{grid-column:1 / -1}}
-.field{display:flex;flex-direction:column;gap:8px;min-width:0}
-.field label,.field .lbl{font-size:var(--t-small);font-weight:600}
-input[type=date],input[type=number],input[type=text],select{
-  width:100%;height:48px;padding:0 14px;border:1px solid var(--line-strong);border-radius:var(--r-sm);background:var(--bg);font-size:15px;transition:border-color .2s,background .2s}
-input:focus,select:focus{border-color:var(--navy);background:var(--card);outline:none;box-shadow:0 0 0 3px var(--navy-soft)}
-.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;cursor:pointer}
-.check input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--navy);flex:none}
-.check-field{justify-content:flex-end}
-@media (min-width:1100px){.check-field .lbl{display:none}}
-
-/* 칩 */
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
-.chip{appearance:none;border:1px solid var(--line);background:var(--card);border-radius:var(--r-pill);padding:9px 16px;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s}
-.chip:hover{border-color:var(--line-strong)}
-.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg);font-weight:600}
-
-/* 상태 표시: 색만 쓰지 않고 아이콘 + 문구 */
-.flag{display:inline-flex;align-items:center;gap:6px;font-size:var(--t-micro);font-weight:600;padding:4px 10px;border-radius:var(--r-pill);background:var(--cream);white-space:nowrap;vertical-align:middle}
-.flag svg{width:12px;height:12px;flex:none}
-.flag.ok{background:var(--navy-soft)}
-.flag.bad{background:var(--coral-soft);color:var(--coral-ink)}
-.flag.warn{background:var(--cream-2)}
-.flags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-
-.meter{display:inline-flex;gap:3px;vertical-align:middle}
-.meter i{width:7px;height:7px;border-radius:50%;background:var(--line-strong)}
-.meter i.on{background:var(--navy)}
-.meter.hard i.on{background:var(--coral)}
-
-/* ---------- 카드 + 아코디언 ---------- */
-.list{display:flex;flex-direction:column;gap:14px;list-style:none;margin:0;padding:0}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);transition:box-shadow .3s var(--ease),border-color .3s;
-  animation:rise .55s var(--ease) both;animation-delay:calc(var(--i,0) * 35ms)}
-.card:hover{box-shadow:var(--shadow-hover)}
-.card.is-open{box-shadow:var(--shadow);border-color:var(--line-strong)}
-.list.still .card{animation:none}
-@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.card-head{appearance:none;background:none;border:0;width:100%;text-align:left;cursor:pointer;border-radius:var(--r-lg);
-  display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 16px;align-items:start;padding:22px 22px 20px}
-.badge{width:44px;height:44px;border-radius:14px;background:var(--cream);display:grid;place-items:center;font-size:13px;font-weight:700;letter-spacing:.02em}
-.card-title{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px}
-.card-title h3{font-size:var(--t-h3);font-weight:700;letter-spacing:-.02em;line-height:1.35}
-.card-title .sub{font-size:var(--t-small)}
-.card-summary{grid-column:1 / 4;margin:10px 0 0;font-size:14px;line-height:1.65}
-@media (min-width:640px){.card-summary{grid-column:2 / 4;margin-top:6px}}
-.chev{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;transition:transform .35s var(--ease),background .2s}
-.chev svg{width:14px;height:14px}
-.card.is-open .chev{transform:rotate(180deg);background:var(--cream)}
-.stats{grid-column:1 / 4;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:16px 0 0;border-top:1px solid var(--line);padding-top:14px}
-.stat{padding-right:10px;min-width:0}
-.stat + .stat{padding-left:14px;border-left:1px solid var(--line)}
-.stat dt{font-size:var(--t-micro);font-weight:500}
-.stat dd{margin:2px 0 0;font-size:17px;font-weight:700;letter-spacing:-.02em;line-height:1.35}
-.stat dd small{font-size:var(--t-micro);font-weight:500;letter-spacing:0}
-.stat dd .x{font-size:15px}
-
-.card-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease)}
-.card.is-open .card-body{grid-template-rows:1fr}
-.card-body > .inner{overflow:hidden;min-height:0}
-.detail{padding:4px 22px 24px;opacity:0;transform:translateY(-4px);transition:opacity .35s var(--ease) .05s,transform .35s var(--ease) .05s}
-.card.is-open .detail{opacity:1;transform:none}
-
-.blocks{display:grid;gap:12px}
-.blocks + .blocks,.blocks + .block,.block + .block,.block + .blocks{margin-top:12px}
-.blocks > .block + .block{margin-top:0}
-@media (min-width:640px){.blocks.two{grid-template-columns:1fr 1fr}}
-.block{background:var(--bg);border-radius:var(--r-md);padding:18px}
-.panel .block{background:var(--bg)}
-.block h4{font-size:14px;font-weight:700;margin:0 0 10px}
-.block h4 span{font-weight:400;font-size:var(--t-micro)}
-.block p{margin:0;font-size:14px}
-.block p + p{margin-top:8px}
-.kv{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;font-size:14px}
-.kv dt{font-weight:600;white-space:nowrap}
-.kv dd{margin:0}
-.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;font-size:14px}
-.checks li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:8px}
-.checks li::before{content:"✓";width:18px;height:18px;margin-top:2px;border-radius:6px;border:1.5px solid var(--navy);color:var(--navy);display:grid;place-items:center;font-size:11px;font-weight:800;line-height:1}
-.dots{list-style:disc;margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14px}
-.fees{width:100%;border-collapse:collapse;font-size:14px}
-.fees th,.fees td{text-align:left;padding:10px 0;border-bottom:1px solid var(--line);vertical-align:top}
-.fees th{font-weight:600;width:26%;padding-right:12px}
-.fees tr:last-child th,.fees tr:last-child td{border-bottom:0}
-.fees .is-sel th,.fees .is-sel td{font-weight:700}
-.fees .is-sel th::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--coral);margin:0 6px 2px 0}
-.timeline{list-style:none;margin:0;padding:0;position:relative}
-.timeline::before{content:"";position:absolute;left:51px;top:10px;bottom:10px;width:1px;background:var(--line-strong)}
-.timeline li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:0 20px;padding:6px 0;font-size:14px;position:relative}
-.timeline b{font-size:var(--t-small);font-weight:700;text-align:right}
-.timeline li::after{content:"";position:absolute;left:48px;top:13px;width:7px;height:7px;border-radius:50%;background:var(--card);border:1.5px solid var(--navy)}
-.timeline li:last-child::after{background:var(--coral);border-color:var(--coral)}
-.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
-.link{display:inline-flex;align-items:center;gap:6px;font-size:var(--t-small);font-weight:600;text-decoration:none;padding:8px 14px;border-radius:var(--r-pill);border:1px solid var(--line-strong);background:var(--card);cursor:pointer}
-.link:hover{border-color:var(--navy)}
-.link svg{width:12px;height:12px}
-.link.solid{background:var(--navy);border-color:var(--navy);color:var(--on-navy)}
-.tel{font-weight:700;text-decoration:none;white-space:nowrap;user-select:all}
-.note{font-size:var(--t-small);margin:12px 0 0}
-.note b{font-weight:700}
-.callout{border-radius:var(--r-md);padding:16px 18px;font-size:14px;background:var(--cream)}
-.callout + .callout{margin-top:10px}
-.callout strong{display:block;font-weight:700;margin-bottom:2px}
-.callout.bad{background:var(--coral-soft)}
-.callout.bad strong{color:var(--coral-ink)}
-.callout.info{background:var(--navy-soft)}
-
-/* ---------- 일정 계산 ---------- */
-.plan-grid{display:grid;gap:16px;align-items:start}
-@media (min-width:900px){.plan-grid{grid-template-columns:minmax(0,300px) minmax(0,1fr)}}
-.form{display:flex;flex-direction:column;gap:18px}
-.verdict{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-start;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:18px}
-.verdict .lbl{font-size:var(--t-small);font-weight:600}
-.verdict .big{font-size:36px;font-weight:800;letter-spacing:-.03em;line-height:1.15;margin:4px 0}
-.verdict .sub{font-size:14px}
-.verdict .flag{margin-left:auto;font-size:13px;padding:6px 12px}
-.sec-h{font-size:15px;font-weight:700;margin:24px 0 12px}
-.tl{list-style:none;margin:0;padding:0}
-.tl li{display:grid;grid-template-columns:96px 14px minmax(0,1fr);gap:12px;padding:7px 0;font-size:14px;align-items:start}
-.tl .dt{font-size:var(--t-small);font-weight:700;text-align:right;padding-top:1px}
-.tl .dot{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--navy);margin-top:6px}
-.tl li:last-child .dot{background:var(--coral);border-color:var(--coral)}
-.tl li.past .dot{background:var(--coral-soft);border-color:var(--coral)}
-.mini-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
-.mini{background:var(--bg);border-radius:var(--r-md);padding:14px 16px;font-size:14px;display:flex;flex-direction:column;gap:6px}
-.mini h4{font-size:15px;font-weight:700;margin:0}
-.mini .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
-
-/* ---------- 국가 상세 ---------- */
-.detail-top{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;margin-bottom:12px}
-.detail-top h2{font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-.03em}
-.detail-top .side{display:flex;gap:10px;align-items:center;font-size:14px;font-weight:600}
-.lead-text{font-size:16px;max-width:44em;margin:0 0 24px}
-.dgrid{display:grid;gap:14px;align-items:start}
-@media (min-width:900px){.dgrid{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}}
-ul.req{list-style:none;margin:0;padding:0}
-ul.req label{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer;font-size:14px}
-ul.req li:last-child label{border-bottom:0}
-ul.req input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--navy)}
-ul.req input:checked + span{text-decoration:line-through;text-decoration-color:var(--line-strong);opacity:.6}
-
-/* ---------- 항공사 비교 표 ---------- */
-.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card)}
-table.cmp{border-collapse:collapse;width:100%;min-width:1120px;font-size:14px}
-table.cmp th:first-child{width:150px}
-table.cmp td:nth-child(2),table.cmp td:nth-child(3){width:170px}
-table.cmp td:nth-child(4){width:110px}
-table.cmp td:nth-child(5){width:190px}
-table.cmp .kv{grid-template-columns:1fr;gap:2px}
-table.cmp .kv dd{margin-bottom:8px}
-table.cmp th,table.cmp td{text-align:left;vertical-align:top;padding:16px 18px;border-bottom:1px solid var(--line)}
-table.cmp thead th{font-size:var(--t-micro);font-weight:600;letter-spacing:.04em;background:var(--cream)}
-table.cmp tbody th{font-size:15px;font-weight:700;white-space:nowrap}
-table.cmp tbody tr:last-child > *{border-bottom:0}
-table.cmp .dots{font-size:13px}
-
-/* ---------- 광고 슬롯 ----------
-   네이티브: 카드와 같은 형태·여백, '광고' 표기 + 크림 배경으로 구분 (AdSense 정책)
-   최소 높이로 레이아웃 흔들림 방지, 링크·버튼과 간격 유지 */
-.ad-label{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.06em;padding:3px 8px;border-radius:6px;border:1px solid var(--line-strong);background:var(--card)}
-.ad-native-slot{list-style:none;border-radius:var(--r-lg);background:var(--cream);border:1px solid var(--line);padding:18px 22px 22px;min-height:168px;margin:6px 0}
-.ad-native-slot .ad-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:var(--t-micro)}
-.ad-display-slot .ad-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:var(--t-micro)}
-.ad-frame{width:300px;min-height:600px;border-radius:var(--r-md);background:var(--cream)}
-
-.foot{padding:40px 0 64px;margin-top:48px;border-top:1px solid var(--line);font-size:var(--t-small)}
-.foot p{margin:0 0 8px;max-width:48em}
-/* 오프라인 안내 · 앱 설치 */
-.netbar{position:fixed;z-index:60;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));max-width:560px;margin:0 auto;border-radius:var(--r-md);padding:14px 18px;font-size:14px;line-height:1.6;background:#FFF7F7;border:1px solid #F6CDD0;box-shadow:var(--shadow-hover)}
-.netbar[hidden]{display:none}
-.netbar strong{display:block;font-weight:700}
-.install-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0 0 12px}
-.install-row .btn{min-height:44px;padding:0 18px}
-
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-</style>
+<link rel="stylesheet" href="/base.css?v=1">
 </head>
 <body>
 <a class="skip" href="#app">본문으로 건너뛰기</a>
@@ -360,38 +54,17 @@ table.cmp .dots{font-size:13px}
 <header class="topbar">
   <div class="topbar-row">
     <a class="logo" href="#flights" aria-label="PawTrip 홈"><svg viewBox="0 0 445.4 112.0" aria-hidden="true" focusable="false"><g transform="scale(0.5)"><g transform="translate(-12.6,-14.7)"><path d="M45.25,238.50 C41.31,238.13 39.20,237.55 36.12,235.99 C33.63,234.72 32.30,233.86 30.40,232.26 C27.41,229.76 25.33,227.21 23.01,223.23 C21.32,220.32 19.47,214.96 18.75,210.88 C18.56,209.81 18.26,208.18 18.08,207.25 C17.19,202.58 16.87,200.78 16.87,200.44 C16.87,200.23 16.76,199.33 16.63,198.44 C16.07,194.72 15.99,194.03 15.68,190.69 C15.51,188.76 15.26,186.43 15.12,185.50 C14.99,184.57 14.82,182.72 14.75,181.38 C14.67,180.04 14.47,177.88 14.30,176.57 C14.13,175.25 13.94,172.90 13.87,171.31 C13.80,169.73 13.63,167.06 13.49,165.38 C12.94,158.68 12.56,141.92 12.66,128.27 C12.73,119.41 13.08,106.82 13.37,103.43 C13.55,101.21 13.74,97.74 13.87,94.19 C13.94,92.47 14.13,89.77 14.30,88.19 C14.47,86.61 14.67,84.19 14.75,82.81 C14.82,81.44 15.02,78.99 15.19,77.38 C15.36,75.76 15.55,73.37 15.62,72.06 C15.70,70.76 15.78,69.55 15.81,69.38 C15.84,69.20 15.93,68.16 16.00,67.06 C16.08,65.96 16.27,63.94 16.43,62.56 C16.60,61.19 16.77,59.44 16.81,58.69 C16.86,57.93 17.00,56.69 17.13,55.94 C17.27,55.18 17.51,53.65 17.68,52.53 C17.85,51.41 18.02,50.45 18.05,50.40 C18.08,50.35 18.28,49.47 18.50,48.44 C19.52,43.66 23.24,35.85 26.36,31.94 C28.83,28.85 32.52,25.47 35.15,23.89 C38.91,21.62 43.97,19.60 47.88,18.81 C48.39,18.70 49.43,18.48 50.19,18.31 C50.94,18.15 52.58,17.87 53.81,17.69 C55.05,17.52 56.71,17.26 57.50,17.13 C58.29,16.99 59.61,16.82 60.44,16.75 C61.26,16.68 62.75,16.47 63.75,16.30 C64.80,16.12 66.56,15.94 67.94,15.86 C69.24,15.79 71.97,15.60 74.00,15.43 C77.39,15.15 80.60,15.02 89.12,14.80 C95.43,14.65 103.96,15.33 107.86,16.30 C108.52,16.47 109.57,16.70 110.19,16.81 C110.81,16.92 111.59,17.10 111.94,17.19 C112.28,17.29 113.27,17.51 114.12,17.69 C116.20,18.11 117.29,18.45 120.56,19.70 C125.07,21.43 129.24,23.33 131.81,24.82 C132.36,25.14 133.52,25.79 134.38,26.27 C140.45,29.66 148.77,36.62 152.83,41.72 C156.45,46.27 158.06,48.50 160.37,52.24 C161.89,54.68 164.53,59.86 165.19,61.66 C165.44,62.36 166.03,63.92 166.50,65.12 C167.59,67.92 167.98,69.13 168.75,72.12 C169.09,73.47 169.52,75.09 169.70,75.74 C169.87,76.39 170.10,77.49 170.20,78.18 C170.30,78.87 170.49,80.00 170.63,80.69 C171.76,86.44 171.73,100.19 170.57,106.44 C170.40,107.33 170.23,108.34 170.19,108.69 C170.02,109.97 168.30,116.99 167.67,118.94 C166.30,123.17 163.36,129.73 161.25,133.25 C156.91,140.49 154.56,143.56 149.34,148.76 C144.55,153.55 142.13,155.48 135.89,159.49 C132.79,161.48 126.04,165.12 125.43,165.12 C125.39,165.12 124.36,165.55 123.15,166.07 C120.61,167.16 119.04,167.70 115.62,168.69 C114.28,169.07 112.79,169.52 112.31,169.69 C111.27,170.04 106.42,171.02 104.31,171.31 C103.49,171.42 102.25,171.61 101.56,171.75 C99.76,172.09 99.53,172.12 97.25,172.25 C86.99,172.86 85.31,173.20 83.75,174.96 C82.16,176.77 81.54,179.29 81.86,182.62 C82.02,184.24 82.17,186.07 82.38,188.75 C82.46,189.75 82.60,191.13 82.69,191.81 C83.00,194.04 83.16,197.69 83.09,200.94 C83.02,203.84 82.98,204.27 82.51,207.00 C81.63,212.18 80.93,214.79 79.74,217.40 C76.43,224.66 72.51,229.61 67.31,233.12 C63.92,235.41 61.34,236.68 58.34,237.54 C56.04,238.21 56.16,238.19 53.13,238.50 C50.23,238.80 48.52,238.80 45.25,238.50Z" fill="var(--logo-navy)"/><path d="M77.93,129.45 C75.03,128.79 71.97,126.59 70.11,123.82 C69.12,122.36 68.76,121.61 68.17,119.88 C67.69,118.44 67.69,118.44 67.70,115.81 C67.70,113.19 67.70,113.19 68.16,111.66 C68.83,109.42 69.83,107.54 71.63,105.12 C72.75,103.63 74.73,101.58 78.81,97.69 C80.10,96.45 81.95,94.58 82.90,93.53 C85.49,90.70 87.34,89.23 89.81,88.05 C93.28,86.39 97.10,86.39 100.56,88.05 C103.04,89.23 104.88,90.70 107.47,93.53 C108.43,94.58 110.27,96.45 111.57,97.69 C115.65,101.58 117.63,103.63 118.74,105.12 C120.54,107.54 121.54,109.42 122.22,111.66 C122.67,113.19 122.67,113.19 122.68,115.81 C122.69,118.44 122.69,118.44 122.20,119.88 C121.62,121.61 121.25,122.36 120.27,123.82 C118.77,126.05 116.57,127.88 114.17,128.87 C112.63,129.51 111.72,129.65 109.38,129.60 C107.36,129.55 107.28,129.54 105.94,129.07 C105.18,128.81 103.47,128.07 102.12,127.44 C98.27,125.61 97.13,125.25 95.19,125.25 C93.25,125.25 92.11,125.61 88.25,127.44 C86.91,128.07 85.19,128.81 84.44,129.07 C83.07,129.55 83.06,129.55 80.88,129.59 C79.37,129.61 78.45,129.56 77.93,129.45Z M60.28,98.31 C58.88,97.83 57.89,97.34 57.06,96.73 C53.27,93.90 51.36,90.05 51.33,85.19 C51.31,82.31 51.98,80.47 53.69,78.65 C55.23,77.01 56.74,76.38 59.10,76.38 C61.83,76.38 64.17,77.48 66.79,80.00 C69.06,82.17 70.50,85.00 70.93,88.12 C71.32,90.94 71.10,92.84 70.20,94.69 C69.37,96.37 68.64,97.11 67.04,97.91 C65.72,98.56 65.72,98.56 63.45,98.59 C61.31,98.62 61.14,98.61 60.28,98.31Z M124.47,98.44 C122.30,97.62 121.11,96.58 120.18,94.69 C118.78,91.84 119.00,87.38 120.70,83.96 C122.49,80.39 125.90,77.43 129.23,76.57 C130.20,76.32 132.34,76.31 133.31,76.57 C135.92,77.25 138.19,79.73 138.84,82.62 C139.12,83.83 139.11,86.40 138.83,87.95 C138.00,92.51 134.94,96.40 130.89,98.03 C129.56,98.56 129.56,98.56 127.25,98.59 C125.50,98.61 124.82,98.57 124.47,98.44Z M80.66,81.13 C79.49,80.82 78.42,80.38 77.53,79.86 C76.72,79.39 74.39,77.13 73.76,76.21 C70.87,71.97 70.20,64.63 72.32,60.26 C73.67,57.46 75.37,55.91 78.08,55.01 C79.45,54.55 80.40,54.51 81.77,54.86 C84.29,55.51 85.84,56.63 87.99,59.37 C89.21,60.93 90.49,64.05 91.06,66.89 C92.09,72.02 90.28,77.50 86.78,79.84 C84.73,81.21 82.60,81.66 80.66,81.13Z M106.94,81.29 C103.65,80.55 101.22,78.36 100.00,75.02 C98.68,71.43 98.71,68.04 100.08,64.00 C101.46,59.95 103.97,56.78 106.83,55.48 C108.89,54.55 110.50,54.41 112.29,55.01 C115.01,55.91 116.71,57.46 118.06,60.26 C120.17,64.63 119.51,71.97 116.61,76.21 C115.99,77.13 113.65,79.39 112.85,79.86 C110.93,80.98 108.35,81.61 106.94,81.29Z" fill="var(--logo-coral)"/></g></g><g transform="translate(97.4,90.6)"><path d="M11.7 0.8Q8.1 0.8 6.6 -0.1Q5.1 -1.2 4.8 -2.9Q4.4 -4.7 4.4 -6.5V-58.9Q4.4 -60.7 4.8 -62.4Q5.1 -64.1 6.7 -65.1Q8.2 -66.2 11.8 -66.2H31.4Q35.5 -66.2 39.6 -64.8Q43.6 -63.3 47.1 -60.3Q50.6 -57.3 52.8 -52.8Q55.0 -48.4 55.0 -42.5Q55.0 -36.6 52.8 -32.2Q50.6 -27.8 47.1 -24.9Q43.6 -21.9 39.5 -20.4Q35.4 -19.0 31.3 -19.0H19.1V-6.4Q19.1 -4.6 18.7 -2.9Q18.3 -1.2 16.8 -0.1Q15.2 0.8 11.7 0.8ZM19.1 -33.6H31.4Q33.6 -33.6 35.6 -34.5Q37.7 -35.4 39.1 -37.4Q40.5 -39.4 40.5 -42.6Q40.5 -45.3 39.3 -47.3Q38.2 -49.3 36.1 -50.4Q34.0 -51.6 31.3 -51.6H19.1Z" fill="var(--logo-navy)"/><path d="M99.2 0.7Q95.7 0.7 94.0 -0.4Q92.3 -1.7 92.3 -3.5L93.3 -5.1Q92.7 -4.2 91.1 -2.8Q89.4 -1.4 86.8 -0.3Q84.2 0.7 80.4 0.7Q76.0 0.7 72.0 -1.1Q68.0 -3.0 64.9 -6.4Q61.9 -9.8 60.1 -14.2Q58.3 -18.5 58.3 -23.3Q58.3 -28.0 60.1 -32.3Q61.9 -36.5 65.0 -39.8Q68.1 -43.2 72.0 -45.1Q76.0 -47.0 80.4 -47.0Q84.0 -47.0 86.4 -46.0Q88.9 -45.0 90.6 -43.6Q92.3 -42.3 93.2 -41.0L92.4 -42.4Q92.3 -44.7 94.0 -45.9Q95.7 -47.1 99.3 -47.1Q102.8 -47.1 104.3 -46.0Q105.7 -45.0 106.1 -43.2Q106.4 -41.5 106.4 -39.6V-6.5Q106.4 -4.7 106.1 -2.9Q105.7 -1.2 104.3 -0.2Q102.8 0.7 99.2 0.7ZM82.5 -13.5Q85.0 -13.5 87.1 -14.8Q89.1 -16.1 90.3 -18.3Q91.5 -20.5 91.5 -23.2Q91.5 -26.0 90.3 -28.1Q89.0 -30.3 86.9 -31.6Q84.8 -32.9 82.3 -32.9Q79.5 -32.9 77.4 -31.5Q75.2 -30.2 73.9 -28.0Q72.6 -25.8 72.6 -23.0Q72.6 -20.4 73.9 -18.2Q75.2 -16.1 77.5 -14.8Q79.7 -13.5 82.5 -13.5Z" fill="var(--logo-navy)"/><path d="M131.5 0.9Q128.9 0.9 127.5 0.0Q126.1 -0.9 125.5 -2.3Q124.8 -3.6 124.5 -4.6L110.9 -38.1Q110.3 -40.4 110.3 -42.0Q110.4 -43.5 111.5 -44.6Q112.6 -45.7 115.0 -46.6Q118.6 -48.1 120.9 -47.5Q123.2 -46.8 124.4 -43.5L131.5 -24.2L137.8 -42.0Q138.2 -43.0 138.9 -44.2Q139.5 -45.4 140.9 -46.3Q142.3 -47.3 144.7 -47.3Q147.3 -47.3 148.8 -46.3Q150.2 -45.4 150.9 -44.1Q151.6 -42.9 151.9 -42.0L158.3 -24.2L165.0 -42.4Q166.3 -45.9 168.5 -47.2Q170.7 -48.4 174.4 -46.9Q177.7 -45.5 179.0 -43.3Q180.2 -41.2 178.7 -38.0L165.2 -4.6Q164.8 -3.5 164.1 -2.2Q163.4 -0.8 162.1 0.0Q160.8 0.9 158.4 0.9Q155.9 0.9 154.5 0.1Q153.2 -0.6 152.4 -2.0Q151.7 -3.3 151.2 -4.7L144.8 -22.3L138.5 -4.7Q137.8 -2.9 137.2 -1.6Q136.7 -0.3 135.4 0.2Q134.1 0.9 131.5 0.9Z" fill="var(--logo-navy)"/><path d="M226.2 -66.3Q227.9 -66.3 229.2 -66.0Q230.5 -65.7 231.5 -64.4Q232.4 -63.1 232.4 -60.0Q232.4 -57.0 231.5 -55.6Q230.5 -54.3 229.1 -54.0Q227.7 -53.7 226.0 -53.7H210.6V-6.2Q210.6 -4.4 210.2 -2.7Q209.9 -1.1 208.4 -0.1Q206.9 0.8 203.4 0.8Q199.9 0.8 198.4 -0.1Q196.8 -1.1 196.6 -2.8Q196.3 -4.5 196.3 -6.3V-53.7H180.6Q179.1 -53.7 177.6 -54.0Q176.2 -54.4 175.3 -55.7Q174.5 -57.0 174.5 -60.0Q174.5 -63.1 175.3 -64.4Q176.2 -65.7 177.6 -66.0Q179.1 -66.3 180.6 -66.3Z" fill="var(--logo-coral)"/><path d="M242.5 0.8Q239.0 0.8 237.5 -0.1Q236.0 -1.1 235.7 -2.8Q235.3 -4.6 235.3 -6.4V-39.9Q235.3 -41.8 235.7 -43.4Q236.1 -45.1 237.6 -46.1Q239.1 -47.1 242.6 -47.1Q246.0 -47.1 247.5 -46.2Q249.0 -45.3 249.4 -44.1Q249.6 -43.4 249.6 -42.9Q250.5 -43.8 251.9 -45.0Q253.3 -46.0 255.4 -46.8Q257.4 -47.6 260.1 -47.6Q261.2 -47.6 262.5 -47.4Q263.8 -47.3 265.2 -46.8Q266.5 -46.4 267.7 -45.7Q268.8 -45.0 269.6 -43.9Q270.3 -42.9 270.3 -41.3Q270.3 -37.4 268.5 -34.7Q266.6 -31.9 263.9 -31.9Q262.2 -31.9 261.6 -32.2Q260.9 -32.5 260.4 -32.8Q260.0 -33.1 259.4 -33.3Q258.9 -33.6 257.3 -33.6Q255.9 -33.6 254.6 -33.2Q253.3 -32.8 252.2 -32.0Q251.1 -31.2 250.5 -30.0Q249.8 -28.8 249.8 -27.3V-6.2Q249.8 -4.4 249.5 -2.7Q249.2 -1.0 247.6 -0.0Q246.1 0.8 242.5 0.8Z" fill="var(--logo-coral)"/><path d="M282.5 0.8Q278.9 0.8 277.4 -0.1Q276.0 -1.1 275.6 -2.8Q275.3 -4.5 275.3 -6.3V-39.8Q275.3 -41.7 275.6 -43.3Q276.0 -45.0 277.5 -46.0Q279.0 -47.0 282.6 -47.0Q286.0 -47.0 287.5 -45.9Q289.0 -44.9 289.3 -43.2Q289.7 -41.6 289.7 -39.6V-6.2Q289.7 -4.4 289.3 -2.7Q289.0 -1.0 287.5 -0.0Q286.0 0.8 282.5 0.8ZM282.5 -54.0Q278.8 -54.0 277.3 -55.1Q275.8 -56.1 275.4 -57.8Q275.1 -59.6 275.1 -61.5Q275.1 -63.5 275.5 -65.2Q275.9 -66.9 277.4 -67.9Q278.9 -68.9 282.6 -68.9Q286.1 -68.9 287.7 -67.8Q289.2 -66.8 289.5 -65.0Q289.9 -63.3 289.9 -61.4Q289.9 -59.5 289.5 -57.7Q289.2 -56.0 287.7 -55.0Q286.1 -54.0 282.5 -54.0Z" fill="var(--logo-coral)"/><path d="M322.0 0.0Q317.3 0.0 313.8 -1.9Q312.0 -2.6 310.7 -3.8V13.6Q310.8 15.4 310.4 17.0Q310.0 18.7 308.5 19.7Q307.1 20.7 303.5 20.7Q300.0 20.7 298.6 19.7Q297.1 18.7 296.7 17.1Q296.4 15.5 296.4 13.7V-39.9Q296.4 -41.8 296.7 -43.4Q297.0 -45.0 298.5 -46.0Q300.0 -47.1 303.4 -47.1Q306.4 -47.1 308.2 -46.2Q309.9 -45.4 310.7 -43.5V-43.1Q312.1 -44.3 313.9 -45.3Q317.3 -47.1 322.0 -47.1Q326.3 -47.1 330.2 -45.2Q334.2 -43.2 337.3 -39.9Q340.4 -36.6 342.1 -32.3Q343.9 -28.0 343.9 -23.2Q343.9 -18.4 342.1 -14.1Q340.4 -9.8 337.3 -6.7Q334.2 -3.5 330.3 -1.7Q326.4 0.0 322.0 0.0ZM320.0 -13.5Q322.7 -13.5 324.8 -14.8Q326.9 -16.1 328.2 -18.3Q329.5 -20.5 329.5 -23.2Q329.5 -26.0 328.3 -28.1Q327.0 -30.3 324.9 -31.5Q322.8 -32.8 320.1 -32.8Q317.5 -32.8 315.4 -31.5Q313.2 -30.2 312.0 -28.0Q310.8 -25.9 310.8 -23.2Q310.8 -20.5 312.0 -18.3Q313.3 -16.1 315.4 -14.8Q317.5 -13.5 320.0 -13.5Z" fill="var(--logo-coral)"/></g></svg></a>
-    <span class="topbar-right"><span class="meta">규정 확인일 <b class="vdate">2026-10-01</b></span><a class="sos-btn" href="#sos" aria-label="응급 SOS 카드 열기">SOS</a></span>
+    <span class="topbar-right"><span class="meta">규정 확인일 <b class="vdate">2026-10-01</b></span><a class="sos-btn" href="/#sos" aria-label="응급 SOS 카드 열기">SOS</a></span>
   </div>
-  <nav class="tabs" aria-label="메뉴">
-    <a href="#flights" data-tab="flights">항공편 선택</a>
-    <a href="#plan" data-tab="plan">일정 계산</a>
-    <a href="#prep" data-tab="prep">준비 루틴</a>
-    <a href="#countries" data-tab="countries">국가별 규정</a>
-    <a href="#airlines" data-tab="airlines">항공사 비교</a>
-    <a href="#return" data-tab="return">귀국 검역</a>
-    <a href="#wallet" data-tab="wallet">내 반려견</a>
-    <a href="#trips" data-tab="trips">여행 기록</a>
-    <a href="#about" data-tab="about">기준과 출처</a>
-  </nav>
+  <nav class="tabs groups" id="navGroups" aria-label="메뉴 묶음"></nav>
+  <nav class="tabs" id="navSub" aria-label="메뉴"></nav>
 </header>
 
 <div class="shell">
   <aside class="rail" aria-label="사이트 메뉴">
     <h1 class="logo" style="margin:0"><a class="logo" href="#flights"><span class="sr-only">PawTrip 포트립</span><svg viewBox="0 0 445.4 112.0" aria-hidden="true" focusable="false"><g transform="scale(0.5)"><g transform="translate(-12.6,-14.7)"><path d="M45.25,238.50 C41.31,238.13 39.20,237.55 36.12,235.99 C33.63,234.72 32.30,233.86 30.40,232.26 C27.41,229.76 25.33,227.21 23.01,223.23 C21.32,220.32 19.47,214.96 18.75,210.88 C18.56,209.81 18.26,208.18 18.08,207.25 C17.19,202.58 16.87,200.78 16.87,200.44 C16.87,200.23 16.76,199.33 16.63,198.44 C16.07,194.72 15.99,194.03 15.68,190.69 C15.51,188.76 15.26,186.43 15.12,185.50 C14.99,184.57 14.82,182.72 14.75,181.38 C14.67,180.04 14.47,177.88 14.30,176.57 C14.13,175.25 13.94,172.90 13.87,171.31 C13.80,169.73 13.63,167.06 13.49,165.38 C12.94,158.68 12.56,141.92 12.66,128.27 C12.73,119.41 13.08,106.82 13.37,103.43 C13.55,101.21 13.74,97.74 13.87,94.19 C13.94,92.47 14.13,89.77 14.30,88.19 C14.47,86.61 14.67,84.19 14.75,82.81 C14.82,81.44 15.02,78.99 15.19,77.38 C15.36,75.76 15.55,73.37 15.62,72.06 C15.70,70.76 15.78,69.55 15.81,69.38 C15.84,69.20 15.93,68.16 16.00,67.06 C16.08,65.96 16.27,63.94 16.43,62.56 C16.60,61.19 16.77,59.44 16.81,58.69 C16.86,57.93 17.00,56.69 17.13,55.94 C17.27,55.18 17.51,53.65 17.68,52.53 C17.85,51.41 18.02,50.45 18.05,50.40 C18.08,50.35 18.28,49.47 18.50,48.44 C19.52,43.66 23.24,35.85 26.36,31.94 C28.83,28.85 32.52,25.47 35.15,23.89 C38.91,21.62 43.97,19.60 47.88,18.81 C48.39,18.70 49.43,18.48 50.19,18.31 C50.94,18.15 52.58,17.87 53.81,17.69 C55.05,17.52 56.71,17.26 57.50,17.13 C58.29,16.99 59.61,16.82 60.44,16.75 C61.26,16.68 62.75,16.47 63.75,16.30 C64.80,16.12 66.56,15.94 67.94,15.86 C69.24,15.79 71.97,15.60 74.00,15.43 C77.39,15.15 80.60,15.02 89.12,14.80 C95.43,14.65 103.96,15.33 107.86,16.30 C108.52,16.47 109.57,16.70 110.19,16.81 C110.81,16.92 111.59,17.10 111.94,17.19 C112.28,17.29 113.27,17.51 114.12,17.69 C116.20,18.11 117.29,18.45 120.56,19.70 C125.07,21.43 129.24,23.33 131.81,24.82 C132.36,25.14 133.52,25.79 134.38,26.27 C140.45,29.66 148.77,36.62 152.83,41.72 C156.45,46.27 158.06,48.50 160.37,52.24 C161.89,54.68 164.53,59.86 165.19,61.66 C165.44,62.36 166.03,63.92 166.50,65.12 C167.59,67.92 167.98,69.13 168.75,72.12 C169.09,73.47 169.52,75.09 169.70,75.74 C169.87,76.39 170.10,77.49 170.20,78.18 C170.30,78.87 170.49,80.00 170.63,80.69 C171.76,86.44 171.73,100.19 170.57,106.44 C170.40,107.33 170.23,108.34 170.19,108.69 C170.02,109.97 168.30,116.99 167.67,118.94 C166.30,123.17 163.36,129.73 161.25,133.25 C156.91,140.49 154.56,143.56 149.34,148.76 C144.55,153.55 142.13,155.48 135.89,159.49 C132.79,161.48 126.04,165.12 125.43,165.12 C125.39,165.12 124.36,165.55 123.15,166.07 C120.61,167.16 119.04,167.70 115.62,168.69 C114.28,169.07 112.79,169.52 112.31,169.69 C111.27,170.04 106.42,171.02 104.31,171.31 C103.49,171.42 102.25,171.61 101.56,171.75 C99.76,172.09 99.53,172.12 97.25,172.25 C86.99,172.86 85.31,173.20 83.75,174.96 C82.16,176.77 81.54,179.29 81.86,182.62 C82.02,184.24 82.17,186.07 82.38,188.75 C82.46,189.75 82.60,191.13 82.69,191.81 C83.00,194.04 83.16,197.69 83.09,200.94 C83.02,203.84 82.98,204.27 82.51,207.00 C81.63,212.18 80.93,214.79 79.74,217.40 C76.43,224.66 72.51,229.61 67.31,233.12 C63.92,235.41 61.34,236.68 58.34,237.54 C56.04,238.21 56.16,238.19 53.13,238.50 C50.23,238.80 48.52,238.80 45.25,238.50Z" fill="var(--logo-navy)"/><path d="M77.93,129.45 C75.03,128.79 71.97,126.59 70.11,123.82 C69.12,122.36 68.76,121.61 68.17,119.88 C67.69,118.44 67.69,118.44 67.70,115.81 C67.70,113.19 67.70,113.19 68.16,111.66 C68.83,109.42 69.83,107.54 71.63,105.12 C72.75,103.63 74.73,101.58 78.81,97.69 C80.10,96.45 81.95,94.58 82.90,93.53 C85.49,90.70 87.34,89.23 89.81,88.05 C93.28,86.39 97.10,86.39 100.56,88.05 C103.04,89.23 104.88,90.70 107.47,93.53 C108.43,94.58 110.27,96.45 111.57,97.69 C115.65,101.58 117.63,103.63 118.74,105.12 C120.54,107.54 121.54,109.42 122.22,111.66 C122.67,113.19 122.67,113.19 122.68,115.81 C122.69,118.44 122.69,118.44 122.20,119.88 C121.62,121.61 121.25,122.36 120.27,123.82 C118.77,126.05 116.57,127.88 114.17,128.87 C112.63,129.51 111.72,129.65 109.38,129.60 C107.36,129.55 107.28,129.54 105.94,129.07 C105.18,128.81 103.47,128.07 102.12,127.44 C98.27,125.61 97.13,125.25 95.19,125.25 C93.25,125.25 92.11,125.61 88.25,127.44 C86.91,128.07 85.19,128.81 84.44,129.07 C83.07,129.55 83.06,129.55 80.88,129.59 C79.37,129.61 78.45,129.56 77.93,129.45Z M60.28,98.31 C58.88,97.83 57.89,97.34 57.06,96.73 C53.27,93.90 51.36,90.05 51.33,85.19 C51.31,82.31 51.98,80.47 53.69,78.65 C55.23,77.01 56.74,76.38 59.10,76.38 C61.83,76.38 64.17,77.48 66.79,80.00 C69.06,82.17 70.50,85.00 70.93,88.12 C71.32,90.94 71.10,92.84 70.20,94.69 C69.37,96.37 68.64,97.11 67.04,97.91 C65.72,98.56 65.72,98.56 63.45,98.59 C61.31,98.62 61.14,98.61 60.28,98.31Z M124.47,98.44 C122.30,97.62 121.11,96.58 120.18,94.69 C118.78,91.84 119.00,87.38 120.70,83.96 C122.49,80.39 125.90,77.43 129.23,76.57 C130.20,76.32 132.34,76.31 133.31,76.57 C135.92,77.25 138.19,79.73 138.84,82.62 C139.12,83.83 139.11,86.40 138.83,87.95 C138.00,92.51 134.94,96.40 130.89,98.03 C129.56,98.56 129.56,98.56 127.25,98.59 C125.50,98.61 124.82,98.57 124.47,98.44Z M80.66,81.13 C79.49,80.82 78.42,80.38 77.53,79.86 C76.72,79.39 74.39,77.13 73.76,76.21 C70.87,71.97 70.20,64.63 72.32,60.26 C73.67,57.46 75.37,55.91 78.08,55.01 C79.45,54.55 80.40,54.51 81.77,54.86 C84.29,55.51 85.84,56.63 87.99,59.37 C89.21,60.93 90.49,64.05 91.06,66.89 C92.09,72.02 90.28,77.50 86.78,79.84 C84.73,81.21 82.60,81.66 80.66,81.13Z M106.94,81.29 C103.65,80.55 101.22,78.36 100.00,75.02 C98.68,71.43 98.71,68.04 100.08,64.00 C101.46,59.95 103.97,56.78 106.83,55.48 C108.89,54.55 110.50,54.41 112.29,55.01 C115.01,55.91 116.71,57.46 118.06,60.26 C120.17,64.63 119.51,71.97 116.61,76.21 C115.99,77.13 113.65,79.39 112.85,79.86 C110.93,80.98 108.35,81.61 106.94,81.29Z" fill="var(--logo-coral)"/></g></g><g transform="translate(97.4,90.6)"><path d="M11.7 0.8Q8.1 0.8 6.6 -0.1Q5.1 -1.2 4.8 -2.9Q4.4 -4.7 4.4 -6.5V-58.9Q4.4 -60.7 4.8 -62.4Q5.1 -64.1 6.7 -65.1Q8.2 -66.2 11.8 -66.2H31.4Q35.5 -66.2 39.6 -64.8Q43.6 -63.3 47.1 -60.3Q50.6 -57.3 52.8 -52.8Q55.0 -48.4 55.0 -42.5Q55.0 -36.6 52.8 -32.2Q50.6 -27.8 47.1 -24.9Q43.6 -21.9 39.5 -20.4Q35.4 -19.0 31.3 -19.0H19.1V-6.4Q19.1 -4.6 18.7 -2.9Q18.3 -1.2 16.8 -0.1Q15.2 0.8 11.7 0.8ZM19.1 -33.6H31.4Q33.6 -33.6 35.6 -34.5Q37.7 -35.4 39.1 -37.4Q40.5 -39.4 40.5 -42.6Q40.5 -45.3 39.3 -47.3Q38.2 -49.3 36.1 -50.4Q34.0 -51.6 31.3 -51.6H19.1Z" fill="var(--logo-navy)"/><path d="M99.2 0.7Q95.7 0.7 94.0 -0.4Q92.3 -1.7 92.3 -3.5L93.3 -5.1Q92.7 -4.2 91.1 -2.8Q89.4 -1.4 86.8 -0.3Q84.2 0.7 80.4 0.7Q76.0 0.7 72.0 -1.1Q68.0 -3.0 64.9 -6.4Q61.9 -9.8 60.1 -14.2Q58.3 -18.5 58.3 -23.3Q58.3 -28.0 60.1 -32.3Q61.9 -36.5 65.0 -39.8Q68.1 -43.2 72.0 -45.1Q76.0 -47.0 80.4 -47.0Q84.0 -47.0 86.4 -46.0Q88.9 -45.0 90.6 -43.6Q92.3 -42.3 93.2 -41.0L92.4 -42.4Q92.3 -44.7 94.0 -45.9Q95.7 -47.1 99.3 -47.1Q102.8 -47.1 104.3 -46.0Q105.7 -45.0 106.1 -43.2Q106.4 -41.5 106.4 -39.6V-6.5Q106.4 -4.7 106.1 -2.9Q105.7 -1.2 104.3 -0.2Q102.8 0.7 99.2 0.7ZM82.5 -13.5Q85.0 -13.5 87.1 -14.8Q89.1 -16.1 90.3 -18.3Q91.5 -20.5 91.5 -23.2Q91.5 -26.0 90.3 -28.1Q89.0 -30.3 86.9 -31.6Q84.8 -32.9 82.3 -32.9Q79.5 -32.9 77.4 -31.5Q75.2 -30.2 73.9 -28.0Q72.6 -25.8 72.6 -23.0Q72.6 -20.4 73.9 -18.2Q75.2 -16.1 77.5 -14.8Q79.7 -13.5 82.5 -13.5Z" fill="var(--logo-navy)"/><path d="M131.5 0.9Q128.9 0.9 127.5 0.0Q126.1 -0.9 125.5 -2.3Q124.8 -3.6 124.5 -4.6L110.9 -38.1Q110.3 -40.4 110.3 -42.0Q110.4 -43.5 111.5 -44.6Q112.6 -45.7 115.0 -46.6Q118.6 -48.1 120.9 -47.5Q123.2 -46.8 124.4 -43.5L131.5 -24.2L137.8 -42.0Q138.2 -43.0 138.9 -44.2Q139.5 -45.4 140.9 -46.3Q142.3 -47.3 144.7 -47.3Q147.3 -47.3 148.8 -46.3Q150.2 -45.4 150.9 -44.1Q151.6 -42.9 151.9 -42.0L158.3 -24.2L165.0 -42.4Q166.3 -45.9 168.5 -47.2Q170.7 -48.4 174.4 -46.9Q177.7 -45.5 179.0 -43.3Q180.2 -41.2 178.7 -38.0L165.2 -4.6Q164.8 -3.5 164.1 -2.2Q163.4 -0.8 162.1 0.0Q160.8 0.9 158.4 0.9Q155.9 0.9 154.5 0.1Q153.2 -0.6 152.4 -2.0Q151.7 -3.3 151.2 -4.7L144.8 -22.3L138.5 -4.7Q137.8 -2.9 137.2 -1.6Q136.7 -0.3 135.4 0.2Q134.1 0.9 131.5 0.9Z" fill="var(--logo-navy)"/><path d="M226.2 -66.3Q227.9 -66.3 229.2 -66.0Q230.5 -65.7 231.5 -64.4Q232.4 -63.1 232.4 -60.0Q232.4 -57.0 231.5 -55.6Q230.5 -54.3 229.1 -54.0Q227.7 -53.7 226.0 -53.7H210.6V-6.2Q210.6 -4.4 210.2 -2.7Q209.9 -1.1 208.4 -0.1Q206.9 0.8 203.4 0.8Q199.9 0.8 198.4 -0.1Q196.8 -1.1 196.6 -2.8Q196.3 -4.5 196.3 -6.3V-53.7H180.6Q179.1 -53.7 177.6 -54.0Q176.2 -54.4 175.3 -55.7Q174.5 -57.0 174.5 -60.0Q174.5 -63.1 175.3 -64.4Q176.2 -65.7 177.6 -66.0Q179.1 -66.3 180.6 -66.3Z" fill="var(--logo-coral)"/><path d="M242.5 0.8Q239.0 0.8 237.5 -0.1Q236.0 -1.1 235.7 -2.8Q235.3 -4.6 235.3 -6.4V-39.9Q235.3 -41.8 235.7 -43.4Q236.1 -45.1 237.6 -46.1Q239.1 -47.1 242.6 -47.1Q246.0 -47.1 247.5 -46.2Q249.0 -45.3 249.4 -44.1Q249.6 -43.4 249.6 -42.9Q250.5 -43.8 251.9 -45.0Q253.3 -46.0 255.4 -46.8Q257.4 -47.6 260.1 -47.6Q261.2 -47.6 262.5 -47.4Q263.8 -47.3 265.2 -46.8Q266.5 -46.4 267.7 -45.7Q268.8 -45.0 269.6 -43.9Q270.3 -42.9 270.3 -41.3Q270.3 -37.4 268.5 -34.7Q266.6 -31.9 263.9 -31.9Q262.2 -31.9 261.6 -32.2Q260.9 -32.5 260.4 -32.8Q260.0 -33.1 259.4 -33.3Q258.9 -33.6 257.3 -33.6Q255.9 -33.6 254.6 -33.2Q253.3 -32.8 252.2 -32.0Q251.1 -31.2 250.5 -30.0Q249.8 -28.8 249.8 -27.3V-6.2Q249.8 -4.4 249.5 -2.7Q249.2 -1.0 247.6 -0.0Q246.1 0.8 242.5 0.8Z" fill="var(--logo-coral)"/><path d="M282.5 0.8Q278.9 0.8 277.4 -0.1Q276.0 -1.1 275.6 -2.8Q275.3 -4.5 275.3 -6.3V-39.8Q275.3 -41.7 275.6 -43.3Q276.0 -45.0 277.5 -46.0Q279.0 -47.0 282.6 -47.0Q286.0 -47.0 287.5 -45.9Q289.0 -44.9 289.3 -43.2Q289.7 -41.6 289.7 -39.6V-6.2Q289.7 -4.4 289.3 -2.7Q289.0 -1.0 287.5 -0.0Q286.0 0.8 282.5 0.8ZM282.5 -54.0Q278.8 -54.0 277.3 -55.1Q275.8 -56.1 275.4 -57.8Q275.1 -59.6 275.1 -61.5Q275.1 -63.5 275.5 -65.2Q275.9 -66.9 277.4 -67.9Q278.9 -68.9 282.6 -68.9Q286.1 -68.9 287.7 -67.8Q289.2 -66.8 289.5 -65.0Q289.9 -63.3 289.9 -61.4Q289.9 -59.5 289.5 -57.7Q289.2 -56.0 287.7 -55.0Q286.1 -54.0 282.5 -54.0Z" fill="var(--logo-coral)"/><path d="M322.0 0.0Q317.3 0.0 313.8 -1.9Q312.0 -2.6 310.7 -3.8V13.6Q310.8 15.4 310.4 17.0Q310.0 18.7 308.5 19.7Q307.1 20.7 303.5 20.7Q300.0 20.7 298.6 19.7Q297.1 18.7 296.7 17.1Q296.4 15.5 296.4 13.7V-39.9Q296.4 -41.8 296.7 -43.4Q297.0 -45.0 298.5 -46.0Q300.0 -47.1 303.4 -47.1Q306.4 -47.1 308.2 -46.2Q309.9 -45.4 310.7 -43.5V-43.1Q312.1 -44.3 313.9 -45.3Q317.3 -47.1 322.0 -47.1Q326.3 -47.1 330.2 -45.2Q334.2 -43.2 337.3 -39.9Q340.4 -36.6 342.1 -32.3Q343.9 -28.0 343.9 -23.2Q343.9 -18.4 342.1 -14.1Q340.4 -9.8 337.3 -6.7Q334.2 -3.5 330.3 -1.7Q326.4 0.0 322.0 0.0ZM320.0 -13.5Q322.7 -13.5 324.8 -14.8Q326.9 -16.1 328.2 -18.3Q329.5 -20.5 329.5 -23.2Q329.5 -26.0 328.3 -28.1Q327.0 -30.3 324.9 -31.5Q322.8 -32.8 320.1 -32.8Q317.5 -32.8 315.4 -31.5Q313.2 -30.2 312.0 -28.0Q310.8 -25.9 310.8 -23.2Q310.8 -20.5 312.0 -18.3Q313.3 -16.1 315.4 -14.8Q317.5 -13.5 320.0 -13.5Z" fill="var(--logo-coral)"/></g></svg></a></h1>
-    <nav aria-label="메뉴">
-      <ol>
-        <li><a href="#flights" data-tab="flights"><span class="dot"></span>항공편 선택</a></li>
-        <li><a href="#plan" data-tab="plan"><span class="dot"></span>일정 계산</a></li>
-        <li><a href="#prep" data-tab="prep"><span class="dot"></span>준비 루틴</a></li>
-        <li><a href="#countries" data-tab="countries"><span class="dot"></span>국가별 규정</a></li>
-        <li><a href="#airlines" data-tab="airlines"><span class="dot"></span>항공사 비교</a></li>
-        <li><a href="#return" data-tab="return"><span class="dot"></span>귀국 검역</a></li>
-        <li><a href="#wallet" data-tab="wallet"><span class="dot"></span>내 반려견</a></li>
-        <li><a href="#trips" data-tab="trips"><span class="dot"></span>여행 기록</a></li>
-        <li><a href="#about" data-tab="about"><span class="dot"></span>기준과 출처</a></li>
-      </ol>
-    </nav>
-    <a class="sos-rail" href="#sos" data-tab="sos"><span class="sos-btn" aria-hidden="true">SOS</span><span><b>응급 SOS 카드</b>현지 수의사에게 바로 보여주기</span></a>
+    <nav aria-label="메뉴" id="navRail"></nav>
+    <a class="sos-rail" href="/#sos"><span class="sos-btn" aria-hidden="true">SOS</span><span><b>응급 SOS 카드</b>현지 수의사에게 바로 보여주기</span></a>
     <div class="meta"><strong>대한민국 출발 기준</strong>규정 확인일 <span class="vdate">2026-10-01</span><br>출국 전 공식 출처에서 다시 확인하세요.</div>
   </aside>
 
@@ -425,7 +98,7 @@ table.cmp .dots{font-size:13px}
       <p>PawTrip은 공식 출처를 요약한 참고 자료입니다. 각국 검역당국과 항공사는 규정을 예고 없이 바꿉니다. 출국 전 각 항목의 출처 링크에서 최신 내용을 다시 확인하세요. 입국 거부·격리에 대한 책임은 지지 않습니다.</p>
       <div id="alertRow" hidden></div>
       <p class="install-row" id="installRow" hidden><button class="btn" type="button" id="installBtn">PawTrip 앱으로 설치</button><span>홈 화면에서 바로 열고, 인터넷이 없어도 저장된 규정을 볼 수 있어요.</span></p>
-      <p><a href="privacy.html"><strong>개인정보처리방침</strong></a> · 문의 <a href="mailto:help@pawtrip.us">help@pawtrip.us</a></p>
+      <p><a href="/#about">기준과 출처</a> · <a href="/changes/">규정 변경 이력</a> · <a href="/privacy.html"><strong>개인정보처리방침</strong></a> · 문의 <a href="mailto:help@pawtrip.us">help@pawtrip.us</a></p>
       <p>© PawTrip · pawtrip.us</p>
     </footer>
   </div>
@@ -447,7 +120,8 @@ table.cmp .dots{font-size:13px}
   </li>
 </template>
 
-<script src="features.js?v=1"></script>
+<script src="/nav.js?v=1"></script>
+<script src="/features.js?v=2"></script>
 <script>
 (function(){
   const app = document.getElementById('app');
@@ -565,7 +239,7 @@ table.cmp .dots{font-size:13px}
   function viewFlights(){
     const fd = state.fdest || state.dest;
     const opts = DATA.countries.map(c=>`<option value="${c.id}" ${c.id===fd?'selected':''}>${esc(c.name)}</option>`).join('');
-    app.innerHTML = head('01 · 항공편 선택','우리 개는 어느 항공사로 갈 수 있을까','목적지와 무게를 넣으면 기내에 함께 탈 수 있는 항공사부터 보여줍니다. 카드를 누르면 규격·요금·신청 방법·연락처가 펼쳐집니다.') + `
+    app.innerHTML = head('준비하기 · 항공편 선택','우리 개는 어느 항공사로 갈 수 있을까','목적지와 무게를 넣으면 기내에 함께 탈 수 있는 항공사부터 보여줍니다. 카드를 누르면 규격·요금·신청 방법·연락처가 펼쳐집니다.') + `
       <form class="panel" id="fform" autocomplete="off">
         <div class="filters four">
           <div class="field"><label for="fdest">목적지</label><select id="fdest">${opts}</select></div>
@@ -652,7 +326,7 @@ table.cmp .dots{font-size:13px}
   // ---------- 일정 계산 ----------
   function viewPlan(){
     const opts = DATA.countries.map(c=>`<option value="${c.id}" ${c.id===state.dest?'selected':''}>${esc(c.name)}</option>`).join('');
-    app.innerHTML = head('02 · 일정 계산','출국일에서 거꾸로 계산하는 준비 일정','희망 출국일과 지금까지 준비한 것을 넣으면, 가장 빠른 출국 가능일과 단계별 날짜가 나옵니다.') + `
+    app.innerHTML = head('준비하기 · 일정 계산','출국일에서 거꾸로 계산하는 준비 일정','희망 출국일과 지금까지 준비한 것을 넣으면, 가장 빠른 출국 가능일과 단계별 날짜가 나옵니다.') + `
       <div class="plan-grid">
         <form class="panel form" id="pform" autocomplete="off">
           <div class="field"><label for="dest">목적지</label><select id="dest">${opts}</select></div>
@@ -741,7 +415,7 @@ table.cmp .dots{font-size:13px}
     if(sort==='hard') list.sort((a,b)=>b.difficulty-a.difficulty);
     const inView = !!app.querySelector('#country-list'); const keep = inView ? openIds() : []; const keepAnim = !inView;
     const b = (k,v,t,cur)=>`<button class="chip" type="button" data-${k}="${v}" aria-pressed="${cur===v}">${t}</button>`;
-    app.innerHTML = head('04 · 국가별 입국 규정','나라마다 다른 입국 조건','최소 준비 기간과 난이도를 먼저 보고, 필요한 나라만 펼쳐서 확인하세요.') + `
+    app.innerHTML = head('규정 · 국가별 입국 규정','나라마다 다른 입국 조건','최소 준비 기간과 난이도를 먼저 보고, 필요한 나라만 펼쳐서 확인하세요.') + `
       <div class="chips" role="group" aria-label="지역">${b('region','all','전체 지역',region)}${b('region','short','단거리',region)}${b('region','mid','중거리',region)}${b('region','long','장거리',region)}</div>
       <div class="chips" role="group" aria-label="정렬" style="margin-bottom:20px">${b('sort','default','기본 순서',sort)}${b('sort','easy','쉬운 순',sort)}${b('sort','hard','어려운 순',sort)}${b('sort','lead','준비 기간 짧은 순',sort)}</div>
       <ol class="list${keepAnim?'':' still'}" id="country-list">${list.map(countryCard).join('')}</ol>`;
@@ -789,7 +463,7 @@ table.cmp .dots{font-size:13px}
         <td>${f.short?`<div>단 ${esc(f.short)}</div><div>중 ${esc(f.mid)}</div><div>장 ${esc(f.long)}</div>${f.heavy?`<p class="note">${esc(f.heavy)}</p>`:''}`:'—'}</td>
         <td>${a.banner?`<p class="note" style="margin:0 0 8px"><b>참고</b> ${esc(a.banner)}</p>`:''}<ul class="dots">${(a.notes||[]).map(n=>`<li>${esc(n)}</li>`).join('')}</ul>${contacts(a)?`<div style="margin-top:10px">${contacts(a)}</div>`:''}<div class="links" style="margin-top:10px"><a class="link" href="${esc(a.source.url)}" target="_blank" rel="noopener">공식 페이지 ${ICON.ext}</a>${a.source2?`<a class="link" href="${esc(a.source2.url)}" target="_blank" rel="noopener">${esc(a.source2.title)} ${ICON.ext}</a>`:''}</div></td></tr>`;
     }).join('');
-    app.innerHTML = head('05 · 항공사 비교','항공사 규정 한눈에 비교','기내·위탁 한도, 단두종 제한, 구간별 요금을 나란히 놓았습니다. 표는 옆으로 밀어서 볼 수 있습니다.') + `
+    app.innerHTML = head('규정 · 항공사 비교','항공사 규정 한눈에 비교','기내·위탁 한도, 단두종 제한, 구간별 요금을 나란히 놓았습니다. 표는 옆으로 밀어서 볼 수 있습니다.') + `
       <div class="panel" style="margin-bottom:16px"><div class="field" style="max-width:420px"><label for="breed">견종 이름으로 단두종 여부 확인</label><input type="text" id="breed" placeholder="예: 치와와, 시추, 푸들" value="${esc(state.breed||'')}"></div><p class="hint" id="breedOut" style="margin-top:10px"></p></div>
       <div class="tablewrap"><table class="cmp"><thead><tr><th>항공사</th><th>기내 동반</th><th>위탁 수하물</th><th>단두종</th><th>요금 (편도·32kg 이하)</th><th>주의 · 연락처</th></tr></thead><tbody>${rows}</tbody></table></div>
       <p class="hint" style="margin-top:12px">요금은 한국 출발 편도, 각 항공사 공식 페이지 기준 (확인일 ${esc(DATA.meta.verified)}). 운항 노선은 항공사마다 다르니 예약 전 확인하세요.</p>`;
@@ -805,7 +479,7 @@ table.cmp .dots{font-size:13px}
   // ---------- 귀국 검역 ----------
   function viewReturn(){
     const r = DATA.returnToKorea;
-    app.innerHTML = head('06 · 귀국 검역', esc(r.title), '') + `
+    app.innerHTML = head('규정 · 귀국 검역', esc(r.title), '') + `
       <div class="dgrid">
         <section class="panel"><h3 class="sec-h" style="margin-top:0">알아둘 것</h3><ul class="checks">${r.points.map(p=>`<li>${esc(p)}</li>`).join('')}</ul></section>
         <section class="panel"><h3 class="sec-h" style="margin-top:0">한 번에 끝내는 순서</h3>
@@ -821,7 +495,7 @@ table.cmp .dots{font-size:13px}
 
   // ---------- 기준과 출처 ----------
   function viewAbout(){
-    app.innerHTML = head('09 · 기준과 출처','이 사이트의 기준','') + `
+    app.innerHTML = head('기준과 출처','이 사이트의 기준','') + `
       <div class="dgrid">
         <section class="panel"><h3 class="sec-h" style="margin-top:0">정리 기준</h3><ul class="checks">
           <li>출발지는 대한민국으로 고정했습니다.</li>
@@ -841,7 +515,7 @@ table.cmp .dots{font-size:13px}
           <li>SOS 카드는 고정 문구와 선택형 항목만 영어·일본어·중국어로 번역했고, 직접 쓴 내용은 원문 그대로 보여줍니다.</li>
           <li>켄넬 훈련 단계는 AKC·SPCA 뉴질랜드 가이드, 비행 당일 안내는 IATA·AVMA·아시아나 공식 안내를 따릅니다. 훈련 시작 시점(출국 8주 전)은 PawTrip 권장값입니다.</li>
           <li>여행 기록의 공항 좌표는 OurAirports 공개 데이터, 거리는 공항 간 대권 거리입니다.</li></ul>
-          <h3 class="sec-h">다음 업데이트</h3><ul class="dots"><li>여행지에서 반려견과 함께 가기 좋은 곳</li>${PTX.hasAlerts()?'':'<li>규정 변경 알림 신청</li>'}</ul>${PTX.alertBox('about')}</section>
+          <h3 class="sec-h">더 보기</h3><ul class="dots"><li><a href="/changes/">규정 변경 이력</a>: 무엇을 언제 어떤 근거로 바꿨는지</li><li><a href="/domestic/">국내 이동</a> · <a href="/local/">현지 이동</a> · <a href="/titer/">항체가 검사</a> · <a href="/cost/">비용 계산</a></li></ul><h3 class="sec-h">다음 업데이트</h3><ul class="dots"><li>고속버스·제주행 여객선 반려동물 기준</li><li>이스타항공·에어로케이·파라타항공·에어서울 국내선 규정</li>${PTX.hasAlerts()?'':'<li>규정 변경 알림 신청</li>'}</ul>${PTX.alertBox('about')}</section>
       </div>`;
   }
 
@@ -872,13 +546,10 @@ table.cmp .dots{font-size:13px}
     const h = (location.hash||'#flights').slice(1);
     const c = DATA.countries.find(x=>x.id===h);
     const tab = c ? 'countries' : (TABS.includes(h)?h:'flights');
-    document.querySelectorAll('[data-tab]').forEach(a=>a.setAttribute('aria-current', a.dataset.tab===tab?'page':'false'));
-    const act = document.querySelector('.tabs [aria-current="page"]');
-    if(act){ const bar=act.parentElement; bar.scrollTo({left:act.offsetLeft-(bar.clientWidth-act.offsetWidth)/2}); }
+    if(window.PTNav) PTNav.render(tab);
     const hero=document.getElementById('hero'); hero.hidden = tab!=='flights';
     const views = {flights:viewFlights,plan:viewPlan,countries:viewCountries,airlines:viewAirlines,return:viewReturn,about:viewAbout};
     if(c) viewCountry(c); else (views[tab] || PTX.views[tab] || viewFlights)();
-    document.querySelectorAll('.sos-btn,.sos-rail').forEach(a=>{ if(a.tagName==='A') a.setAttribute('aria-current', tab==='sos'?'page':'false'); });
     if(route.ran && tab!=='flights') window.scrollTo({top:0});
     route.ran = true;
     const vpath = c ? '/countries/'+c.id : '/'+tab;

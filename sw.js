@@ -3,9 +3,9 @@
    - 아이콘·이미지·글꼴은 저장본을 먼저 보여 주고 뒤에서 갱신
    - 히어로 영상(1MB 이상)과 GA·광고 요청은 건드리지 않음
    배포 때 규정만 바뀌면 VERSION을 안 올려도 됩니다(네트워크 우선이라 자동 갱신). sw.js나 저장 목록을 바꿀 때만 올리세요. */
-const VERSION = 'pawtrip-v5';
-const CORE = ['./', 'index.html', 'data.json', 'features.js', 'features.css'];
-const EXTRA = ['privacy.html', 'manifest.webmanifest', 'airports.json', 'media/logo-light.svg', 'media/mark.svg', 'media/hero-poster.jpg',
+const VERSION = 'pawtrip-v6';
+const CORE = ['./', 'index.html', 'data.json', 'base.css', 'nav.js', 'features.js', 'features.css'];
+const EXTRA = ['privacy.html', 'domestic/', 'titer/', 'cost/', 'local/', 'changes/', 'manifest.webmanifest', 'airports.json', 'media/logo-dark.svg', 'media/logo-light.svg', 'media/mark.svg', 'media/hero-poster.jpg',
   'media/icon-192.png', 'media/icon-512.png', 'media/apple-touch-icon.png'];
 const FONT_HOST = 'cdn.jsdelivr.net';
 
@@ -53,11 +53,13 @@ self.addEventListener('fetch', e => {
   if (url.origin === location.origin) {
     if (req.destination === 'video' || /\.(mp4|webm)$/.test(url.pathname)) return;
     if (req.mode === 'navigate') {
-      const key = url.pathname.endsWith('privacy.html') ? 'privacy.html' : 'index.html';
+      // 페이지마다 따로 저장: / → index.html, /domestic/ → domestic/, /privacy.html → privacy.html
+      const p = url.pathname.replace(/^\//, '');
+      const key = (p === '' || p === 'index.html') ? 'index.html' : (p.endsWith('/') || p.endsWith('.html') ? p : p + '/');
       e.respondWith(networkFirst(req, key)); return;
     }
     if (url.pathname.endsWith('/data.json')) { e.respondWith(networkFirst(req, 'data.json')); return; }
-    const m = url.pathname.match(/\/(features\.(?:js|css)|airports\.json)$/);
+    const m = url.pathname.match(/\/(features\.(?:js|css)|base\.css|nav\.js|airports\.json)$/);
     if (m) { e.respondWith(networkFirst(req, m[1])); return; }
     e.respondWith(staleWhileRevalidate(req)); return;
   }
