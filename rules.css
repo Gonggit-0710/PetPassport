@@ -1,0 +1,48 @@
+/* Search pages use PawTrip's existing panels, spacing and disclosure cards. */
+.rules-page .rule-country-list{margin-top:16px}
+.rules-page .rule-country>summary{list-style:none}
+.rules-page .rule-country>summary::-webkit-details-marker{display:none}
+.rules-page .rule-country .card-title h3{margin:0;font-size:var(--t-h3)}
+.rules-page .rule-country .card-summary{margin:10px 0 0;max-width:none}
+.rules-page .rule-country .stats{margin:16px 0 0}
+.rules-page .rule-country[open] .chev{transform:rotate(180deg);background:var(--cream)}
+.rules-page .rule-country-body{padding:4px 22px 24px}
+.rules-page .rule-country .block h2{font-size:14px;font-weight:700;margin:0 0 10px}
+.rules-page .rule-country .block p{margin:0;font-size:14px}
+.rules-page .rule-country .block p+p{margin-top:8px}
+.rules-page .rule-country .checks{margin:0}
+.rules-page .rule-checks{list-style:none;margin:0;padding:0}
+.rules-page .rule-checks li+li{margin-top:10px}
+.rules-page .rule-checks label{display:flex;align-items:flex-start;gap:10px;font-size:14px;line-height:1.7;cursor:pointer}
+.rules-page .rule-checks input{width:18px;height:18px;margin:3px 0 0;flex:none;accent-color:var(--navy);cursor:pointer}
+.rules-page .rule-checks input:focus-visible{outline:2px solid var(--navy);outline-offset:3px}
+.rules-page .rule-country .block .rule-check-hint{margin-top:12px;font-size:var(--t-micro)}
+.rules-page [data-check-status]:empty{display:none}
+.rules-page .rule-country .block+.blocks{margin-top:12px}
+.rules-page .rule-country .card-head:focus-visible{outline:2px solid var(--navy);outline-offset:3px}
+.rules-page .rule-permalink{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin:-6px 4px 6px;font-size:var(--t-micro)}
+.rules-page .rule-permalink .link{font-size:var(--t-micro);padding:4px 10px}
+.rules-page .page-head{padding-bottom:16px}
+.rules-page .dgrid{margin-top:16px}
+.rules-page .dgrid>.panel>h2:first-child{margin:0 0 14px;font-size:17px}
+.rules-page .dgrid+.rule-side{margin-top:14px}
+.rules-page .req{margin:0}
+.rules-page .req li{padding:10px 0}
+.rules-page .rule-side{padding:8px 20px}
+.rules-page .rule-fold+.rule-fold{border-top:1px solid var(--line)}
+.rules-page .rule-fold>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0;cursor:pointer;list-style:none}
+.rules-page .rule-fold>summary::-webkit-details-marker{display:none}
+.rules-page .rule-fold>summary::after{content:'⌄';font-size:20px;line-height:1;flex:none;transition:transform .2s}
+.rules-page .rule-fold[open]>summary::after{transform:rotate(180deg)}
+.rules-page .rule-fold>summary>h2{font-size:16px;font-weight:700;margin:0;line-height:1.5}
+.rules-page .rule-fold-body{padding:0 0 16px;font-size:14px}
+.rules-page .rule-fold-body h3{font-size:15px;margin:16px 0 10px}
+.rules-page .rule-fold-body .tablewrap{margin-top:0}
+.rules-page .rule-fold-body p:last-child{margin-bottom:0}
+.rules-page .rule-fold>summary:focus-visible{outline:2px solid var(--navy);outline-offset:3px;border-radius:4px}
+.rules-page .air-grid h3{margin:0 0 8px;font-size:17px}
+.rules-page .air-grid .panel{padding:18px}
+.rules-page .air-grid{gap:14px}
+.rules-page .air-grid .panel>p{font-size:14px}
+@media(min-width:640px){.rules-page .air-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:639px){.rules-page .page-head{padding-top:24px}.rules-page .page-head h1{font-size:24px!important}.rules-page .panel{padding:18px}.rules-page .rule-side{padding:4px 16px}}

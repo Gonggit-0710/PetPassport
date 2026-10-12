@@ -11,13 +11,13 @@
     {t:'켄넬 적응 훈련', u:'/#prep', g:'준비하기 · 준비 루틴', x:'켄넬 크레이트 이동장 친해지기 밥 먹기 문 닫기 머무는 시간 늘리기 이동 연습 출국 8주 전 시작 낑낑 AKC SPCA 오늘 연습 기록'},
     {t:'비행 당일 준비', u:'/#prep', g:'준비하기 · 준비 루틴', x:'식사 비행 2시간 전 물 산책 진정제 안정제 수면제 흡수 패드 담요 IATA AVMA 아시아나'},
     {t:'짐 싸기 리스트', u:'/#prep', g:'준비하기 · 준비 루틴', x:'짐 패킹 체크리스트 해외여행 국내 나들이 캠핑 서류 원본 사본 케이지 패드 사료 간식 목줄 하네스 인식표 배변봉투 2m'},
-    {t:'펫 카드', u:'/#wallet', g:'내 반려견', x:'마이크로칩 번호 광견병 접종일 유효기간 항체가 결과 지병 알레르기 복용 약 보호자 연락처 사진 오프라인'},
-    {t:'SOS 카드 (응급)', u:'/#sos', g:'내 반려견', x:'응급 아플 때 동물병원 수의사 영어 일본어 중국어 번역 현지 병원 찾기 지도'},
+    {t:'My Card', u:'/#wallet', g:'내 반려견', x:'마이크로칩 번호 광견병 접종일 유효기간 항체가 결과 지병 알레르기 복용 약 보호자 연락처 사진 오프라인'},
+    {t:'My Card · 진료용 카드', u:'/sos/', g:'내 반려견', x:'응급 아플 때 동물병원 수의사 영어 일본어 중국어 번역 현지 병원 찾기 지도'},
     {t:'서류 사본 보관', u:'/#wallet', g:'내 반려견 · 펫 카드', x:'서류 사진 PDF 접종증명서 항체가 결과서 건강증명서 검역증명서 수입허가 동물등록증'},
     {t:'백업·복원', u:'/#wallet', g:'내 반려견 · 펫 카드', x:'기기 변경 핸드폰 바꿀 때 백업 파일 내려받기 복원'},
     {t:'여행 기록 · 결산 카드', u:'/#trips', g:'내 반려견', x:'비행 기록 거리 km 스탬프 인스타그램 스토리 결산 카드 공항 제주 국내'},
     {t:'단두종 항공 규정 (견종 확인)', u:'/#airlines', g:'규정 · 항공사', x:'단두종 퍼그 시추 불독 프렌치불독 페키니즈 치와와 보스턴테리어 위탁 불가 기내만 가능 견종 이름으로 확인'},
-    {t:'항공사 비교', u:'/#airlines', g:'규정', x:'항공사 기내 위탁 한도 단두종 목록 요금 비교 표 견종 확인'},
+    {t:'항공사 비교', u:'/airlines/', g:'규정', x:'항공사 기내 위탁 한도 단두종 목록 요금 비교 표 견종 확인'},
     {t:'기준과 출처', u:'/#about', g:'기준과 출처', x:'정리 기준 공식 출처 확인일 앱 설치 홈 화면 추가 오프라인'},
     {t:'개인정보처리방침', u:'/privacy.html', g:'기준과 출처', x:'개인정보 쿠키 구글 애널리틱스 기기에만 저장 문의'}
   ];
@@ -39,10 +39,10 @@
   let DOCS = null, loading = null;
   function fromData(d){
     const out = [];
-    (d.countries||[]).forEach(c => out.push({t:c.name+' 입국 규정', u:'/#'+c.id, g:'규정 · 국가별', k:(EN[c.id]||'')+' '+c.code,
+    (d.countries||[]).forEach(c => out.push({t:c.name+' 입국 규정', u:'/countries/'+encodeURIComponent(c.id)+'/', g:'규정 · 국가별', k:(EN[c.id]||'')+' '+c.code,
       x:[c.status, c.summary, ...(c.requirements||[]), c.quarantine, c.leadNote, c.airlineNote, c.returnNote, ...(c.timeline||[]).map(s=>s.t)].filter(Boolean).join(' ')}));
     (d.airlines||[]).forEach(a => { const f = a.fees||{};
-      out.push({t:a.name+' 반려동물 규정', u:'/#airlines', g:'규정 · 항공사', k:a.id,
+      out.push({t:a.name+' 반려동물 규정', u:'/airlines/'+encodeURIComponent(a.id)+'/', g:'규정 · 항공사', k:a.id,
         x:['기내', a.cabin && a.cabin.maxKg && a.cabin.maxKg+'kg', a.cabin && a.cabin.size, '위탁', a.checked && (a.checked.allowed ? (a.checked.maxKg+'kg '+(a.checked.size||'')) : '위탁 불가'),
            f.short, f.mid, f.long, f.heavy, a.howTo, a.booking, a.banner, ...(a.notes||[]), (a.brachyList||[]).join(' '), ...(a.contact||[]).map(p=>p.label+' '+p.tel)].filter(Boolean).join(' ')}); });
     if(d.returnToKorea) out.push({t:d.returnToKorea.title||'귀국 검역', u:'/#return', g:'규정', k:'귀국 검역 재입국 한국 입국', x:[...(d.returnToKorea.points||[]), d.returnToKorea.tip, ...(d.quarantineOffices||[]).map(o=>o.name+' '+o.tel+' '+o.hours)].join(' ')});
@@ -149,7 +149,7 @@
     const tb = document.querySelector('.topbar-right');
     if(tb && !tb.querySelector('.srch-btn')) tb.insertAdjacentHTML('afterbegin', `<button type="button" class="srch-btn" aria-label="사이트 검색 (단축키 /)" title="검색">${ICON}</button>`);
     const rail = document.querySelector('.rail');
-    if(rail && !rail.querySelector('.srch-rail')){ const nav = rail.querySelector('nav'); nav && nav.insertAdjacentHTML('beforebegin', `<button type="button" class="srch-rail">${ICON}<span>검색</span><kbd>/</kbd></button>`); }
+    if(rail && !rail.querySelector('.srch-rail')){ const nav = rail.querySelector('.my-card-primary') || rail.querySelector('nav'); nav && nav.insertAdjacentHTML('beforebegin', `<button type="button" class="srch-rail">${ICON}<span>검색</span><kbd>/</kbd></button>`); }
   }
   document.addEventListener('click', e => { if(e.target.closest('.srch-btn,.srch-rail')) open(); });
   document.addEventListener('keydown', e => {

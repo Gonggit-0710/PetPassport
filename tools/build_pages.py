@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 """PawTrip 실제 주소 페이지 생성기
 실행: python tools/build_pages.py  (저장소 루트에서)
-- /domestic/ /titer/ /cost/ /changes/ /local/ 의 index.html 과 sitemap.xml 을 만듭니다.
-- 규정 숫자를 바꿀 때는 이 파일의 PAGES 내용을 고친 뒤 다시 실행하세요.
+- 기존 안내 페이지와 data.json 기반 /countries/ /airlines/ /sos/ 및 sitemap.xml 을 만듭니다.
+- 국가·항공사 규정은 data.json을 수정한 뒤 다시 실행하세요. 기존 안내 페이지는 PAGES에서 관리합니다.
 - 확인일(VERIFIED)은 공식 페이지를 다시 확인한 날로 바꿉니다.
 """
 import os, html, json, datetime, re
+from rule_pages import pages as rule_pages
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 VERIFIED = '2026-10-08'
@@ -38,8 +39,9 @@ SHELL = '''<!doctype html>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="/base.css?v=1">
-<link rel="stylesheet" href="/features.css?v=4">
+<link rel="stylesheet" href="/base.css?v=13">
+<link rel="stylesheet" href="/features.css?v=5">
+{page_style}
 <script>
 (function(){{
   var ID='G-6G8CX7W76G', H=location.hostname;
@@ -79,7 +81,7 @@ SHELL = '''<!doctype html>
 <header class="topbar">
   <div class="topbar-row">
     <a class="logo" href="/" aria-label="PawTrip 홈"><picture><source srcset="/media/logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/media/logo-light.svg" alt="PawTrip" style="height:34px;width:auto"></picture></a>
-    <span class="topbar-right"><span class="meta">확인일 <b>{verified}</b></span><a class="sos-btn" href="/#sos" aria-label="응급 SOS 카드 열기">SOS</a></span>
+    <span class="topbar-right"><span class="meta">확인일 <b>{verified}</b></span><a class="sos-btn my-card-button" href="/#wallet" aria-label="My Card 열기">My Card</a></span>
   </div>
   <nav class="tabs groups" id="navGroups" aria-label="메뉴 묶음"></nav>
   <nav class="tabs" id="navSub" aria-label="메뉴"></nav>
@@ -87,24 +89,25 @@ SHELL = '''<!doctype html>
 <div class="shell">
   <aside class="rail" aria-label="사이트 메뉴">
     <a class="logo" href="/"><picture><source srcset="/media/logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/media/logo-light.svg" alt="PawTrip" style="height:38px;width:auto"></picture></a>
+    <a class="sos-rail my-card-primary" href="/#wallet"><span class="sos-btn" aria-hidden="true">MY</span><span><b>My Card</b>체크한 준비사항 모아보기</span></a>
     <nav aria-label="메뉴" id="navRail"></nav>
-    <a class="sos-rail" href="/#sos"><span class="sos-btn" aria-hidden="true">SOS</span><span><b>응급 SOS 카드</b>현지 수의사에게 바로 보여주기</span></a>
     <div class="meta"><strong>대한민국 출발 기준</strong>이 페이지 확인일 {verified}<br>출발 전 공식 출처에서 다시 확인하세요.</div>
   </aside>
   <div class="content">
-    <main id="main" class="doc" tabindex="-1">
-      <header class="page-head"><span class="num">{group}</span><h1 style="font-size:var(--t-h2);font-weight:800;letter-spacing:-.03em;line-height:1.3;margin:8px 0 10px">{title}</h1><p>{lead}</p><p class="updated">공식 출처 확인일 {verified}</p></header>
+    <main id="main" class="doc {page_class}" tabindex="-1">
+      <header class="page-head"><span class="num">{group}</span><h1 style="font-size:var(--t-h2);font-weight:800;letter-spacing:-.03em;line-height:1.3;margin:8px 0 10px">{heading}</h1><p>{lead}</p><p class="updated">공식 출처 확인일 {verified}</p></header>
 {body}
     </main>
     <footer class="foot">
+      <nav class="links" aria-label="여행 규정과 카드 안내"><a href="/countries/">국가별 입국 규정</a><a href="/airlines/">항공사 반려동물 규정</a><a href="/sos/">My Card 안내</a></nav>
       <p>PawTrip은 공식 출처를 요약한 참고 자료입니다. 항공사·철도 운영사·각국 기관은 규정을 예고 없이 바꿉니다. 출발 전 각 항목의 출처 링크에서 최신 내용을 다시 확인하세요.</p>
       <p><a href="/#about">기준과 출처</a> · <a href="/changes/">규정 변경 이력</a> · <a href="/privacy.html"><strong>개인정보처리방침</strong></a> · 문의 <a href="mailto:help@pawtrip.us">help@pawtrip.us</a></p>
       <p>© PawTrip · pawtrip.us</p>
     </footer>
   </div>
 </div>
-<script src="/nav.js?v=2"></script>
-<script src="/search.js?v=1"></script>
+<script src="/nav.js?v=5"></script>
+<script src="/search.js?v=4"></script>
 <script>
 PTNav.render('{tab}');
 try{{ gtag('event','page_view',{{page_path:location.pathname,page_title:document.title}}); }}catch(e){{}}
@@ -380,19 +383,24 @@ def sections(p, body):
     return out
 
 def build():
+    with open(os.path.join(ROOT, 'data.json'), encoding='utf-8') as f:
+        data = json.load(f)
+    all_pages = PAGES + rule_pages(data)
     index = []
-    for p in PAGES:
+    for p in all_pages:
         url = f"{SITE}/{p['slug']}/"
-        out = SHELL.format(title=html.escape(p['title']), desc=html.escape(p['desc']), url=url, verified=VERIFIED,
-                           group=html.escape(p['group']), lead=html.escape(p['lead']), body=p['body'](), tab=p['tab'], extra=p.get('extra',''))
+        body = p['body']()
+        out = SHELL.format(title=html.escape(p['title']), desc=html.escape(p['desc']), url=url, verified=p.get('verified', VERIFIED),
+                           group=html.escape(p['group']), lead=html.escape(p['lead']), body=body, tab=p['tab'], extra=p.get('extra',''),
+                           page_class=p.get('page_class', ''), page_style=p.get('page_style', ''), heading=html.escape(p.get('heading', p['title'])))
         d = os.path.join(ROOT, p['slug']); os.makedirs(d, exist_ok=True)
         with open(os.path.join(d, 'index.html'), 'w', encoding='utf-8', newline='\n') as f: f.write(out)
-        index += sections(p, p['body']())
+        index += sections(p, body)
     with open(os.path.join(ROOT, 'search-index.json'), 'w', encoding='utf-8', newline='\n') as f: json.dump(index, f, ensure_ascii=False, separators=(',', ':'))
-    urls = [('/', VERIFIED)] + [(f"/{p['slug']}/", VERIFIED) for p in PAGES] + [('/privacy.html', '2026-10-08')]
+    urls = [('/', max(VERIFIED, data['meta']['verified']))] + [(f"/{p['slug']}/", p.get('verified', VERIFIED)) for p in all_pages] + [('/privacy.html', '2026-10-08')]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{SITE}{u}</loc><lastmod>{d}</lastmod></url>\n' for u, d in urls) + '</urlset>\n'
     with open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8', newline='\n') as f: f.write(sm)
-    print('built', [p['slug'] for p in PAGES], 'search entries', len(index))
+    print('built', len(all_pages), 'pages, search entries', len(index))
 
 if __name__ == '__main__':
     build()

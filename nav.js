@@ -18,8 +18,8 @@
       ['return','귀국 검역','/#return']
     ]},
     {id:'mypet', name:'내 반려견', items:[
-      ['wallet','펫 카드','/#wallet'],
-      ['sos','SOS 카드','/#sos', true],   // true: 데스크톱 목록에서는 숨김(아래 SOS 상자로 대신)
+      ['wallet','My Card','/#wallet', true],
+      ['sos','다국어 진료용 카드','/#sos', true],
       ['trips','여행 기록','/#trips']
     ]}
   ];
@@ -40,7 +40,7 @@
       const act = sEl.querySelector('[aria-current="page"]'); if(act) sEl.scrollTo({left: act.offsetLeft - (sEl.clientWidth - act.offsetWidth)/2}); }
     if(rEl) rEl.innerHTML = NAV.map(x => `<p class="rail-g">${esc(x.name)}</p><ol>${x.items.filter(i=>!i[3]).map(i => `<li>${link(i, active, 'rl')}</li>`).join('')}</ol>`).join('')
       + `<p class="rail-x">${EXTRA.map(i => `<a href="${i[2]}" aria-current="${i[0]===active?'page':'false'}">${esc(i[1])}</a>`).join(' · ')}</p>`;
-    document.querySelectorAll('.sos-btn[href],.sos-rail').forEach(a => a.setAttribute('aria-current', active==='sos'?'page':'false'));
+    document.querySelectorAll('.sos-btn[href],.sos-rail').forEach(a => a.setAttribute('aria-current', active==='wallet'?'page':'false'));
   }
   // 묶음 버튼: 아래 줄만 바꿔 보여줌 (페이지 이동 없음)
   document.addEventListener('click', e => {
@@ -53,7 +53,7 @@
   // 같은 문서 안 이동: '/#plan' 링크는 해시만 바꿔 앱 라우터가 처리
   document.addEventListener('click', e => {
     const a = e.target.closest('a[href^="/#"]'); if(!a) return;
-    if(location.pathname === '/' || location.pathname.endsWith('/index.html')){ e.preventDefault(); location.hash = a.getAttribute('href').slice(2); }
+    if((location.pathname === '/' || location.pathname === '/index.html') && !a.search){ e.preventDefault(); location.hash = a.getAttribute('href').slice(2); }
   });
   window.PTNav = { render, NAV, groupOf };
 })();

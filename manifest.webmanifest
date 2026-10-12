@@ -36,7 +36,7 @@
   ],
   "shortcuts": [
     {
-      "name": "SOS 카드",
+      "name": "다국어 진료용 카드",
       "url": "/#sos",
       "icons": [
         {
@@ -56,7 +56,7 @@
       ]
     },
     {
-      "name": "내 반려견 카드",
+      "name": "My Card",
       "url": "/#wallet",
       "icons": [
         {

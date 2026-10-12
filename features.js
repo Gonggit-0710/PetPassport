@@ -1,6 +1,6 @@
 /* PawTrip 부가 기능 (2026-10-08)
    0. 규정 변경 알림: 카카오톡 채널 (KAKAO_CHANNEL_ID를 넣어야 버튼이 보임)
-   1. 내 반려견: 펫 카드 · 다국어 SOS 카드 · 서류 사본 · 백업
+   1. 내 반려견: 펫 카드 · 다국어 다국어 진료용 카드 · 서류 사본 · 백업
    2. 준비 루틴: 켄넬 적응 훈련 · 비행 당일 · 짐 싸기 리스트
    3. 여행 기록: 비행 구간 기록 · 대권 거리 · 결산 카드 이미지
    - 모든 입력은 이 기기(localStorage · IndexedDB)에만 저장. 서버 전송 없음
@@ -165,20 +165,58 @@ async function loadPhoto(){
 PTX.views.wallet = function(){
   // 한 화면 구성: 펫 카드(오른쪽 위 '정보 고치기') → 서류 사본 → 백업·복원(접힘). SOS는 상단 SOS 버튼·메뉴에서
   const app = PT.app; const editing = wTab === 'edit'; wTab = 'card'; // 편집 모드는 한 번만 (다른 메뉴 갔다 오면 카드로)
-  app.innerHTML = PT.head('내 반려견 · 펫 카드', editing ? '반려견 정보 입력' : '공항·호텔·동물병원에서 바로 꺼내는 카드',
-      editing ? '입력하는 즉시 이 기기에 저장됩니다. 다 넣었으면 아래 완료를 누르세요.' : '마이크로칩 번호, 접종·항체가 날짜, 지병과 알레르기를 한 화면에 모았습니다. 홈 화면에 설치해 두면 인터넷이 없어도 열립니다.') +
+  app.innerHTML = PT.head('내 반려견 · My Card', editing ? '반려견 정보 입력' : 'My Card',
+      editing ? '입력하는 즉시 이 기기에 저장됩니다. 다 넣었으면 아래 완료를 누르세요.' : '국가별 입국 준비, 반려견 정보와 서류를 한곳에서 관리하세요. 체크한 항목은 자동 저장됩니다.') +
     (editing ? '' : `<div class="callout bad" style="margin-bottom:16px"><strong>원본 서류를 대신하지 않습니다</strong>공항 검역과 항공사 카운터는 수의사가 서명한 원본 증명서와 검역증명서를 확인합니다. 이 카드는 빠른 확인용 요약이니 원본은 반드시 챙기세요.</div>`) + `
+    ${editing ? '' : '<div id="wprogress" class="wsec"></div><div class="links" style="margin-bottom:16px"><a class="link solid" href="#sos">다국어 진료용 카드 보여주기</a></div>'}
     <div id="wbody"></div>
     ${editing ? '' : `<div id="wdocs" class="wsec"></div>
     <details class="panel wsec" id="wbk"><summary>기기를 바꿀 때: 백업·복원</summary><div id="wbkBody" style="margin-top:14px"></div></details>`}
     <p class="hint" style="margin-top:16px">입력한 정보와 사진은 이 기기 브라우저에만 저장되고 PawTrip으로 전송되지 않습니다. 기기를 바꾸거나 사이트 데이터를 지우면 사라지니 백업 파일로 보관하세요.</p>`;
   if(editing){ renderEdit($('#wbody')); window.scrollTo({top:0}); return; }
-  renderCard($('#wbody')); renderDocs($('#wdocs')); renderBackup($('#wbkBody'));
+  renderProgress($('#wprogress')); renderCard($('#wbody')); renderDocs($('#wdocs')); renderBackup($('#wbkBody'));
 };
+
+function completed(c){
+  const value = LS.get('pp3c-' + c.id, []);
+  return Array.isArray(value) ? [...new Set(value.filter(i => Number.isInteger(i) && i >= 0 && i < c.requirements.length))] : [];
+}
+function renderProgress(el){
+  const countries = PT.data().countries;
+  const selected = LS.get('pt-check-dest', PT.state.dest);
+  const current = countries.find(c => c.id === selected) || countries[0];
+  const expanded = !!el.querySelector('details[open]');
+  el.innerHTML = `<section class="panel"><h3 class="sec-h" style="margin-top:0">여행 준비 진행 상황</h3>
+    <div class="chips" id="myProgressChips"></div>
+    <div class="field" style="max-width:360px"><label for="myCheckCountry">체크리스트 관리할 나라</label><select id="myCheckCountry">${countries.map(c=>`<option value="${c.id}" ${c.id===current.id?'selected':''}>${PT.esc(c.name)}</option>`).join('')}</select></div>
+    <details class="my-checklist" ${expanded?'open':''}><summary><b>${PT.esc(current.name)} 입국 준비</b> <span id="myCheckCount"></span></summary>
+    <ul class="card-checks">${current.requirements.map((r,i)=>`<li><label><input type="checkbox" data-my-check="${i}"><span>${PT.esc(r)}</span></label></li>`).join('')}</ul></details>
+    <p class="hint" id="myCheckSaved" role="status">자동 저장 · 이 브라우저에 보관됩니다.</p>
+    <div class="links"><a class="link" href="/countries/${current.id}/">규정과 출처 보기</a><a class="link" href="/?dest=${current.id}#plan">이 나라로 일정 계산</a></div></section>`;
+  const refresh = () => {
+    const done = completed(current);
+    el.querySelectorAll('[data-my-check]').forEach(box => { box.checked = done.includes(Number(box.dataset.myCheck)); });
+    $('#myCheckCount').textContent = `${done.length} / ${current.requirements.length} 완료`;
+    $('#myProgressChips').innerHTML = countries.filter(c=>c.id===current.id || completed(c).length).map(c=>`<button type="button" class="chip" data-check-country="${c.id}" aria-pressed="${c.id===current.id}">${PT.esc(c.name)} · ${completed(c).length}/${c.requirements.length}</button>`).join('');
+  };
+  refresh();
+  $('#myCheckCountry').addEventListener('change', e => { LS.set('pt-check-dest', e.target.value); renderProgress(el); });
+  $('#myProgressChips').addEventListener('click', e => { const b = e.target.closest('[data-check-country]'); if(!b) return; LS.set('pt-check-dest', b.dataset.checkCountry); renderProgress(el); });
+  el.querySelectorAll('[data-my-check]').forEach(box => box.addEventListener('change', () => {
+    const done = [...el.querySelectorAll('[data-my-check]:checked')].map(x=>Number(x.dataset.myCheck));
+    const ok = LS.set('pp3c-' + current.id, done);
+    $('#myCheckSaved').textContent = ok ? '저장됨 · My Card에서 언제든 이어서 확인하세요.' : '저장하지 못했어요. 브라우저 저장 공간을 확인하세요.';
+    refresh();
+  }));
+}
+window.addEventListener('storage', e => {
+  if(!PT || !(e.key === null || (e.key||'').startsWith('pp3c-'))) return;
+  const el = document.getElementById('wprogress'); if(el) renderProgress(el);
+});
 
 PTX.views.sos = function(){
   const app = PT.app; const w = W();
-  app.innerHTML = PT.head('내 반려견 · SOS','응급 SOS 카드','반려견이 아플 때 현지 동물병원에서 이 화면을 그대로 보여주세요. 인터넷이 없어도 열립니다.') + `
+  app.innerHTML = PT.head('My Card · 진료용','다국어 진료용 카드','반려견이 아플 때 현지 동물병원에서 이 화면을 그대로 보여주세요. 인터넷이 없어도 열립니다.') + `
     ${walletFilled(w) ? '' : '<div class="callout bad" style="margin-bottom:16px"><strong>아직 카드가 비어 있어요</strong>여행 전에 이름·마이크로칩 번호·지병·알레르기를 미리 넣어 두세요. <a href="#wallet" id="sosFill">반려견 정보 입력하기</a></div>'}
     <div id="wbody"></div>
     <div class="links"><a class="link" href="#wallet" id="sosEdit">카드 내용 고치기</a></div>`;
@@ -243,7 +281,7 @@ function renderEdit(el){
         <div class="field"><label for="w-sex">성별</label><select id="w-sex" data-k="sex"><option value="">선택</option><option value="m" ${w.sex==='m'?'selected':''}>수컷</option><option value="f" ${w.sex==='f'?'selected':''}>암컷</option></select></div>
         ${inp('dob','생년월일','date')}${inp('weight','체중 (kg)','number','min="0.1" max="100" step="0.1" inputmode="decimal"')}
         <label class="check" style="align-self:end;padding-bottom:12px"><input type="checkbox" data-k="neut" ${w.neut?'checked':''}><span>중성화 완료</span></label>
-        <div class="field full"><p class="hint" style="margin:0">지병·알레르기·약은 비워 두면 SOS 카드에 '미입력'으로 표시됩니다. '없음'은 직접 확인하고 체크했을 때만 표시됩니다.</p></div>
+        <div class="field full"><p class="hint" style="margin:0">지병·알레르기·약은 비워 두면 다국어 진료용 카드에 '미입력'으로 표시됩니다. '없음'은 직접 확인하고 체크했을 때만 표시됩니다.</p></div>
         <div class="field full"><label for="w-photo">사진</label><input type="file" id="w-photo" accept="image/*"><p class="hint">사진은 작게 줄여 이 기기에만 저장합니다.</p></div>
       </div></fieldset>
       <fieldset><legend>마이크로칩 · 광견병</legend><div class="form-grid two">
@@ -253,7 +291,7 @@ function renderEdit(el){
         <div class="field full"><label for="w-titerLab">검사기관</label><input type="text" id="w-titerLab" data-k="titerLab" value="${PT.esc(w.titerLab||'')}" placeholder="예: 농림축산검역본부"></div>
       </div></fieldset>
       <fieldset><legend>지병</legend><label class="check" style="margin-bottom:10px"><input type="checkbox" data-k="condNone" ${w.condNone?'checked':''}><span><b>알려진 지병 없음</b> (확인했을 때만 체크)</span></label>${opts(CONDITIONS,'cond')}
-        <div class="field" style="margin-top:12px"><label for="w-condNote">기타 지병 (직접 입력)</label><input type="text" id="w-condNote" data-k="condNote" value="${PT.esc(w.condNote||'')}"><p class="hint">직접 쓴 내용은 SOS 카드에 번역 없이 원문 그대로 보입니다. 영어로 쓰면 해외에서 더 잘 통합니다.</p></div></fieldset>
+        <div class="field" style="margin-top:12px"><label for="w-condNote">기타 지병 (직접 입력)</label><input type="text" id="w-condNote" data-k="condNote" value="${PT.esc(w.condNote||'')}"><p class="hint">직접 쓴 내용은 다국어 진료용 카드에 번역 없이 원문 그대로 보입니다. 영어로 쓰면 해외에서 더 잘 통합니다.</p></div></fieldset>
       <fieldset><legend>알레르기</legend><label class="check" style="margin-bottom:10px"><input type="checkbox" data-k="algNone" ${w.algNone?'checked':''}><span><b>알려진 알레르기 없음</b> (확인했을 때만 체크)</span></label>${opts(ALLERGIES,'alg')}
         <div class="field" style="margin-top:12px"><label for="w-algNote">기타 알레르기 (약물 포함)</label><input type="text" id="w-algNote" data-k="algNote" value="${PT.esc(w.algNote||'')}"></div></fieldset>
       <fieldset><legend>복용 중인 약</legend>
@@ -435,7 +473,8 @@ function renderBackup(el){
     st.textContent = '백업 파일을 만드는 중…';
     let files = [];
     try{ files = await Promise.all((await DB.all()).map(async f => ({id:f.id, kind:f.kind, title:f.title, type:f.type, name:f.name, added:f.added, data: await blobToDataUrl(f.blob)}))); }catch(e){}
-    const pack = {app:'pawtrip', v:1, exported:new Date().toISOString(), wallet:W(), train:LS.get('pt-train',null), pack:LS.get('pt-pack',null), trips:LS.get('pt-trips',[]), files};
+    const checklists = Object.fromEntries(PT.data().countries.map(c=>[c.id, completed(c)]));
+    const pack = {app:'pawtrip', v:1, exported:new Date().toISOString(), wallet:W(), checklists, train:LS.get('pt-train',null), pack:LS.get('pt-pack',null), trips:LS.get('pt-trips',[]), files};
     const blob = new Blob([JSON.stringify(pack)], {type:'application/json'});
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'pawtrip-backup-' + todayIso() + '.json';
     document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
@@ -444,8 +483,12 @@ function renderBackup(el){
   $('#bkIn').addEventListener('change', async e => { const f = e.target.files[0]; if(!f) return;
     let pack; try{ pack = JSON.parse(await f.text()); }catch(err){ st.textContent = 'JSON 파일을 읽지 못했어요. PawTrip에서 받은 백업 파일인지 확인하세요.'; return; }
     if(!pack || pack.app!=='pawtrip'){ st.textContent = 'PawTrip 백업 파일이 아니에요.'; return; }
-    if(!confirm('이 기기의 내 반려견 정보·서류 사본·준비 루틴·여행 기록을 백업 파일 내용으로 바꿀까요?')) { e.target.value=''; return; }
+    if(!confirm('이 기기의 내 반려견 정보·입국 준비 체크리스트·서류 사본·준비 루틴·여행 기록을 백업 파일 내용으로 바꿀까요?')) { e.target.value=''; return; }
     saveW(pack.wallet||{}); if(pack.train) LS.set('pt-train', pack.train); if(pack.pack) LS.set('pt-pack', pack.pack); LS.set('pt-trips', Array.isArray(pack.trips)?pack.trips:[]);
+    if(pack.checklists && typeof pack.checklists==='object') PT.data().countries.forEach(c => {
+      const done = pack.checklists[c.id];
+      if(Array.isArray(done)) LS.set('pp3c-' + c.id, [...new Set(done.filter(i=>Number.isInteger(i) && i>=0 && i<c.requirements.length))]);
+    });
     let n = 0;
     try{ await DB.clear(); for(const x of (pack.files||[])){ const b = await dataUrlToBlob(x.data); await DB.put({id:x.id, kind:x.kind, title:x.title, type:x.type, name:x.name, added:x.added, blob:b}); n++; } }catch(err){}
     PT.track('backup_import', {files:n});

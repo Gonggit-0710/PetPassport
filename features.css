@@ -116,6 +116,10 @@ a.sos-btn:hover{background:#B0222E}
 a.sos-btn[aria-current="page"]{box-shadow:0 0 0 3px var(--coral-soft)}
 .sos-rail{display:flex;align-items:center;gap:12px;margin:20px 0 0;padding:12px;border-radius:var(--r-md);border:1px solid var(--line);text-decoration:none;font-size:12px;line-height:1.4;color:var(--ink)}
 .sos-rail b{display:block;font-size:14px}
+.sos-rail.my-card-primary{margin:0;background:var(--navy-soft);border-color:transparent}
+.sos-rail.my-card-primary .sos-btn,.my-card-button{background:var(--navy)}
+.sos-rail.my-card-primary:hover,.sos-rail.my-card-primary[aria-current="page"]{background:var(--navy-soft);border-color:var(--navy)}
+a.my-card-button:hover{background:var(--navy)}
 .sos-rail:hover,.sos-rail[aria-current="page"]{background:var(--coral-soft);border-color:transparent}
 @media (max-width:1023px){.sos-rail{display:none}}
 @media (max-width:429px){.topbar .meta{display:none}}
