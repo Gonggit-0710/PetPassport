@@ -81,7 +81,7 @@ SHELL = '''<!doctype html>
 <header class="topbar">
   <div class="topbar-row">
     <a class="logo" href="/" aria-label="PawTrip 홈"><picture><source srcset="/media/logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/media/logo-light.svg" alt="PawTrip" style="height:34px;width:auto"></picture></a>
-    <span class="topbar-right"><span class="meta">확인일 <b>{verified}</b></span><a class="sos-btn my-card-button" href="/#wallet" aria-label="My Card 열기">My Card</a></span>
+    <span class="topbar-right"><span class="meta">확인일 <b>{verified}</b></span><a class="sos-btn my-card-button" href="/mycard/" aria-label="My Card 열기">My Card</a></span>
   </div>
   <nav class="tabs groups" id="navGroups" aria-label="메뉴 묶음"></nav>
   <nav class="tabs" id="navSub" aria-label="메뉴"></nav>
@@ -89,7 +89,7 @@ SHELL = '''<!doctype html>
 <div class="shell">
   <aside class="rail" aria-label="사이트 메뉴">
     <a class="logo" href="/"><picture><source srcset="/media/logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/media/logo-light.svg" alt="PawTrip" style="height:38px;width:auto"></picture></a>
-    <a class="sos-rail my-card-primary" href="/#wallet"><span class="sos-btn" aria-hidden="true">MY</span><span><b>My Card</b>체크한 준비사항 모아보기</span></a>
+    <a class="sos-rail my-card-primary" href="/mycard/"><span class="sos-btn" aria-hidden="true">MY</span><span><b>My Card</b>체크한 준비사항 모아보기</span></a>
     <nav aria-label="메뉴" id="navRail"></nav>
     <div class="meta"><strong>대한민국 출발 기준</strong>이 페이지 확인일 {verified}<br>출발 전 공식 출처에서 다시 확인하세요.</div>
   </aside>
@@ -106,8 +106,8 @@ SHELL = '''<!doctype html>
     </footer>
   </div>
 </div>
-<script src="/nav.js?v=5"></script>
-<script src="/search.js?v=4"></script>
+<script src="/nav.js?v=6"></script>
+<script src="/search.js?v=5"></script>
 <script>
 PTNav.render('{tab}');
 try{{ gtag('event','page_view',{{page_path:location.pathname,page_title:document.title}}); }}catch(e){{}}
@@ -181,7 +181,7 @@ def domestic_body():
           <li><span>약관에 이동장 크기·무게 수치는 없습니다. 큰 이동장이면 코레일 고객센터(1544-7788)에 먼저 확인하세요</span></li></ul>
           <div class="links">{ext('https://www.letskorail.com','코레일 (약관: 한국철도공사 여객운송약관 휴대품 조항)')}</div></div>
       </div>
-      <p class="hint">예방접종 증명서는 요구받을 수 있으니 사진이나 <a href="/#wallet">펫 카드의 서류 사본</a>으로 챙겨 두세요.</p>
+      <p class="hint">예방접종 증명서는 요구받을 수 있으니 사진이나 <a href="/mycard/">펫 카드의 서류 사본</a>으로 챙겨 두세요.</p>
 
       <h2 id="etc">고속버스 · 여객선</h2>
       <p>고속버스 회사와 제주행 여객선사는 회사마다 기준이 다르고, 아직 공식 운송약관 원문을 모두 확인하지 못했습니다. 확인을 마치면 이 페이지에 추가합니다. 그 전에는 예매 전 각 회사에 반려동물 동반 기준을 물어보세요.</p>
@@ -212,7 +212,7 @@ def titer_body():
         {ext('https://www.gov.kr/portal/service/serviceInfo/PTR000051622','정부24 · 광견병 항체 검사 신청 시스템')}
       </div>
       <h2 id="wait">나라별 대기 기간</h2>
-      <p>채혈 후 기다려야 하는 기간과 가장 빠른 출국일은 <a href="/#plan">일정 계산</a>에 채혈일을 넣으면 바로 나옵니다. 나라별 원문 요건은 <a href="/#countries">국가별 규정</a>에서 확인하세요.</p>'''
+      <p>채혈 후 기다려야 하는 기간과 가장 빠른 출국일은 <a href="/#plan">일정 계산</a>에 채혈일을 넣으면 바로 나옵니다. 나라별 원문 요건은 <a href="/countries/">국가별 규정</a>에서 확인하세요.</p>'''
 
 # ------------------------------------------------------------------ 현지 이동
 def local_body():
@@ -268,7 +268,7 @@ def changes_body():
     return f'''
       <p>규정 수치를 바꾸거나 바로잡을 때마다 날짜와 내용을 기록합니다. 각 항목의 근거는 해당 페이지의 공식 출처 링크에 있습니다.</p>
       <div class="chg-list">{items}</div>
-      <div class="links" style="margin-top:20px"><a class="link solid" href="/#countries">국가별 규정</a><a class="link" href="/#airlines">항공사 비교</a><a class="link" href="/domestic/">국내 이동</a></div>'''
+      <div class="links" style="margin-top:20px"><a class="link solid" href="/countries/">국가별 규정</a><a class="link" href="/#airlines">항공사 비교</a><a class="link" href="/domestic/">국내 이동</a></div>'''
 
 # ------------------------------------------------------------------ 비용 계산
 def cost_body():

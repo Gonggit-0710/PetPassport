@@ -77,7 +77,7 @@ class RulePagesTest(unittest.TestCase):
 
     def test_all_new_pages_have_static_content_and_real_internal_links(self):
         generated = pages(DATA)
-        self.assertEqual(len(generated), len(DATA['countries']) + len(DATA['airlines']) + 3)
+        self.assertEqual(len(generated), len(DATA['countries']) + len(DATA['airlines']) + 4)
         for p in generated:
             file = ROOT / p['slug'] / 'index.html'
             source = file.read_text(encoding='utf-8')
@@ -103,6 +103,14 @@ class RulePagesTest(unittest.TestCase):
         for p in pages(DATA):
             self.assertIn('https://pawtrip.us/' + p['slug'] + '/', urls)
 
+    def test_mycard_is_searchable_without_exposing_user_records(self):
+        source = (ROOT / 'mycard/index.html').read_text(encoding='utf-8')
+        self.assertIn('국가별 준비 체크리스트 관리', source)
+        self.assertIn('/mycard.js?v=1', source)
+        index = json.loads((ROOT / 'search-index.json').read_text(encoding='utf-8'))
+        self.assertTrue(any(row['u'] == '/mycard/' and 'My Card' in row['t'] for row in index))
+        self.assertIn("'mycard.js'", (ROOT / 'tools/prepare_site.py').read_text(encoding='utf-8'))
+
     def test_javascript_syntax(self):
         scripts = []
         for file in [ROOT / 'index.html'] + [ROOT / p['slug'] / 'index.html' for p in pages(DATA)]:
@@ -112,7 +120,7 @@ class RulePagesTest(unittest.TestCase):
                 path = Path(temp) / f'script-{i}.js'
                 path.write_text(script, encoding='utf-8')
                 subprocess.run(['node', '--check', str(path)], check=True, capture_output=True)
-        for name in ('nav.js', 'search.js', 'features.js', 'sw.js'):
+        for name in ('nav.js', 'search.js', 'features.js', 'mycard.js', 'sw.js'):
             subprocess.run(['node', '--check', str(ROOT / name)], check=True, capture_output=True)
 
 

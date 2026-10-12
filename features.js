@@ -168,7 +168,7 @@ PTX.views.wallet = function(){
   app.innerHTML = PT.head('내 반려견 · My Card', editing ? '반려견 정보 입력' : 'My Card',
       editing ? '입력하는 즉시 이 기기에 저장됩니다. 다 넣었으면 아래 완료를 누르세요.' : '국가별 입국 준비, 반려견 정보와 서류를 한곳에서 관리하세요. 체크한 항목은 자동 저장됩니다.') +
     (editing ? '' : `<div class="callout bad" style="margin-bottom:16px"><strong>원본 서류를 대신하지 않습니다</strong>공항 검역과 항공사 카운터는 수의사가 서명한 원본 증명서와 검역증명서를 확인합니다. 이 카드는 빠른 확인용 요약이니 원본은 반드시 챙기세요.</div>`) + `
-    ${editing ? '' : '<div id="wprogress" class="wsec"></div><div class="links" style="margin-bottom:16px"><a class="link solid" href="#sos">다국어 진료용 카드 보여주기</a></div>'}
+    ${editing ? '' : '<div id="wprogress" class="wsec"></div><div class="links" style="margin-bottom:16px"><a class="link solid" href="/#sos">다국어 진료용 카드 보여주기</a></div>'}
     <div id="wbody"></div>
     ${editing ? '' : `<div id="wdocs" class="wsec"></div>
     <details class="panel wsec" id="wbk"><summary>기기를 바꿀 때: 백업·복원</summary><div id="wbkBody" style="margin-top:14px"></div></details>`}
@@ -217,9 +217,9 @@ window.addEventListener('storage', e => {
 PTX.views.sos = function(){
   const app = PT.app; const w = W();
   app.innerHTML = PT.head('My Card · 진료용','다국어 진료용 카드','반려견이 아플 때 현지 동물병원에서 이 화면을 그대로 보여주세요. 인터넷이 없어도 열립니다.') + `
-    ${walletFilled(w) ? '' : '<div class="callout bad" style="margin-bottom:16px"><strong>아직 카드가 비어 있어요</strong>여행 전에 이름·마이크로칩 번호·지병·알레르기를 미리 넣어 두세요. <a href="#wallet" id="sosFill">반려견 정보 입력하기</a></div>'}
+    ${walletFilled(w) ? '' : '<div class="callout bad" style="margin-bottom:16px"><strong>아직 카드가 비어 있어요</strong>여행 전에 이름·마이크로칩 번호·지병·알레르기를 미리 넣어 두세요. <a href="/mycard/?edit=1" id="sosFill">반려견 정보 입력하기</a></div>'}
     <div id="wbody"></div>
-    <div class="links"><a class="link" href="#wallet" id="sosEdit">카드 내용 고치기</a></div>`;
+    <div class="links"><a class="link" href="/mycard/?edit=1" id="sosEdit">카드 내용 고치기</a></div>`;
   ['sosFill','sosEdit'].forEach(id => { const a = document.getElementById(id); if(a) a.addEventListener('click', () => { wTab = 'edit'; }); });
   renderSos(document.getElementById('wbody'));
   PT.track('sos_open', {source:'page'});
@@ -776,4 +776,5 @@ PTX.init = function(api){ PT = api;
   const foot = document.getElementById('alertRow');
   if(foot && channelUrl()){ foot.innerHTML = PTX.alertBox('footer'); foot.hidden = false; }
 };
+PTX.editWallet = function(){ wTab='edit'; PTX.views.wallet(); };
 })();

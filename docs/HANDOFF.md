@@ -8,7 +8,19 @@
 - GitHub: `https://github.com/Gonggit-0710/PetPassport`
 - 브랜치: `main`
 - 이 채팅 기본 폴더 `C:\Dev\PawTrip4u_Blog`는 홈페이지 저장소와 다릅니다. 해당 폴더의 AGENTS.md에 위 저장소를 안내했습니다.
-- 모든 변경은 로컬 저장 상태입니다. 커밋·푸시·운영 배포는 수행하지 않았습니다.
+- 이전 검색·체크박스·My Card 기능은 사용자가 커밋·푸시·운영 배포했습니다. 운영 사이트의 사이트맵 28개 주소와 체크 저장·My Card 연동·원본 Hero 영상 재생을 확인했습니다. 아래 새 주소 변경은 로컬 상태이며 아직 커밋·푸시·배포하지 않았습니다.
+
+## 최신 작업: 메뉴와 실제 주소 일치 — 2026-10-12 / Codex
+
+- 사용자 요청: My Card를 `/mycard/`, 국가 메뉴를 `/countries/`로 연결하고 검색되도록 변경.
+- `tools/rule_pages.py`, `mycard/index.html`, `mycard.js`: My Card 독립 페이지 생성. 정적 소개 본문·title·description·canonical을 제공하고 기존 features.js의 wallet 기능을 재사용합니다. 기존 localStorage·IndexedDB의 체크 기록·반려견 정보·서류를 그대로 읽습니다. My Card에 사용자 개인 기록을 정적 파일로 출력하지 않습니다.
+- 국가 목록의 기존 카드·거리 필터·난이도/준비일 정렬을 유지했습니다. 국가별 체크리스트 버튼은 `/countries/{id}/#requirements`에 연결합니다.
+- `index.html`, `nav.js`, `features.js`, `search.js`, `manifest.webmanifest`, 생성기: My Card·국가 메뉴·검색·홈페이지 버튼을 실제 주소로 연결. 이전 `/#wallet`, `/#countries`, `/#jp` 등 국가 코드 주소는 실제 페이지로 이동합니다. 다국어 카드에서 정보 편집은 `/mycard/?edit=1`로 연결합니다.
+- `search-index.json`, `sitemap.xml`: My Card 소개·준비 체크리스트·서류·백업 검색 항목과 실제 주소 추가. 전체 27개 생성 페이지·검색 항목 167개. 사이트 검색에서 정확히 My Card를 입력하면 관리 페이지가 우선 표시됩니다.
+- `tools/prepare_site.py`, `sw.js`: My Card HTML·스크립트를 공개 배포 묶음과 오프라인 저장 목록에 포함. 캐시 v27, nav v6·search v5·features v7.
+- `tools/test_rule_pages.py`: My Card의 정적 검색 본문·검색 색인·배포 파일 포함 회귀 검증 추가. 생성·자동 검증 6개·공개 파일 준비 성공, git diff --check 통과.
+- 브라우저: `/mycard/` 새로고침 유지, 체크→국가 상세 공유→기존 상태 복원, 국가 메뉴 `/countries/` 이동, 단거리 필터 일본·중국 표시, 기존 해시 주소 전환, My Card 검색 결과 1순위, 반려견 정보 편집 확인. 테스트 입력 정보는 저장하지 않았습니다.
+- Hero 코드·미디어와 data.json은 변경하지 않았습니다. 이번 새 주소 변경은 로컬 저장 상태이며 사용자 GitHub Desktop 커밋·푸시 후 배포가 필요합니다. 검색 엔진 실제 색인은 아직 확인하지 않았습니다.
 
 ## 유지한 변경과 이유
 

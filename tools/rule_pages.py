@@ -114,6 +114,27 @@ CHECKLIST_JS = '''<script>
 })();
 </script>'''
 
+COUNTRY_FILTER_JS = '''<script>
+(function(){
+  const list = document.getElementById('list');
+  const cards = [...list.querySelectorAll('[data-country-row]')];
+  let region = 'all', sort = 'default';
+  function refresh(){
+    document.querySelectorAll('[data-region]').forEach(b => b.setAttribute('aria-pressed', b.dataset.region === region));
+    document.querySelectorAll('[data-sort]').forEach(b => b.setAttribute('aria-pressed', b.dataset.sort === sort));
+    const sorted = [...cards];
+    if(sort === 'easy') sorted.sort((a,b)=>Number(a.dataset.difficulty)-Number(b.dataset.difficulty)||Number(a.dataset.lead)-Number(b.dataset.lead));
+    if(sort === 'hard') sorted.sort((a,b)=>Number(b.dataset.difficulty)-Number(a.dataset.difficulty));
+    if(sort === 'lead') sorted.sort((a,b)=>Number(a.dataset.lead)-Number(b.dataset.lead));
+    sorted.forEach(card => { card.hidden = region !== 'all' && card.dataset.region !== region; list.appendChild(card); });
+  }
+  document.querySelectorAll('[data-region],[data-sort]').forEach(b => b.addEventListener('click',()=>{
+    if(b.dataset.region) region = b.dataset.region; else sort = b.dataset.sort;
+    refresh();
+  }));
+})();
+</script>'''
+
 
 def compact_detail(body, tab):
     """Keep every rule in HTML; use the original app's panels and disclosure layout."""
@@ -153,7 +174,7 @@ def country_card(data, c, opened=False, suffix=''):
         f'<li><label><input type="checkbox" data-rule-check="{i}"><span>{esc(requirement)}</span></label></li>'
         for i, requirement in enumerate(c['requirements'])) + '</ul>'
     body += f'<section class="block"><h2 id="requirements{suffix}">입국 요건</h2>' + checks
-    body += '<p class="hint rule-check-hint">준비를 마친 항목을 체크하세요. <a href="/#wallet">My Card에서 일괄 관리</a> · 이 브라우저에 자동 저장됩니다.</p><p class="hint" data-check-status role="status"></p></section>'
+    body += '<p class="hint rule-check-hint">준비를 마친 항목을 체크하세요. <a href="/mycard/">My Card에서 일괄 관리</a> · 이 브라우저에 자동 저장됩니다.</p><p class="hint" data-check-status role="status"></p></section>'
     timeline = '<ol class="timeline">' + ''.join(
         f'<li><b>{"D-day" if t["d"] == 0 else "D" + ("+" if t["d"] > 0 else "") + str(t["d"])}</b><span>{esc(t["t"])}</span></li>'
         for t in c.get('timeline', [])) + '</ol>'
@@ -162,7 +183,7 @@ def country_card(data, c, opened=False, suffix=''):
     if c.get('airlineNote'):
         body += f'<p><b>항공편</b> {esc(c["airlineNote"])}</p>'
     body += f'<p id="return{suffix}"><b>귀국 시</b> {esc(c.get("returnNote"))}</p></section></div>'
-    body += f'<div class="links" id="sources{suffix}">' + link(f'/#{key}', '체크리스트로 보기', 'link solid') + link(f'/?dest={key}#plan', '이 나라로 일정 계산')
+    body += f'<div class="links" id="sources{suffix}">' + link(f'/countries/{key}/#requirements', '체크리스트로 보기', 'link solid') + link(f'/?dest={key}#plan', '이 나라로 일정 계산')
     body += ''.join(f'<a class="link" href="{esc(s["url"])}" target="_blank" rel="noopener">{esc(s.get("title", "공식 규정"))} ↗</a>' for s in c['sources']) + '</div>'
     if c.get('sourceType') == 'secondary':
         body += '<p class="note">정부 원문 대신 2차 자료로 정리한 항목입니다. 출국 전에 관할 기관의 원문을 확인하세요.</p>'
@@ -247,14 +268,22 @@ def pages(data):
     validate(data)
     out = [country_page(data, c) for c in data['countries']]
     out += [airline_page(data, a) for a in data['airlines']]
-    countries = '<div class="list still rule-country-list" id="list">'
+    countries = '<div class="chips" role="group" aria-label="지역">' + ''.join(
+        f'<button class="chip" type="button" data-region="{value}" aria-pressed="{str(value=="all").lower()}">{label}</button>'
+        for value,label in [('all','전체 지역'),('short','단거리'),('mid','중거리'),('long','장거리')]) + '</div>'
+    countries += '<div class="chips" role="group" aria-label="정렬">' + ''.join(
+        f'<button class="chip" type="button" data-sort="{value}" aria-pressed="{str(value=="default").lower()}">{label}</button>'
+        for value,label in [('default','기본 순서'),('easy','쉬운 순'),('hard','어려운 순'),('lead','준비 기간 짧은 순')]) + '</div>'
+    countries += '<div class="list still rule-country-list" id="list">'
     for c in data['countries']:
+        countries += f'<div data-country-row="{esc(c["id"])}" data-region="{esc(c["region"])}" data-difficulty="{c["difficulty"]}" data-lead="{c["leadDays"]}">'
         countries += country_card(data, c, suffix='-' + c['id'])
         countries += '<div class="rule-permalink">' + link('/countries/' + c['id'] + '/', c['name'] + ' 상세 페이지') + f'<span>확인일 {esc(verified(data, c))}</span></div>'
+        countries += '</div>'
     countries += '</div><div class="links">' + link('/#plan', '출국 일정 계산') + link('/airlines/', '항공사 규정 비교') + '</div>'
     out.append(page('countries', 'countries', '강아지 해외여행 국가별 입국 규정',
                     '한국 출발 반려견의 국가별 입국 검역 요건, 준비 일정, 도착 후 검역과 귀국 준비를 비교하세요.',
-                    '목적지별 상세 페이지에서 입국 요건과 준비 타임라인, 출처를 확인하세요.', countries, verified(data)))
+                    '목적지별 상세 페이지에서 입국 요건과 준비 타임라인, 출처를 확인하세요.', countries, verified(data), extra=COUNTRY_FILTER_JS))
     airlines = '<h2 id="list">항공사별 반려동물 규정</h2><div class="air-grid">'
     for a in data['airlines']:
         cabin = a.get('cabin', {}).get('maxKg')
@@ -265,12 +294,12 @@ def pages(data):
     out.append(page('airlines', 'airlines', '강아지 기내 동반 항공사 비교와 운송 규정',
                     '국적 항공사 반려견 기내 동반·위탁 무게, 케이지 규격, 요금과 신청 방법을 항공사별로 확인하세요.',
                     '무게 한도만으로 탑승이 보장되지는 않습니다. 상세 규정과 노선·기종 제한을 함께 확인하세요.', airlines, verified(data)))
-    sos = '''<div class="links"><a class="btn btn-primary" href="/#wallet">My Card 열기</a><a class="btn" href="/#sos">다국어 진료용 카드 열기</a></div>
+    sos = '''<div class="links"><a class="btn btn-primary" href="/mycard/">My Card 열기</a><a class="btn" href="/#sos">다국어 진료용 카드 열기</a></div>
 <h2 id="languages">영어·일본어·중국어·한국어 다국어 진료용 카드</h2>
 <p>해외 동물병원에서 이름, 체중, 마이크로칩 번호, 지병, 알레르기, 복용약과 보호자 연락처를 한 화면으로 보여줄 수 있습니다.</p>
 <p>고정 문구와 선택형 항목을 번역합니다. 직접 입력한 메모와 약 이름은 원문 그대로 표시합니다.</p>
 <h2 id="prepare">여행 전에 준비하는 순서</h2>
-<ol><li><a href="/#wallet">펫 카드</a>에 반려견 정보를 입력합니다. 확인되지 않은 항목은 미입력으로 남겨 둡니다.</li>
+<ol><li><a href="/mycard/">펫 카드</a>에 반려견 정보를 입력합니다. 확인되지 않은 항목은 미입력으로 남겨 둡니다.</li>
 <li><a href="/#sos">다국어 진료용 카드</a>에서 목적지에 맞는 언어를 고르고 전체 화면으로 확인합니다.</li>
 <li>같은 기기에서 오프라인으로 열리는지 출발 전에 확인합니다.</li></ol>
 <h2 id="vet">현지 동물병원 찾기</h2><p>다국어 진료용 카드 화면에서 나라와 도시를 선택해 현지 검색어로 지도 검색을 열 수 있습니다. 병원 운영 시간과 응급 진료 가능 여부는 전화로 확인하세요.</p>
@@ -279,4 +308,17 @@ def pages(data):
     out.append(page('sos', 'sos', 'My Card · 반려견 여행 준비와 다국어 진료용 카드',
                     '영어·일본어·중국어·한국어 반려견 다국어 진료용 카드로 지병·알레르기·복용약·연락처를 현지 수의사에게 보여주세요.',
                     '여행 전에 정보를 입력하고, 반려견이 아플 때 현지 동물병원에서 카드 화면을 보여주세요.', sos, verified(data)))
+    mycard = '''<h2 id="checklists">국가별 준비 체크리스트 관리</h2>
+<p>국가별 입국 요건을 체크하면 My Card에서 완료 개수와 준비 진행 상황을 확인하고 이어서 수정할 수 있습니다.</p>
+<p><a href="/countries/">국가별 입국 규정과 체크리스트 보기</a></p>
+<h2 id="documents">반려견 정보와 서류 보관</h2>
+<p>반려견 정보, 접종 기록, 검역 서류의 사진·PDF 사본을 한곳에서 관리합니다. 원본 서류는 별도로 챙겨 주세요.</p>
+<h2 id="backup">자동 저장과 백업</h2>
+<p>정보는 이 브라우저에만 저장됩니다. 기기를 바꾸기 전 백업 파일을 내려받으세요. 다른 기기와 자동 동기화되지는 않습니다.</p>
+<noscript><p>체크 기록과 반려견 정보를 관리하려면 JavaScript를 활성화해 주세요.</p></noscript>'''
+    out.append(dict(slug='mycard', tab='wallet', title='My Card · 반려견 여행 준비 체크리스트와 서류 관리',
+                    heading='My Card', desc='국가별 입국 준비 체크리스트, 반려견 정보와 검역 서류를 My Card에서 관리하세요. 체크 상태 자동 저장과 백업을 지원합니다.',
+                    lead='국가별 준비사항과 반려견 정보, 서류를 한곳에서 관리하세요.', group='내 반려견 · My Card',
+                    body=lambda: mycard, verified=verified(data),
+                    extra='<script src="/features.js?v=7"></script><script src="/mycard.js?v=1"></script>'))
     return out

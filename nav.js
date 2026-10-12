@@ -11,14 +11,14 @@
       ['cost','비용 계산','/cost/']
     ]},
     {id:'rules', name:'규정', items:[
-      ['countries','국가별 규정','/#countries'],
+      ['countries','국가별 규정','/countries/'],
       ['airlines','항공사 비교','/#airlines'],
       ['domestic','국내 이동','/domestic/'],
       ['local','현지 이동','/local/'],
       ['return','귀국 검역','/#return']
     ]},
     {id:'mypet', name:'내 반려견', items:[
-      ['wallet','My Card','/#wallet', true],
+      ['wallet','My Card','/mycard/', true],
       ['sos','다국어 진료용 카드','/#sos', true],
       ['trips','여행 기록','/#trips']
     ]}
