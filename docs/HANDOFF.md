@@ -1,5 +1,14 @@
 # PawTrip 작업 인수인계
 
+## 견종 선택·성별·중성화 — 2026-10-12 / Codex
+
+- 사용자 요청: 견종 드롭다운, 간단 작성의 중성화 입력, 영어 암컷/수컷 중성화 용어 구분.
+- `features.js`, `medical-card.js`: 간단·상세 양식 모두 29개 견종 드롭다운과 기타 직접 입력 제공. 기존 목록 밖 견종을 직접 입력값으로 보존하며 알려진 견종은 외국어 카드에 영문명/한국어명 병기. 성별과 중성화 완료/안 함/미입력 선택 추가. 기존 `neut:true`는 완료로 읽고 기존 false 또는 누락은 안 함으로 단정하지 않고 미입력으로 읽습니다. `neutStatus`와 기존 호환 boolean `neut`를 함께 저장합니다.
+- 출력: 미리보기·PNG·인쇄·기존 SOS·Wallet 상세 데이터에 성별/중성화 반영. 영어 Female · Spayed, Male · Neutered, 중성화 안 함은 Intact, 미입력은 not provided. 일본어 완료 표현도 성별에 맞게 避妊済み/去勢済み 사용. 직접 입력한 미등록 견종은 원문 유지.
+- `wallet-service/pass.js`: 상세 필드에 성별/중성화 추가. 공개 스크립트 features v11·medical-card v3 연결과 페이지 재생성. 기존 개인정보 전송 동의 범위를 넘는 정보는 추가하지 않았습니다.
+- 검증: Python 6개·카드 및 Wallet 브라우저·서버 3개·공개 파일 검사·diff 통과. 브라우저 검증에 직접 견종 보존, legacy 미입력, 암컷 Spayed, 상세 편집 후 수컷 Neutered, Intact 표시를 추가 확인. PNG 직접 시각 검수.
+- 배포 준비 갱신: 최신 공개 ZIP `C:\Dev\PetPassport\releases\pawtrip-mycard-2026-10-12-2.zip`와 manifest 생성. 이전 접미사 없는 ZIP은 이번 견종/중성화 수정 전 버전입니다. 로컬 저장 완료, 커밋·푸시·운영 배포 없음.
+
 ## 외부 배포 준비 — 2026-10-12 / Codex
 
 - 사용자 요청: 외부 배포 준비. 기존 로컬 변경을 유지하고 `git fetch origin` 후 HEAD와 origin/main의 차이 0/0을 확인했습니다. 실제 푸시·배포는 요청 범위에 포함하지 않고 준비 상태로 남겼습니다.

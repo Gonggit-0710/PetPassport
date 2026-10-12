@@ -5,12 +5,12 @@ import {PNG} from 'pngjs';
 
 export class RequestError extends Error {constructor(status,message){super(message);this.status=status;}}
 const labels={
-  en:['Name','Breed','Weight','Medical conditions','Allergies','Current medications','Owner','Phone','Emergency contact','Microchip no.','Regular vet'],
-  ja:['名前','犬種','体重','持病','アレルギー','服用中の薬','飼い主','電話','緊急連絡先','マイクロチップ番号','かかりつけ動物病院'],
-  zh:['名字','品种','体重','既往病史','过敏','正在服用的药物','主人','电话','紧急联系人','芯片号','常去的宠物医院'],
-  ko:['이름','견종','체중','지병','알레르기','복용 중인 약','보호자','전화','비상 연락처','마이크로칩 번호','주치 동물병원']
+  en:['Name','Breed','Weight','Medical conditions','Allergies','Current medications','Owner','Phone','Emergency contact','Microchip no.','Regular vet','Sex / spay-neuter'],
+  ja:['名前','犬種','体重','持病','アレルギー','服用中の薬','飼い主','電話','緊急連絡先','マイクロチップ番号','かかりつけ動物病院','性別・避妊去勢'],
+  zh:['名字','品种','体重','既往病史','过敏','正在服用的药物','主人','电话','紧急联系人','芯片号','常去的宠物医院','性别・绝育'],
+  ko:['이름','견종','체중','지병','알레르기','복용 중인 약','보호자','전화','비상 연락처','마이크로칩 번호','주치 동물병원','성별·중성화']
 };
-const keys=['name','breed','weight','conditions','allergies','medications','owner','phone','emergency','chip','vet'];
+const keys=['name','breed','weight','conditions','allergies','medications','owner','phone','emergency','chip','vet','sex'];
 const notes={en:'Owner-provided information. Free-text notes and medication names remain in their original language. Not an official certificate.',ja:'飼い主が提供した情報です。自由記入のメモ・薬名は原文のままです。公的な証明書ではありません。',zh:'信息由主人提供。自由填写的备注及药名保留原文。本卡不是官方证明。',ko:'보호자 제공 정보입니다. 직접 쓴 메모와 약 이름은 원문입니다. 원본 증명서를 대신하지 않습니다.'};
 
 export function configuration(env=process.env){

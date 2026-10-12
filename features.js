@@ -150,6 +150,22 @@ const VET_CITIES = {
 const DOC_TYPES = ['광견병 접종증명서','항체가 검사 결과서','건강증명서(영문)','동물검역증명서(한국 발급)','목적지 수입허가·사전신고','동물등록증','기타'];
 
 const W = () => LS.get('pt-wallet', {});
+const BREEDS = [['믹스견','Mixed breed'],['말티즈','Maltese'],['푸들','Poodle'],['토이 푸들','Toy Poodle'],['미니어처 푸들','Miniature Poodle'],['스탠더드 푸들','Standard Poodle'],['비숑 프리제','Bichon Frise'],['포메라니안','Pomeranian'],['치와와','Chihuahua'],['시추','Shih Tzu'],['요크셔 테리어','Yorkshire Terrier'],['미니어처 슈나우저','Miniature Schnauzer'],['닥스훈트','Dachshund'],['파피용','Papillon'],['페키니즈','Pekingese'],['퍼그','Pug'],['프렌치 불도그','French Bulldog'],['보스턴 테리어','Boston Terrier'],['웰시 코기','Welsh Corgi'],['시바 이누','Shiba Inu'],['진돗개','Jindo'],['비글','Beagle'],['코커 스패니얼','Cocker Spaniel'],['보더 콜리','Border Collie'],['골든 리트리버','Golden Retriever'],['래브라도 리트리버','Labrador Retriever'],['시베리안 허스키','Siberian Husky'],['사모예드','Samoyed'],['저먼 셰퍼드','German Shepherd']];
+function breedFields(w,prefix){
+  const match=BREEDS.find(b=>b.includes(w.breed));const selected=match?match[0]:w.breed?'__other__':'';
+  return `<div class="field"><label for="${prefix}-breed">견종 (선택)</label><select id="${prefix}-breed" name="breed" data-k="breed"><option value="">선택하지 않음</option>${BREEDS.map(([ko,en])=>`<option value="${PT.esc(ko)}" ${selected===ko?'selected':''}>${PT.esc(ko)} · ${PT.esc(en)}</option>`).join('')}<option value="__other__" ${selected==='__other__'?'selected':''}>기타 · 직접 입력</option></select><div data-breed-other ${selected==='__other__'?'':'hidden'} style="margin-top:10px"><label for="${prefix}-breedOther">견종 직접 입력</label><input id="${prefix}-breedOther" name="breedOther" maxlength="100" value="${PT.esc(selected==='__other__'?w.breed:'')}" ${selected==='__other__'?'required':'disabled'} placeholder="목록에 없는 견종이나 믹스견 종류"></div></div>`;
+}
+function bindBreed(el,prefix){const select=el.querySelector('#'+prefix+'-breed'),other=el.querySelector('#'+prefix+'-breedOther');select.addEventListener('change',()=>{const show=select.value==='__other__';other.parentElement.hidden=!show;other.disabled=!show;other.required=show;if(show)other.focus();});}
+function readBreed(el,prefix){const select=el.querySelector('#'+prefix+'-breed');return select.value==='__other__'?el.querySelector('#'+prefix+'-breedOther').value.trim():select.value;}
+function breedText(w,lang){const match=BREEDS.find(b=>b.includes(w.breed));return match&&lang!=='ko'?match[1]+' / '+match[0]:w.breed||'—';}
+function neutStatus(w){return ['yes','no','unknown'].includes(w.neutStatus)?w.neutStatus:w.neut===true?'yes':'unknown';}
+function sexText(w,lang){
+  const t=L[lang],sex=w.sex==='m'?t.male:w.sex==='f'?t.female:'';const status=neutStatus(w);
+  const fixed=lang==='en'?(w.sex==='f'?'Spayed':w.sex==='m'?'Neutered':'Spayed / neutered'):lang==='ja'?(w.sex==='f'?'避妊済み':w.sex==='m'?'去勢済み':t.neut):t.neut;
+  const detail=status==='yes'?fixed:status==='no'?({ko:'중성화 안 함',en:'Intact',ja:'未避妊・未去勢',zh:'未绝育'})[lang]:({ko:'중성화 여부 미입력',en:'Spay/neuter status not provided',ja:'避妊・去勢状況は未入力',zh:'绝育情况未填写'})[lang];
+  return [sex,detail].filter(Boolean).join(' · ');
+}
+function sexFields(w,prefix){return `<div class="field"><label for="${prefix}-sex">성별 (선택)</label><select id="${prefix}-sex" name="sex" data-k="sex"><option value="">미입력</option><option value="m" ${w.sex==='m'?'selected':''}>수컷</option><option value="f" ${w.sex==='f'?'selected':''}>암컷</option></select></div><div class="field"><label for="${prefix}-neutStatus">중성화 여부 (선택)</label><select id="${prefix}-neutStatus" name="neutStatus" data-k="neutStatus"><option value="unknown" ${neutStatus(w)==='unknown'?'selected':''}>미입력 · 모름</option><option value="yes" ${neutStatus(w)==='yes'?'selected':''}>중성화 완료</option><option value="no" ${neutStatus(w)==='no'?'selected':''}>중성화 안 함</option></select><p class="hint">영어 카드: 암컷은 Spayed, 수컷은 Neutered로 표시돼요.</p></div>`;}
 const saveW = w => { const ok = LS.set('pt-wallet', w); persistOnce(); return ok; };
 const walletFilled = w => !!(w.name || w.chip || w.rabiesDate);
 PTX.wallet = W;
@@ -180,6 +196,7 @@ PTX.views.wallet = function(){
   renderProgress($('#wprogress')); renderCard($('#wbody')); renderDocs($('#wdocs')); renderBackup($('#wbkBody'));
   if(PTX.mountMedicalCard) PTX.mountMedicalCard($('#medicalFlow'), {
     esc:PT.esc, languages:L, conditions:CONDITIONS, allergies:ALLERGIES,
+    breedFields, bindBreed, readBreed, breedText, sexFields, sexText,
     wallet:W, save:saveW, photo:async()=>{ const p=await DB.get('photo'); return p && p.blob ? blobToDataUrl(p.blob) : null; }, track:PT.track,
     language:()=>LS.get('pt-sos-lang','en'), setLanguage:lang=>LS.set('pt-sos-lang',lang),
     savePhoto:async file=>{ const blob=await shrinkImage(file,600,.85); await DB.put({id:'photo',kind:'photo',title:'사진',type:blob.type,blob,added:Date.now()}); }
@@ -251,7 +268,7 @@ async function renderCard(el){
       <div class="pet-card">
         <div class="pet-photo">${ph?`<img src="${ph}" alt="${PT.esc(w.name||'반려견')} 사진">`:SVG.paw}</div>
         <div><div class="pet-top"><h3 class="pet-name">${PT.esc(w.name||'이름 미입력')}</h3><button class="btn btn-sm" type="button" id="goEdit">정보 고치기</button></div>
-          <p class="pet-sub">${[w.breed, sex + (w.neut?' · 중성화':''), w.dob?fmtDot(w.dob)+' 생':'', w.weight?w.weight+'kg':''].filter(Boolean).map(PT.esc).join(' · ')}</p></div>
+          <p class="pet-sub">${[w.breed, sexText(w,'ko'), w.dob?fmtDot(w.dob)+' 생':'', w.weight?w.weight+'kg':''].filter(Boolean).map(PT.esc).join(' · ')}</p></div>
       </div>
       <h4 class="sec-h">마이크로칩 번호</h4>
       <div class="chipno">${w.chip?PT.esc(w.chip):'<span class="hint">미입력</span>'}</div>
@@ -286,10 +303,9 @@ function renderEdit(el){
   el.innerHTML = `
     <form class="panel stack-16" id="wform" autocomplete="off">
       <fieldset><legend>기본 정보</legend><div class="form-grid two">
-        ${inp('name','이름')}${inp('breed','견종')}
-        <div class="field"><label for="w-sex">성별</label><select id="w-sex" data-k="sex"><option value="">선택</option><option value="m" ${w.sex==='m'?'selected':''}>수컷</option><option value="f" ${w.sex==='f'?'selected':''}>암컷</option></select></div>
+        ${inp('name','이름')}${breedFields(w,'w')}
+        ${sexFields(w,'w')}
         ${inp('dob','생년월일','date')}${inp('weight','체중 (kg)','number','min="0.1" max="100" step="0.1" inputmode="decimal"')}
-        <label class="check" style="align-self:end;padding-bottom:12px"><input type="checkbox" data-k="neut" ${w.neut?'checked':''}><span>중성화 완료</span></label>
         <div class="field full"><p class="hint" style="margin:0">지병·알레르기·약은 비워 두면 다국어 진료용 카드에 '미입력'으로 표시됩니다. '없음'은 직접 확인하고 체크했을 때만 표시됩니다.</p></div>
         <div class="field full"><label for="w-photo">사진</label><input type="file" id="w-photo" accept="image/*"><p class="hint">사진은 작게 줄여 이 기기에만 저장합니다.</p></div>
       </div></fieldset>
@@ -316,8 +332,10 @@ function renderEdit(el){
     </form>`;
   $$('[data-done]', el).forEach(b => b.addEventListener('click', () => { wTab = 'card'; PTX.views.wallet(); window.scrollTo({top:0}); }));
   const form = $('#wform'); const st = $('#wsaved');
+  bindBreed(form,'w');
   const commit = () => { const v = W();
     $$('[data-k]', form).forEach(i => { v[i.dataset.k] = i.type==='checkbox' ? i.checked : i.value.trim(); });
+    v.breed=readBreed(form,'w');v.neut=v.neutStatus==='yes';
     ['cond','alg'].forEach(k => { v[k] = $$(`[data-arr="${k}"]:checked`, form).map(x=>x.value); });
     v.updatedAt = new Date().toISOString();
     const ok = saveW(v); st.textContent = ok ? '저장됨 · 이 기기에만 보관' : '저장하지 못했어요. 브라우저 저장 공간을 확인하세요.';
@@ -356,8 +374,8 @@ function renderSos(el){
       <h3>${t.title}</h3><p class="lead">${t.lead}</p>${lang!=='ko'?`<p class="phr">${t.phr}</p>`:'<p class="phr"></p>'}
       <dl>
         <dt>${t.dog}</dt><dd>${PT.esc(w.name||'—')}</dd>
-        <dt>${t.breed}</dt><dd>${PT.esc(w.breed||'—')}</dd>
-        <dt>${t.sex}</dt><dd>${[sex, w.neut?t.neut:''].filter(Boolean).join(' · ')||'—'}</dd>
+        <dt>${t.breed}</dt><dd>${PT.esc(breedText(w,lang))}</dd>
+        <dt>${t.sex}</dt><dd>${PT.esc(sexText(w,lang))}</dd>
         <dt>${t.dob}</dt><dd>${w.dob||'—'}</dd>
         <dt>${t.weight}</dt><dd>${w.weight?PT.esc(w.weight)+' kg':'—'}</dd>
         <dt>${t.chip}</dt><dd class="nw">${PT.esc(w.chip||'—')}</dd>

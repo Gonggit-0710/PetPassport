@@ -2,6 +2,8 @@
 
 이번 배포에는 My Card의 예시·간단 작성·네 언어 진료용 카드 미리보기·PNG 내려받기·지원 기기의 공유 메뉴·카드 전용 인쇄와 상단 개인정보 안내를 포함합니다. 기존 반려견 정보와 국가별 체크 상태의 저장 키를 유지합니다.
 
+최신 배포 ZIP은 `C:\Dev\PetPassport\releases\pawtrip-mycard-2026-10-12-2.zip`입니다. 견종 드롭다운·직접 입력과 성별·중성화 선택, 영어 Spayed/Neutered 구분을 포함합니다. 접미사 없는 이전 ZIP 대신 이 버전을 사용하세요.
+
 Apple Wallet은 준비 중으로 유지합니다. 공개 `wallet-config.js`의 endpoint는 빈 값이며, 발급 서버는 GitHub Pages 배포 묶음에 포함하지 않습니다. Apple 인증서와 서버 연결·아이폰 설치 검증 후 별도로 활성화합니다.
 
 ## 공개 파일 준비와 검증

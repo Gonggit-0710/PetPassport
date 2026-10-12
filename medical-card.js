@@ -16,7 +16,7 @@
     }
     function rows(w){
       const t=L[lang], result = [
-        [t.dog,w.name||'—'],[t.breed,w.breed||'—'],[t.weight,w.weight?w.weight+' kg':'—'],
+        [t.dog,w.name||'—'],[t.breed,api.breedText(w,lang)],[t.sex,api.sexText(w,lang)],[t.weight,w.weight?w.weight+' kg':'—'],
         [t.cond,health(w,conditions,'cond','condNote','condNone')],
         [t.allergy,health(w,allergies,'alg','algNote','algNone')],
         [t.meds,w.meds||(w.medsNone?t.none:({ko:'미입력',en:'Not provided',ja:'未入力',zh:'未填写'})[lang])],
@@ -53,11 +53,11 @@
       const w=wallet();
       const input=(key,label,type='text',extra='')=>`<div class="field"><label for="mc-${key}">${label}</label><input id="mc-${key}" name="${key}" type="${type}" value="${esc(w[key]||'')}" ${extra}></div>`;
       const group=(list,key,noteKey,noneKey,title)=>`<fieldset><legend>${title}</legend><label class="check"><input type="checkbox" name="${noneKey}" ${w[noneKey]?'checked':''}><span>알려진 ${title} 없음</span></label><details><summary>해당 항목 선택·직접 입력</summary><div class="opt-grid">${list.map(o=>`<label class="check"><input type="checkbox" name="${key}" value="${o.id}" ${(w[key]||[]).includes(o.id)?'checked':''}><span>${o.ko}</span></label>`).join('')}</div>${input(noteKey,'기타 '+title,'text','maxlength="1200"')}</details></fieldset>`;
-      q('.medical-stage').innerHTML=`<form class="medical-form stack-16"><h3 class="sec-h">진료용 카드 간단 작성</h3><p class="hint">이름·체중·보호자 전화는 필수입니다. 건강 정보는 비워 두면 ‘미입력’으로 표시됩니다. 작성 후 카드 만들기를 누르면 이 기기에 저장됩니다.</p><div class="form-grid two">${input('name','반려견 이름','text','required maxlength="100" autocomplete="off"')}${input('weight','체중 (kg)','number','required min="0.1" max="100" step="0.1" inputmode="decimal"')}${input('breed','견종 (선택)','text','maxlength="100"')}${input('owner','보호자 이름 (선택)','text','maxlength="100"')}${input('ownerTel','보호자 전화 (국가번호 포함)','tel','required maxlength="100" placeholder="+82 10-0000-0000"')}<div class="field"><label for="mc-photo">사진 (선택)</label><input id="mc-photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp"><p class="hint">기존 사진은 유지됩니다. 새 사진을 선택하면 교체합니다.</p></div></div>
+      q('.medical-stage').innerHTML=`<form class="medical-form stack-16"><h3 class="sec-h">진료용 카드 간단 작성</h3><p class="hint">이름·체중·보호자 전화는 필수입니다. 건강 정보는 비워 두면 ‘미입력’으로 표시됩니다. 작성 후 카드 만들기를 누르면 이 기기에 저장됩니다.</p><div class="form-grid two">${input('name','반려견 이름','text','required maxlength="100" autocomplete="off"')}${input('weight','체중 (kg)','number','required min="0.1" max="100" step="0.1" inputmode="decimal"')}${api.breedFields(w,'mc')}${api.sexFields(w,'mc')}${input('owner','보호자 이름 (선택)','text','maxlength="100"')}${input('ownerTel','보호자 전화 (국가번호 포함)','tel','required maxlength="100" placeholder="+82 10-0000-0000"')}<div class="field"><label for="mc-photo">사진 (선택)</label><input id="mc-photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp"><p class="hint">기존 사진은 유지됩니다. 새 사진을 선택하면 교체합니다.</p></div></div>
         ${group(conditions,'cond','condNote','condNone','지병')}${group(allergies,'alg','algNote','algNone','알레르기')}
         <fieldset><legend>복용 중인 약</legend><label class="check"><input type="checkbox" name="medsNone" ${w.medsNone?'checked':''}><span>복용 중인 약 없음</span></label><div class="field"><label for="mc-meds">약 이름·용량·횟수 (선택)</label><textarea id="mc-meds" name="meds" maxlength="1200" placeholder="처방전에 적힌 영문 성분명·용량·횟수">${esc(w.meds||'')}</textarea></div></fieldset>
         <p class="hint">선택형 항목만 번역됩니다. 직접 쓴 내용은 원문 그대로 표시됩니다.</p><p class="save-state" role="status" data-form-status></p><div class="row-btns"><button class="btn btn-primary" type="submit">카드 만들고 미리보기</button><button class="btn btn-sm" type="button" data-cancel>취소</button></div></form>`;
-      const f=q('form');
+      const f=q('form');api.bindBreed(f,'mc');
       function mutuallyExclusive(key,noteKey,noneKey){
         f.addEventListener('input',e=>{const name=e.target.name;
           if(name===noneKey && e.target.checked){ f.querySelectorAll(`[name="${key}"]`).forEach(x=>x.checked=false); f.elements[noteKey].value=''; }
@@ -72,6 +72,7 @@
         e.preventDefault(); if(!f.reportValidity()) return;
         const values=new FormData(f), next={...wallet()};
         for(const key of ['name','weight','breed','owner','ownerTel','condNote','algNote','meds']) next[key]=String(values.get(key)||'').trim();
+        next.breed=api.readBreed(f,'mc');next.sex=String(values.get('sex')||'');next.neutStatus=String(values.get('neutStatus')||'unknown');next.neut=next.neutStatus==='yes';
         if(!ready(next)){q('[data-form-status]').textContent='이름·체중·보호자 전화를 입력해 주세요.';return;}
         for(const key of ['cond','alg']) next[key]=values.getAll(key);
         for(const key of ['condNone','algNone','medsNone']) next[key]=values.has(key);
@@ -130,7 +131,7 @@
         try{
           const dest=new URL(endpoint,location.href);
           if(dest.protocol!=='https:' && !(['127.0.0.1','localhost'].includes(dest.hostname)&&dest.protocol==='http:')) throw new Error('Wallet 연결을 확인해야 합니다. PNG 저장을 이용해 주세요.');
-          const payload={language:lang,card:{name:w.name||'',breed:w.breed||'',weight:String(w.weight||''),conditions:health(w,conditions,'cond','condNote','condNone'),allergies:health(w,allergies,'alg','algNote','algNone'),medications:w.meds||(w.medsNone?L[lang].none:({ko:'미입력',en:'Not provided',ja:'未入力',zh:'未填写'})[lang]),owner:w.owner||'',phone:w.ownerTel||'',emergency:w.emer||'',chip:w.chip||'',vet:[w.vet,w.vetTel].filter(Boolean).join(' · ')}};
+          const payload={language:lang,card:{name:w.name||'',breed:api.breedText(w,lang),sex:api.sexText(w,lang),weight:String(w.weight||''),conditions:health(w,conditions,'cond','condNote','condNone'),allergies:health(w,allergies,'alg','algNote','algNone'),medications:w.meds||(w.medsNone?L[lang].none:({ko:'미입력',en:'Not provided',ja:'未入力',zh:'未填写'})[lang]),owner:w.owner||'',phone:w.ownerTel||'',emergency:w.emer||'',chip:w.chip||'',vet:[w.vet,w.vetTel].filter(Boolean).join(' · ')}};
           const source=await api.photo();
           if(source){const img=new Image();await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=reject;img.src=source;});const cv=document.createElement('canvas');cv.width=180;cv.height=180;const g=cv.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,180,180);const s=Math.min(180/img.width,180/img.height);g.drawImage(img,(180-img.width*s)/2,(180-img.height*s)/2,img.width*s,img.height*s);payload.photo=cv.toDataURL('image/png');}
           if(token!==revision||!root.isConnected)return;
