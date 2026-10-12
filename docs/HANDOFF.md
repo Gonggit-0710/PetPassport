@@ -1,5 +1,54 @@
 # PawTrip 작업 인수인계
 
+## 외부 배포 준비 — 2026-10-12 / Codex
+
+- 사용자 요청: 외부 배포 준비. 기존 로컬 변경을 유지하고 `git fetch origin` 후 HEAD와 origin/main의 차이 0/0을 확인했습니다. 실제 푸시·배포는 요청 범위에 포함하지 않고 준비 상태로 남겼습니다.
+- `tools/check_release.py`, `.github/workflows/pages.yml`: Pages 업로드 전 공개 파일·HTML 내부 참조·필수 스크립트·CNAME·규정 일치 검증. Wallet 서버·도구·문서·비밀 파일이 공개 묶음에 들어가지 않도록 확인합니다. 이번 릴리스는 wallet-config endpoint가 빈 값인지도 검사합니다. 향후 Wallet 활성화 시 이 준비 중 검사를 해당 릴리스 조건에 맞춰 변경해야 합니다.
+- `docs/DEPLOYMENT.md`: 이번 배포 내용·GitHub Desktop Commit/Push 절차·Actions/브랜치 배포 구분·배포 후 확인·되돌리기 안내. 현재 GitHub Pages Source 설정은 조회·변경하지 않았습니다.
+- 검증: Python 6개, Wallet 서버 Node 3개, 카드와 Wallet 브라우저 검증 통과. `_site`를 별도 로컬 서버로 열어 같은 브라우저 검증을 추가 실행했습니다. 공개 파일 62개·생성 페이지 27개·검색 항목 169개. 카드 기록 보존·네 언어 PNG·모바일·오프라인과 Wallet 준비 중 상태 확인, diff 검사 성공. data.json·Hero 미디어는 HEAD와 동일합니다.
+- 결과물: `_site/` 공개 배포 묶음과 저장소 밖 `C:\Dev\PetPassport\releases\pawtrip-mycard-2026-10-12.zip`, 해당 `.manifest.json`. ZIP의 CRC 및 파일별 SHA-256을 공개 묶음과 비교해 일치 확인했습니다. ZIP에는 서버 코드·개인 기록·인증서를 포함하지 않습니다.
+- 상태: 로컬 파일·공개 묶음·ZIP 준비 완료. Git 커밋·원격 푸시·운영 배포는 수행하지 않았습니다. 실제 아이폰/안드로이드의 공유·사진첩·PDF 저장 최종 확인과 Apple Wallet의 실제 인증서/서버/아이폰 설치는 기존 미검증 항목입니다.
+
+## My Card 상단 개인정보 안내 — 2026-10-12 / Codex
+
+- 사용자 요청: My Card 진입 시 기기 보관 안내를 친절하고 눈에 띄는 위치에 표시.
+- `features.js`, `features.css`: 페이지 제목 바로 아래에 방패 아이콘·연한 초록 안내 박스 추가. “입력한 정보는 이 기기에 보관돼요”, 반려견 정보·사진·서류의 브라우저 저장과 기본 작성 시 서버 전송/다른 사용자 공개 없음 안내. 직접 공유·Wallet 동의 발급 시 외부 전달 예외와 개인정보 상세 링크도 표시. 관리 화면과 상세 편집 화면에 공통 적용. 하단은 백업·기기 변경 안내로 정리.
+- `tools/rule_pages.py`: JavaScript 실행 전 정적 My Card에도 같은 안내 제공. 생성기·홈페이지에서 features JS v10·CSS v7로 갱신. 페이지 재생성·검색 색인 169개·공개 파일 준비 완료.
+- 검증: 기존 Python 6개·JS 구문·diff 검사 통과. 별도 브라우저에서 모바일 390px의 관리·편집 화면 모두 첫 화면 내 안내 노출과 가로 넘침 없음 확인, 화면 직접 검수. 기존 카드·Wallet 로직 변경 없음.
+- 상태: 로컬 저장 완료, 커밋·푸시·운영 배포 없음.
+
+## Apple Wallet 개발 — 2026-10-12 / Codex
+
+- 사용자 요청: Wallet 지원을 지금 개발. 사용자 Apple Developer Program 가입은 승인 대기 중입니다. 코드와 연결 절차를 준비하되 실제 Apple 인증서·서버 배포·아이폰 설치 검증은 아직 수행할 수 없습니다.
+- `wallet-service/`: 독립 Node 발급 서버와 선택적 Node serverless adapter. `passkit-generator` 3.6.1·`pngjs` 7.0.0 고정 의존성과 pnpm lockfile. 기존 PawTrip 아이콘을 재사용했습니다. 환경변수 인증서 로드, UID·Team ID·기간·발급자 서명·비밀키 일치 확인, 입력·사진 크기 검증, origin 제한, 요청 제한, `no-store` 응답, 로그/DB/파일에 개인 정보를 저장하지 않는 메모리 내 발급.
+- 패스: generic 카드, 앞면 이름·체중·전화·지병·알레르기, 상세 정보·약·생성일·원문 안내, 사진 thumbnail. 서류 원본과 규정 데이터를 전송하지 않습니다. 자동 갱신·공개 QR·서버 프로필 저장은 없습니다. 무작위 새 serialNumber로 발급하므로 재발급은 새 카드이며 이전 카드는 이용자가 정리합니다.
+- `wallet-config.js`, `medical-card.js`, `features.js`: 현재 endpoint는 빈 값이며 Wallet 버튼은 준비 중입니다. 연결 후 버튼 → 정보 전송 동의 → POST 발급 → `.pkpass` 파일 열기. 전송 정보는 미리보기에 표시할 항목과 180px PNG 사진뿐입니다. 실패 시 PNG 저장 대체 경로 유지, GA에는 언어·행동만 기록.
+- `privacy.html`: Wallet 선택·동의 시 일시 서버 처리를 명시. 실제 배포 업체·처리 위치는 호스팅 결정 후 확인하고 운영 설정과 안내에 반영해야 합니다.
+- `index.html`, `tools/rule_pages.py`, 생성 My Card HTML: wallet-config와 새 스크립트 버전 연결. `tools/prepare_site.py`, `sw.js`: 공개 설정만 포함, 서버 디렉터리는 공개 `_site`에 포함하지 않음. 캐시 v29, features JS v9, medical-card v2. `.gitignore`는 비밀 환경파일·certificates·node_modules·PKPass 결과를 제외합니다.
+- 검증: 서버 Node 테스트 3개(시험용 인증서로 네 언어 패스·사진·manifest hash·CMS 서명 실제 암호 검증·인증서 불일치·필수값·origin·no-store·요청 크기·요청 제한), Wallet 브라우저 테스트(응답 모의)와 기존 카드 브라우저 테스트, Python 6개·페이지 생성·공개 묶음 준비·diff 검사 통과. 합성 인증서는 메모리에서만 생성하며 Apple가 발급한 인증서가 아니어서 실제 Wallet에는 사용할 수 없습니다.
+- 상태: 로컬 개발 완료, Git 커밋·푸시·운영 배포 없음. Apple 인증서 미연결, 서버 미배포, 아이폰 Safari 실제 설치 미검증. 현재 사이트에 활성화된 Wallet 기능으로 안내하지 않습니다.
+- 승인 후 절차: `wallet-service/README.md`와 `.env.example`에 기재. Apple Pass Type ID·인증서·비밀키·WWDR·Team ID 연결 → HTTPS 서버 배포와 origin/로그/edge 요청 제한 설정 → wallet-config endpoint 지정 → 실제 아이폰 파일 열기·Wallet 추가 검증 → 홈페이지 배포. 인증서·비밀키는 채팅에 보내지 않습니다.
+
+## 공유 안내 수정 — 2026-10-12 / Codex
+
+- 사용자가 Windows 공유 메뉴에서 카카오톡을 선택했으나 파일이 채팅에 붙지 않는다고 보고했습니다. 현재 공유는 URL이 아닌 PNG File 전달 방식이므로 외부 배포 전이라는 이유로 단정할 수 없습니다. 실제 카카오톡 연결 실패 원인은 미확인입니다.
+- medical-card.js: 공유 완료를 단정하는 문구를 공유 메뉴 열림·앱 첨부 확인 안내로 변경하고, PC 카카오톡에는 PNG 다운로드 후 직접 파일 첨부 대체 경로를 안내합니다. Windows의 navigator.share 완료는 공유 팝업 실행 시점일 수 있어 앱 전송 성공으로 해석하지 않습니다.
+- 검증: JS 구문·기존 브라우저 회귀 검증 통과. 카카오톡으로 실제 메시지를 보내는 테스트는 수행하지 않았습니다. 로컬 변경이며 운영 배포는 수행하지 않았습니다.
+
+## 최신 작업: 진료용 카드 작성·휴대폰 저장 — 2026-10-12 / Codex
+
+- 사용자 요청: 예시 → 간단 작성 → 언어별 미리보기 → 휴대폰 저장을 순차 개발. 현재 작업 범위를 이 카드 제작 흐름까지 확장했습니다. 아래 이전 기록의 범위·배포 상태는 당시 기준입니다.
+- 시작 시 `main` 작업 폴더는 깨끗했고 `git fetch origin` 후 `HEAD...origin/main`은 0/0이었습니다. 사용자 최신 변경을 보존했습니다.
+- `medical-card.js`: 가상 예시 카드, 간단 입력(이름·체중·보호자 전화 필수), 건강 선택·원문 메모·선택 사진, 네 언어 미리보기, PNG 생성·다운로드, 파일 공유 지원 판별과 대체 이미지 미리보기, 카드 전용 인쇄·PDF 저장. 내보내기 이미지에서 긴 메모를 줄바꿈하고 높이를 늘려 잘림을 방지합니다. 공유 파일은 버튼을 누르기 전에 준비합니다.
+- `features.js`, `features.css`, `mycard.js`: My Card 상단에 제작 흐름 연결. 기존 `pt-wallet`·IndexedDB 사진 재사용, 간단 작성 시 접종·항체검사·칩·기존 추가 필드와 국가별 `pp3c-*` 기록 보존. 예시를 개인 데이터에 저장하지 않습니다. `없음`과 `미입력`을 구분하고 직접 쓴 내용은 원문으로 표시합니다. 사진 미리보기 URL은 기존 상세 카드와 독립시켰습니다. 검색의 `#medical`은 제작 영역으로 이동합니다.
+- GA 이벤트: `medical_example_view`, `medical_create_start`, `medical_create_complete`, `medical_language_select`, `medical_image_download`, `medical_image_share`, `medical_print_request`. 전달 값은 언어뿐이며 개인 정보는 없습니다. 다운로드·인쇄 이벤트는 요청 동작이며 실제 사진첩 저장·PDF 저장 성공을 의미하지 않습니다.
+- `tools/rule_pages.py`, `tools/build_pages.py`, 생성 HTML·검색 색인: 진료용 카드 안내 갱신과 스크립트 연결. `tools/prepare_site.py`, `sw.js`: 새 스크립트 배포·오프라인 캐시에 포함. 캐시 v28, features JS v8·CSS v6, medical-card v1, mycard v2.
+- `tools/test_medical_card.cjs`: 개인 브라우저와 분리한 Chrome 자동 검증. 예시 비저장, 필수 입력, 기존 정보·체크 기록 보존, 건강 선택 상호 배제, 사진, 네 언어 PNG 다운로드, 공유 모의 실행·미지원 대체, GA 개인정보 제외, 모바일 390px 가로 넘침 없음, 실제 인쇄 문서 내용(인쇄 호출 모의), 저장 실패 처리, 긴 메모, 기존 SOS 호환, 서비스 워커 오프라인 이미지 생성 성공. 네 언어 PNG와 모바일 화면을 직접 열어 시각 검수했습니다.
+- 검증: 페이지 생성·Python 검증 6개·공개 파일 준비·JS 구문 검증·브라우저 검증·git diff --check 통과. 공개 페이지 27개, 검색 항목 168개. Hero·규정 data.json은 변경하지 않았습니다.
+- 상태: 로컬 저장과 `_site` 준비 완료. 커밋·푸시·운영 배포는 수행하지 않았습니다. 로컬 미리보기 `http://127.0.0.1:8766/mycard/`.
+- 미검증: 실제 아이폰 Safari·안드로이드의 공유 메뉴/사진첩 저장, OS 인쇄 대화상자에서 PDF 저장 완료, 운영 GA 수신. 자동 검증의 공유·인쇄는 모의 호출입니다. 운영 배포 전 실제 휴대폰에서 저장·공유·인쇄를 확인하면 됩니다.
+- 테스트 실행: 로컬 서버를 8766 포트로 실행한 뒤 Playwright가 설치된 Node 환경에서 `node tools/test_medical_card.cjs`. URL은 `PAWTRIP_TEST_URL`, 브라우저 실행 파일은 `PAWTRIP_TEST_BROWSER`, 결과 폴더는 `PAWTRIP_TEST_ARTIFACTS`로 지정할 수 있습니다. 테스트 결과물은 저장소 밖 `C:\Dev\PetPassport\mycard-verification`에 보관했습니다.
+
 ## 현재 범위 — 2026-10-12 / Codex
 
 사용자 요청에 따라 검색 페이지 확장, 국가별 준비사항 체크박스, My Card의 체크 기록 관리만 남겼습니다. Hero는 Git HEAD의 기존 HTML·디자인·영상으로 복원했습니다. 이전 Hero 시안의 배치·색감·캐릭터·모션 제작 조건은 폐기했으며 다음 작업에 적용하지 않습니다.

@@ -1,0 +1,10 @@
+{
+  "name": "pawtrip-wallet-service",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": { "start": "node server.js", "test": "node --test test/*.test.js" },
+  "dependencies": { "passkit-generator": "3.6.1", "pngjs": "7.0.0" },
+  "devDependencies": { "node-forge": "1.4.0", "fflate": "0.8.3" }
+}

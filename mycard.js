@@ -14,7 +14,7 @@
     if(new URLSearchParams(location.search).get('edit') === '1') window.PTX.editWallet();
     else window.PTX.views.wallet();
     function reveal(){
-      const targets = {checklists:'wprogress', documents:'wdocs', backup:'wbk'};
+      const targets = {medical:'medicalFlow', checklists:'wprogress', documents:'wdocs', backup:'wbk'};
       const target = document.getElementById(targets[location.hash.slice(1)]);
       if(target){ if(target.tagName === 'DETAILS') target.open = true; target.scrollIntoView(); }
     }

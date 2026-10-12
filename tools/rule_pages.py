@@ -300,15 +300,19 @@ def pages(data):
 <p>고정 문구와 선택형 항목을 번역합니다. 직접 입력한 메모와 약 이름은 원문 그대로 표시합니다.</p>
 <h2 id="prepare">여행 전에 준비하는 순서</h2>
 <ol><li><a href="/mycard/">펫 카드</a>에 반려견 정보를 입력합니다. 확인되지 않은 항목은 미입력으로 남겨 둡니다.</li>
-<li><a href="/#sos">다국어 진료용 카드</a>에서 목적지에 맞는 언어를 고르고 전체 화면으로 확인합니다.</li>
+<li>My Card에서 예시를 확인하고 간단 정보를 입력한 뒤 목적지에 맞는 언어를 고릅니다.</li>
+<li>완성된 진료용 카드를 PNG 이미지로 내려받거나 인쇄·PDF로 저장합니다.</li>
 <li>같은 기기에서 오프라인으로 열리는지 출발 전에 확인합니다.</li></ol>
 <h2 id="vet">현지 동물병원 찾기</h2><p>다국어 진료용 카드 화면에서 나라와 도시를 선택해 현지 검색어로 지도 검색을 열 수 있습니다. 병원 운영 시간과 응급 진료 가능 여부는 전화로 확인하세요.</p>
-<h2 id="storage">저장과 전달</h2><p>입력 정보는 이 기기의 브라우저에 저장됩니다. 다른 기기에서 링크를 열면 내 정보는 나타나지 않습니다. 브라우저 데이터를 삭제하거나 기기를 바꾸기 전 펫 카드의 백업 기능을 이용하세요.</p>
+<h2 id="storage">저장과 전달</h2><p>My Card에서 언어별 진료용 카드 이미지를 내려받아 휴대폰에 보관하고 동행자에게 전달할 수 있습니다. 지원되는 기기에서는 공유·저장을 이용하세요. 카드에는 연락처와 건강 정보가 포함되므로 전달 전에 확인하세요.</p><p>입력 정보는 이 기기의 브라우저에 저장됩니다. 다른 기기에서 링크를 열면 내 정보는 나타나지 않습니다. 브라우저 데이터를 삭제하거나 기기를 바꾸기 전 펫 카드의 백업 기능을 이용하세요.</p>
 <p>이 카드는 진료 시 보호자 정보를 전달하기 위한 참고 자료이며 공식 검역증명서나 처방전을 대신하지 않습니다.</p>'''
     out.append(page('sos', 'sos', 'My Card · 반려견 여행 준비와 다국어 진료용 카드',
                     '영어·일본어·중국어·한국어 반려견 다국어 진료용 카드로 지병·알레르기·복용약·연락처를 현지 수의사에게 보여주세요.',
                     '여행 전에 정보를 입력하고, 반려견이 아플 때 현지 동물병원에서 카드 화면을 보여주세요.', sos, verified(data)))
-    mycard = '''<h2 id="checklists">국가별 준비 체크리스트 관리</h2>
+    mycard = '''<section class="mycard-privacy" aria-label="내 정보 보관 안내"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><div><h2>입력한 정보는 이 기기에 보관돼요</h2><p>반려견 정보·사진·서류는 지금 사용하는 브라우저에 저장돼요. 카드 작성만으로 PawTrip에 전송되거나 다른 사용자에게 공개되지 않아요.</p><p class="mycard-privacy-detail">직접 카드를 공유하거나 Apple Wallet 발급에 동의할 때만, 전달할 정보를 외부로 보내요. <a href="/privacy.html#s3">자세히 보기</a></p></div></section>
+<h2 id="medical">휴대폰에 보관하는 다국어 진료용 카드</h2>
+<p>예시 카드 보기, 간단 정보 입력, 언어별 미리보기와 PNG 이미지 내려받기를 지원합니다. 영어·일본어·중국어·한국어로 현지 동물병원에서 보여줄 카드를 만들고 인쇄·PDF로 보관하세요. 공유 기능은 지원되는 기기에서 제공됩니다.</p>
+<h2 id="checklists">국가별 준비 체크리스트 관리</h2>
 <p>국가별 입국 요건을 체크하면 My Card에서 완료 개수와 준비 진행 상황을 확인하고 이어서 수정할 수 있습니다.</p>
 <p><a href="/countries/">국가별 입국 규정과 체크리스트 보기</a></p>
 <h2 id="documents">반려견 정보와 서류 보관</h2>
@@ -317,8 +321,8 @@ def pages(data):
 <p>정보는 이 브라우저에만 저장됩니다. 기기를 바꾸기 전 백업 파일을 내려받으세요. 다른 기기와 자동 동기화되지는 않습니다.</p>
 <noscript><p>체크 기록과 반려견 정보를 관리하려면 JavaScript를 활성화해 주세요.</p></noscript>'''
     out.append(dict(slug='mycard', tab='wallet', title='My Card · 반려견 여행 준비 체크리스트와 서류 관리',
-                    heading='My Card', desc='국가별 입국 준비 체크리스트, 반려견 정보와 검역 서류를 My Card에서 관리하세요. 체크 상태 자동 저장과 백업을 지원합니다.',
+                    heading='My Card', desc='반려견 다국어 진료용 카드를 만들고 PNG 이미지·인쇄·PDF로 보관하세요. 국가별 입국 준비 체크리스트, 반려견 정보와 검역 서류 관리, 자동 저장과 백업을 지원합니다.',
                     lead='국가별 준비사항과 반려견 정보, 서류를 한곳에서 관리하세요.', group='내 반려견 · My Card',
                     body=lambda: mycard, verified=verified(data),
-                    extra='<script src="/features.js?v=7"></script><script src="/mycard.js?v=1"></script>'))
+                    extra='<script src="/features.js?v=10"></script><script src="/wallet-config.js?v=1"></script><script src="/medical-card.js?v=2"></script><script src="/mycard.js?v=2"></script>'))
     return out

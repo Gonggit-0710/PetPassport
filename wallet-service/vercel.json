@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/wallet-pass.js": {
+      "includeFiles": "assets/**"
+    }
+  }
+}

@@ -3,7 +3,7 @@
    1. 내 반려견: 펫 카드 · 다국어 다국어 진료용 카드 · 서류 사본 · 백업
    2. 준비 루틴: 켄넬 적응 훈련 · 비행 당일 · 짐 싸기 리스트
    3. 여행 기록: 비행 구간 기록 · 대권 거리 · 결산 카드 이미지
-   - 모든 입력은 이 기기(localStorage · IndexedDB)에만 저장. 서버 전송 없음
+   - 기본 입력은 이 기기(localStorage · IndexedDB)에 저장. Wallet 발급 선택·동의 시 카드 정보를 서버에서 일시 처리
    - GA 이벤트에는 입력값(이름·번호·연락처·병력)을 절대 넣지 않음 */
 (function(){
 'use strict';
@@ -163,18 +163,27 @@ async function loadPhoto(){
   return photoUrl;
 }
 PTX.views.wallet = function(){
+  const previousFlow = document.getElementById('medicalFlow');
+  if(previousFlow && previousFlow.disposeMedicalCard) previousFlow.disposeMedicalCard();
   // 한 화면 구성: 펫 카드(오른쪽 위 '정보 고치기') → 서류 사본 → 백업·복원(접힘). SOS는 상단 SOS 버튼·메뉴에서
   const app = PT.app; const editing = wTab === 'edit'; wTab = 'card'; // 편집 모드는 한 번만 (다른 메뉴 갔다 오면 카드로)
   app.innerHTML = PT.head('내 반려견 · My Card', editing ? '반려견 정보 입력' : 'My Card',
       editing ? '입력하는 즉시 이 기기에 저장됩니다. 다 넣었으면 아래 완료를 누르세요.' : '국가별 입국 준비, 반려견 정보와 서류를 한곳에서 관리하세요. 체크한 항목은 자동 저장됩니다.') +
+    `<section class="mycard-privacy" aria-label="내 정보 보관 안내"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><div><h2>입력한 정보는 이 기기에 보관돼요</h2><p>반려견 정보·사진·서류는 지금 사용하는 브라우저에 저장돼요. 카드 작성만으로 PawTrip에 전송되거나 다른 사용자에게 공개되지 않아요.</p><p class="mycard-privacy-detail">직접 카드를 공유하거나 Apple Wallet 발급에 동의할 때만, 전달할 정보를 외부로 보내요. <a href="/privacy.html#s3">자세히 보기</a></p></div></section>` +
     (editing ? '' : `<div class="callout bad" style="margin-bottom:16px"><strong>원본 서류를 대신하지 않습니다</strong>공항 검역과 항공사 카운터는 수의사가 서명한 원본 증명서와 검역증명서를 확인합니다. 이 카드는 빠른 확인용 요약이니 원본은 반드시 챙기세요.</div>`) + `
-    ${editing ? '' : '<div id="wprogress" class="wsec"></div><div class="links" style="margin-bottom:16px"><a class="link solid" href="/#sos">다국어 진료용 카드 보여주기</a></div>'}
+    ${editing ? '' : '<div id="medicalFlow" class="wsec"></div><div id="wprogress" class="wsec"></div><div class="links" style="margin-bottom:16px"><a class="link" href="/#sos">기존 다국어 진료용 화면·현지 병원 찾기</a></div>'}
     <div id="wbody"></div>
     ${editing ? '' : `<div id="wdocs" class="wsec"></div>
     <details class="panel wsec" id="wbk"><summary>기기를 바꿀 때: 백업·복원</summary><div id="wbkBody" style="margin-top:14px"></div></details>`}
-    <p class="hint" style="margin-top:16px">입력한 정보와 사진은 이 기기 브라우저에만 저장되고 PawTrip으로 전송되지 않습니다. 기기를 바꾸거나 사이트 데이터를 지우면 사라지니 백업 파일로 보관하세요.</p>`;
+    <p class="hint" style="margin-top:16px">기기를 바꾸거나 사이트 데이터를 지우기 전, 백업 파일로 정보를 보관하세요. 다른 기기와 자동으로 동기화되지는 않아요.</p>`;
   if(editing){ renderEdit($('#wbody')); window.scrollTo({top:0}); return; }
   renderProgress($('#wprogress')); renderCard($('#wbody')); renderDocs($('#wdocs')); renderBackup($('#wbkBody'));
+  if(PTX.mountMedicalCard) PTX.mountMedicalCard($('#medicalFlow'), {
+    esc:PT.esc, languages:L, conditions:CONDITIONS, allergies:ALLERGIES,
+    wallet:W, save:saveW, photo:async()=>{ const p=await DB.get('photo'); return p && p.blob ? blobToDataUrl(p.blob) : null; }, track:PT.track,
+    language:()=>LS.get('pt-sos-lang','en'), setLanguage:lang=>LS.set('pt-sos-lang',lang),
+    savePhoto:async file=>{ const blob=await shrinkImage(file,600,.85); await DB.put({id:'photo',kind:'photo',title:'사진',type:blob.type,blob,added:Date.now()}); }
+  });
 };
 
 function completed(c){
@@ -310,6 +319,7 @@ function renderEdit(el){
   const commit = () => { const v = W();
     $$('[data-k]', form).forEach(i => { v[i.dataset.k] = i.type==='checkbox' ? i.checked : i.value.trim(); });
     ['cond','alg'].forEach(k => { v[k] = $$(`[data-arr="${k}"]:checked`, form).map(x=>x.value); });
+    v.updatedAt = new Date().toISOString();
     const ok = saveW(v); st.textContent = ok ? '저장됨 · 이 기기에만 보관' : '저장하지 못했어요. 브라우저 저장 공간을 확인하세요.';
     if(!commit.sent){ commit.sent = true; PT.track('wallet_save', {}); } };
   form.addEventListener('input', e => { if(e.target.type!=='file') commit(); });

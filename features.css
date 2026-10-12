@@ -51,6 +51,34 @@ legend{font-weight:700;font-size:15px;margin:0 0 10px;padding:0}
 .sos .ko{display:block;font-size:12px;color:#777}
 .sos:fullscreen{overflow:auto;border-radius:0;padding:32px;font-size:20px}
 
+/* My Card creation and portable medical card */
+.medical-intro>p{margin:8px 0 16px}
+.medical-stage:empty{display:none}
+.medical-form,.medical-preview{margin-top:20px;padding-top:20px;border-top:1px solid var(--line)}
+.medical-form fieldset{min-width:0}
+.medical-form details{margin-top:12px}
+.medical-form summary,.medical-image-fallback summary{cursor:pointer;font-weight:600}
+.medical-form .opt-grid{margin:14px 0}
+.medical-preview .chips{margin-bottom:16px}
+.medical-card{background:#fff;color:#111;border:1px solid #ccd7df;border-radius:16px;overflow:hidden;max-width:680px;margin:0 auto}
+.medical-card-head{display:flex;align-items:center;justify-content:space-between;gap:16px;background:#163449;color:#fff;padding:24px}
+.medical-card-head>div{min-width:0;overflow-wrap:anywhere}
+.medical-brand{font-size:12px;font-weight:700;letter-spacing:.04em}
+.medical-card-head h3{font-size:22px;line-height:1.4;margin:8px 0}
+.medical-card-head p{margin:0;font-size:18px}
+.medical-photo{width:84px;height:84px;object-fit:contain;flex:none;background:#fff;border-radius:12px}
+.medical-card dl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:0;margin:0;padding:8px 24px}
+.medical-card dt,.medical-card dd{padding:12px 0;border-bottom:1px solid #e4ebef;overflow-wrap:anywhere;white-space:pre-wrap}
+.medical-card dt{font-size:14px;font-weight:700;padding-right:12px;color:#405361}
+.medical-card dd{margin:0;font-size:16px}
+.medical-card footer{padding:16px 24px;background:#f5f8fa;font-size:12px;color:#405361;overflow-wrap:anywhere}
+.medical-card footer p{margin:0 0 8px}
+.medical-card footer b{display:block;margin-top:8px;color:#163449}
+.medical-image-fallback{margin-top:16px}
+.medical-image-fallback img{display:block;width:100%;max-width:680px;height:auto;margin:12px auto;border:1px solid var(--line)}
+.medical-print-frame{position:fixed;width:1px;height:1px;left:-10000px;top:0;border:0}
+@media(max-width:480px){.medical-card-head{padding:16px;gap:10px}.medical-card-head h3{font-size:19px}.medical-photo{width:64px;height:64px}.medical-card dl{padding:4px 16px}.medical-card dt{font-size:12px}.medical-card dd{font-size:14px}.medical-card footer{padding:14px 16px}}
+
 /* 서류 사본 */
 .doc-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .doc-list li{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px;background:var(--card)}
@@ -158,5 +186,13 @@ html.srch-open{overflow:hidden}
 /* 펫 카드 화면 정리 */
 .pet-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .wsec{margin-top:16px}
+.mycard-privacy{display:flex;gap:14px;align-items:flex-start;margin:0 0 20px;padding:18px 20px;border:1px solid #bcd8cf;border-left:4px solid #28715c;border-radius:var(--r-md);background:#f0f8f4;color:#193e32}
+.mycard-privacy>svg{width:28px;height:28px;flex:none;margin-top:2px;color:#28715c}
+.mycard-privacy>div{min-width:0}
+.mycard-privacy>div>h2{margin:0 0 7px;font-size:18px;line-height:1.45;font-weight:800;color:inherit}
+.mycard-privacy>div>p{margin:0;font-size:14px;line-height:1.7;overflow-wrap:anywhere}
+.mycard-privacy .mycard-privacy-detail{margin-top:9px;font-size:12px;color:#375b4e}
+.mycard-privacy a{color:inherit;font-weight:600;text-underline-offset:3px}
+@media(max-width:480px){.mycard-privacy{gap:10px;padding:16px 14px}.mycard-privacy>svg{width:24px;height:24px}.mycard-privacy>div>h2{font-size:16px}.mycard-privacy>div>p{font-size:13px}}
 details.wsec summary{cursor:pointer;font-weight:700;font-size:15px;list-style-position:inside}
 details.wsec[open] summary{margin-bottom:4px}
