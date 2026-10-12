@@ -166,6 +166,7 @@ function sexText(w,lang){
   return [sex,detail].filter(Boolean).join(' · ');
 }
 function sexFields(w,prefix){return `<div class="field"><label for="${prefix}-sex">성별 (선택)</label><select id="${prefix}-sex" name="sex" data-k="sex"><option value="">미입력</option><option value="m" ${w.sex==='m'?'selected':''}>수컷</option><option value="f" ${w.sex==='f'?'selected':''}>암컷</option></select></div><div class="field"><label for="${prefix}-neutStatus">중성화 여부 (선택)</label><select id="${prefix}-neutStatus" name="neutStatus" data-k="neutStatus"><option value="unknown" ${neutStatus(w)==='unknown'?'selected':''}>미입력 · 모름</option><option value="yes" ${neutStatus(w)==='yes'?'selected':''}>중성화 완료</option><option value="no" ${neutStatus(w)==='no'?'selected':''}>중성화 안 함</option></select><p class="hint">영어 카드: 암컷은 Spayed, 수컷은 Neutered로 표시돼요.</p></div>`;}
+PTX.uiLexicon = ()=>Object.fromEntries([...CONDITIONS,...ALLERGIES].map(o=>[o.ko,{en:o.en,ja:o.ja,zh:o.zh}]));
 const saveW = w => { const ok = LS.set('pt-wallet', w); persistOnce(); return ok; };
 const walletFilled = w => !!(w.name || w.chip || w.rabiesDate);
 PTX.wallet = W;

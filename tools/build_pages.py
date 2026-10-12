@@ -40,7 +40,7 @@ SHELL = '''<!doctype html>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="/base.css?v=13">
-<link rel="stylesheet" href="/features.css?v=7">
+<link rel="stylesheet" href="/features.css?v=8">
 {page_style}
 <script>
 (function(){{
@@ -106,6 +106,7 @@ SHELL = '''<!doctype html>
     </footer>
   </div>
 </div>
+<script src="/site-language.js?v=1"></script>
 <script src="/nav.js?v=6"></script>
 <script src="/search.js?v=5"></script>
 <script>
