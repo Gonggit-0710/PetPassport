@@ -1,5 +1,15 @@
 # PawTrip 작업 인수인계
 
+## 내일 우선 작업 확정: Cloudflare Pages 이전 준비 — 2026-10-13 / Codex
+
+- 사용자 결정: 내일(2026-10-14, America/Los_Angeles) 무료 호스팅 Cloudflare Pages 이전 작업 진행. 기존 홈페이지 개선/성장 과제보다 이전 준비와 검증을 먼저 수행. 이 기록은 다음 세션 작업 기억이며 자동 실행/알림 예약은 생성하지 않았습니다.
+- 순서: AGENTS/이 문서·Git 상태 확인 → Cloudflare 계정/기존 DNS 확인 → GitHub 저장소 연결과 현재 공개 `_site` 생성 절차 설정 → 임시 pages.dev 주소 배포 → 실제 화면/파일/기능 검증 → 결과 확인 후 `pawtrip.us` 연결/DNS 전환. 검증 전에 현재 GitHub Pages 운영 연결을 제거하지 않습니다. 도메인 등록업체를 옮기는 작업은 필요하지 않습니다.
+- 확인 대상: 홈/My Dog/PawLog/Games 각각의 경로, 승인된 게임 방침 #ko/#en·문장·추적 코드 없음, 루트 app-ads.txt 원문 및 응답, sitemap/robots/canonical, 이전 `/mycard/`·`/blog/` 이동, 폰트/발바닥/영상/서비스워커, 모바일 검색·언어·PNG 저장. Cloudflare Pages 파일당 25MiB 제한에 현재 영상 포함 모든 파일이 맞는지 사전 확인합니다.
+- 개인정보/측정: 임시 도메인은 다른 origin이므로 기존 pawtrip.us의 기기 저장 기록이 자동으로 보이지 않음을 설명하고 실제 사용자 데이터를 테스트 주소에 복사하지 않습니다. 최종 동일 HTTPS 도메인에서는 저장 키/사진 저장소를 유지하고 실제 보존 확인. 기존 GA는 운영 도메인에서만 로드되며 미리보기에서 안 뜨는 것을 측정 실패로 오해하지 않습니다. Cloudflare 자동 분석 스크립트가 Games 방침에 삽입되지 않도록 확인합니다.
+- DNS 전환 전 현재 레코드(메일 MX/TXT·Search Console 소유권 TXT 포함)를 보존하고 기존 설정 복구 방법 준비. 도메인/주소를 유지해 검색 링크와 정책 URL을 보존합니다. 계정 인증/접근에 필요한 단계는 사용자의 직접 로그인으로 처리하며 비밀 정보를 채팅에 요청하지 않습니다.
+- GitHub Desktop Push origin → 자동 배포 흐름 유지. 무료 범위를 벗어나는 유료 기능/결제는 별도 선택으로 취급. 아직 Cloudflare 프로젝트 생성·계정 연결·DNS 수정·실제 이전은 수행하지 않았습니다.
+- 공식 기준(이전 시 최신 조건 재확인): https://developers.cloudflare.com/pages/platform/limits/ , https://developers.cloudflare.com/pages/configuration/git-integration/ , https://developers.cloudflare.com/pages/configuration/custom-domains/ .
+
 ## My Dog 밑줄도 Paw 블루로 통일 — 2026-10-13 / Codex
 
 - 사용자 요청: My Dog 아래 선도 로고 블루로. `features.css` 기본/선택/호버 밑줄을 코럴 → Paw #1E3A8A로 변경. 2px 두께·배경 없음·제목/아이콘/서체 및 PawLog 중앙 정렬/코럴 발바닥 유지. AGENTS 최신 기준 저장.
