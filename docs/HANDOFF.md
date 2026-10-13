@@ -1,5 +1,16 @@
 # PawTrip 작업 인수인계
 
+## My Dog 주소 변경·PawLog GA 측정 보완 — 2026-10-13 / Codex
+
+- 사용자 요청: My Dog 주소도 명칭에 맞게 변경하고, GA 인기 페이지에 예전 이름이 남고 PawLog가 없는 원인 확인.
+- 정식 주소는 `/mydog/`. 메뉴·검색·홈페이지 링크·PawLog 헤더·설치 바로가기·sitemap·canonical·오프라인 캐시와 생성기를 새 주소로 변경. 기존 `/mycard/`는 noindex 호환 페이지로 유지하고 query/hash를 보존해 새 주소로 이동. `/?#wallet` 계열과 여행 기록의 기존 해시 경로도 새 주소로 연결. `pt-wallet`, `pt-trips`, 사진·체크 데이터 및 mycard.js 파일명은 유지.
+- `tools/blog_core.py`: PawLog 목록과 3개 글에 빠져 있던 GA4 코드 추가. `G-6G8CX7W76G`, 운영 pawtrip.us 도메인에서만 로드, localhost·관리 미리보기에서 미전송. 제목은 `PawTrip · PawLog`/`PawTrip · PawLog · 글 제목`. 승인된 Games 방침에는 분석 코드 추가 없음.
+- `tools/build_pages.py`: My Dog 측정 제목을 `PawTrip · My Dog`로 명시. 정적 페이지와 PawLog의 수동 page_view는 query/hash를 제외한 실제 경로만 전달. 개인 반려견 정보·사진·전화번호는 분석 매개변수에 포함하지 않음. GA 과거 제목/경로 기록을 새 이름으로 소급 변경한 것은 아님.
+- 캐시: sw v40, nav v10, features v17, medical-card v6, search v7. `tools/prepare_site.py`, `tools/check_release.py`, AGENTS 및 테스트 경로 수정. sitemap은 새 주소만 제공하고 이전 주소는 호환용.
+- 검증: Python 16개, 공개 묶음 98개·참조/비공개 파일 검사, My Dog 이전 주소 query/hash 보존·여행 기록 보존/결산, 4언어 UI·진료용 PNG/공유/인쇄/오프라인 회귀 통과. `tools/test_analytics.cjs`는 운영 도메인을 모의하여 PawLog 목록/3개 글·My Dog의 단일 page_view 제목/경로, localhost 제외, 게임 방침 제외 검증. Google 스크립트는 가짜 응답 처리하여 테스트 방문을 실제 GA로 보내지 않음. diff 검사 통과.
+- 상태: 로컬 저장·배포 묶음 준비 완료. 이번 변경 커밋·푸시·운영 배포 미실행, 실제 GA 수신 미확인. 사용자 GitHub Desktop으로 배포 후 PawLog/My Dog 방문 → GA 실시간 → 일반 보고서 24~48시간 뒤 확인. 날짜 범위를 배포 후로 지정하고 ‘페이지 및 화면’에서 PawLog 검색(인기 요약은 상위 항목만 표시).
+- 계정 설정 미확인: 홈페이지는 해시 이동을 수동 측정함. GA 데이터 스트림의 향상된 측정 > 페이지 조회 고급 설정에서 ‘브라우저 기록 이벤트를 기반으로 한 페이지 변경’이 켜져 있으면 중복 측정 가능. 이 옵션은 꺼서 수동 측정과 겹치지 않도록 확인하되 전체 향상된 측정을 끌 필요는 없음. 이번에 GA 계정 설정은 변경하지 않음. 공식 기준은 docs/SEO.md 참고.
+
 ## Google 검색 최적화·사이트맵 제출 확인 — 2026-10-13 / Codex
 
 - 사용자 요청: Google 검색 노출 개선. Search Console 캡처에 속성 등록·색인 페이지 1개/검색 클릭 0회, 사이트맵 제출 없음 표시. 공개 sitemap(36 URL) HTTP 200 확인 후 제출 방법 안내, 사용자가 ‘제출 성공’ 확인. 실제 색인 미발견 사유를 전체 보고서 없이 단정하지 않았습니다.

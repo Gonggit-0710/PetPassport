@@ -57,7 +57,7 @@
     },
     {
       "name": "My Dog",
-      "url": "/mycard/",
+      "url": "/mydog/",
       "icons": [
         {
           "src": "media/icon-192.png",

@@ -3,9 +3,9 @@
    - 아이콘·이미지·글꼴은 저장본을 먼저 보여 주고 뒤에서 갱신
    - 히어로 영상(1MB 이상)과 GA·광고 요청은 건드리지 않음
    배포 때 규정만 바뀌면 VERSION을 안 올려도 됩니다(네트워크 우선이라 자동 갱신). sw.js나 저장 목록을 바꿀 때만 올리세요. */
-const VERSION = 'pawtrip-v39';
+const VERSION = 'pawtrip-v40';
 const CORE = ['./', 'index.html', 'data.json', 'base.css', 'rules.css', 'nav.js', 'search.js', 'search-index.json', 'features.js', 'trip-plan.js', 'site-language.js', 'medical-card.js', 'wallet-config.js', 'mycard.js', 'features.css'];
-const EXTRA = ['privacy.html', 'mycard/', 'countries/', 'airlines/', 'sos/', 'domestic/', 'titer/', 'cost/', 'local/', 'changes/', 'manifest.webmanifest', 'airports.json', 'media/logo-dark.svg', 'media/logo-light.svg', 'media/mark.svg', 'media/hero-poster.jpg',
+const EXTRA = ['privacy.html', 'mydog/', 'mycard/', 'countries/', 'airlines/', 'sos/', 'domestic/', 'titer/', 'cost/', 'local/', 'changes/', 'manifest.webmanifest', 'airports.json', 'media/logo-dark.svg', 'media/logo-light.svg', 'media/mark.svg', 'media/hero-poster.jpg',
   'media/icon-192.png', 'media/icon-512.png', 'media/apple-touch-icon.png'];
 const FONT_HOST = 'cdn.jsdelivr.net';
 

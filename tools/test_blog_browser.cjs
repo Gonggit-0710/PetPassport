@@ -16,7 +16,7 @@ const fs=require('node:fs');
    for(const link of links){await page.goto(base+link);await page.locator('.story img').last().scrollIntoViewIfNeeded();await page.waitForFunction(()=>[...document.querySelectorAll('.story img')].every(x=>x.complete&&x.naturalWidth>0));assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));assert.equal(await page.locator('.story script,.story iframe').count(),0)}
    await page.screenshot({path:`C:/Dev/PetPassport/pawlog-story-${width}.png`,fullPage:true});
   }
-  await page.goto(base+'/mycard/');await page.locator('#navRail a[href="/pawlog/"]').waitFor({state:'attached'});
+  await page.goto(base+'/mydog/');await page.locator('#navRail a[href="/pawlog/"]').waitFor({state:'attached'});
   const admin=process.env.PAWLOG_ADMIN_URL;if(!admin)throw Error('Set PAWLOG_ADMIN_URL to an isolated test editor, not the live editor.');
   await page.setViewportSize({width:1200,height:950});await page.goto(admin+'/admin/');
   await page.locator('#postList button').first().waitFor();

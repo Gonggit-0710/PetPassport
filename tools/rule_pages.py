@@ -174,7 +174,7 @@ def country_card(data, c, opened=False, suffix=''):
         f'<li><label><input type="checkbox" data-rule-check="{i}"><span>{esc(requirement)}</span></label></li>'
         for i, requirement in enumerate(c['requirements'])) + '</ul>'
     body += f'<section class="block"><h2 id="requirements{suffix}">입국 요건</h2>' + checks
-    body += '<p class="hint rule-check-hint">준비를 마친 항목을 체크하세요. <a href="/mycard/">My Dog에서 일괄 관리</a> · 이 브라우저에 자동 저장됩니다.</p><p class="hint" data-check-status role="status"></p></section>'
+    body += '<p class="hint rule-check-hint">준비를 마친 항목을 체크하세요. <a href="/mydog/">My Dog에서 일괄 관리</a> · 이 브라우저에 자동 저장됩니다.</p><p class="hint" data-check-status role="status"></p></section>'
     timeline = '<ol class="timeline">' + ''.join(
         f'<li><b>{"D-day" if t["d"] == 0 else "D" + ("+" if t["d"] > 0 else "") + str(t["d"])}</b><span>{esc(t["t"])}</span></li>'
         for t in c.get('timeline', [])) + '</ol>'
@@ -294,12 +294,12 @@ def pages(data):
     out.append(page('airlines', 'airlines', '강아지 기내 동반 항공사 비교와 운송 규정',
                     '국적 항공사 반려견 기내 동반·위탁 무게, 케이지 규격, 요금과 신청 방법을 항공사별로 확인하세요.',
                     '무게 한도만으로 탑승이 보장되지는 않습니다. 상세 규정과 노선·기종 제한을 함께 확인하세요.', airlines, verified(data)))
-    sos = '''<div class="links"><a class="btn btn-primary" href="/mycard/">My Dog 열기</a><a class="btn" href="/#sos">다국어 진료용 카드 열기</a></div>
+    sos = '''<div class="links"><a class="btn btn-primary" href="/mydog/">My Dog 열기</a><a class="btn" href="/#sos">다국어 진료용 카드 열기</a></div>
 <h2 id="languages">영어·일본어·중국어·한국어 다국어 진료용 카드</h2>
 <p>해외 동물병원에서 이름, 체중, 마이크로칩 번호, 지병, 알레르기, 복용약과 보호자 연락처를 한 화면으로 보여줄 수 있습니다.</p>
 <p>고정 문구와 선택형 항목을 번역합니다. 직접 입력한 메모와 약 이름은 원문 그대로 표시합니다.</p>
 <h2 id="prepare">여행 전에 준비하는 순서</h2>
-<ol><li><a href="/mycard/">펫 카드</a>에 반려견 정보를 입력합니다. 확인되지 않은 항목은 미입력으로 남겨 둡니다.</li>
+<ol><li><a href="/mydog/">펫 카드</a>에 반려견 정보를 입력합니다. 확인되지 않은 항목은 미입력으로 남겨 둡니다.</li>
 <li>My Dog에서 예시를 확인하고 간단 정보를 입력한 뒤 목적지에 맞는 언어를 고릅니다.</li>
 <li>완성된 진료용 카드를 PNG 이미지로 내려받거나 인쇄·PDF로 저장합니다.</li>
 <li>같은 기기에서 오프라인으로 열리는지 출발 전에 확인합니다.</li></ol>
@@ -320,9 +320,9 @@ def pages(data):
 <h2 id="backup">자동 저장과 백업</h2>
 <p>정보는 이 브라우저에만 저장됩니다. 기기를 바꾸기 전 백업 파일을 내려받으세요. 다른 기기와 자동 동기화되지는 않습니다.</p>
 <noscript><p>체크 기록과 반려견 정보를 관리하려면 JavaScript를 활성화해 주세요.</p></noscript>'''
-    out.append(dict(slug='mycard', tab='wallet', title='My Dog · 반려견 여행 준비 체크리스트와 서류 관리',
+    out.append(dict(slug='mydog', tab='wallet', title='My Dog · 반려견 여행 준비 체크리스트와 서류 관리',
                     heading='My Dog', desc='반려견 다국어 진료용 카드를 만들고 PNG 이미지·인쇄·PDF로 보관하세요. 국가별 입국 준비 체크리스트, 반려견 정보와 검역 서류 관리, 자동 저장과 백업을 지원합니다.',
                     lead='우리 강아지 정보와 여행 기록을 한곳에', group='My Dog',
                     body=lambda: mycard, verified=verified(data),
-                    extra='<script src="/trip-plan.js?v=1"></script><script src="/features.js?v=16"></script><script src="/wallet-config.js?v=1"></script><script src="/medical-card.js?v=5"></script><script src="/mycard.js?v=4"></script>'))
+                    extra='<script src="/trip-plan.js?v=1"></script><script src="/features.js?v=17"></script><script src="/wallet-config.js?v=1"></script><script src="/medical-card.js?v=6"></script><script src="/mycard.js?v=4"></script>'))
     return out

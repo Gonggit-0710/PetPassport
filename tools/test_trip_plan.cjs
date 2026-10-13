@@ -17,7 +17,7 @@ assert.equal(plan.project(jp,{dep:'2026-11-01'},today).tooSoon,true);
  try{
   const context=await browser.newContext({serviceWorkers:'block',viewport:{width:390,height:844}}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   await context.route(/cdn\.jsdelivr\.net/,r=>r.abort());const base=process.env.PAWTRIP_TEST_URL||'http://127.0.0.1:8766';
-  await page.goto(base+'/mycard/');await page.locator('#myTripDate').waitFor();assert.equal(await page.locator('#myTripDate').inputValue(),'');
+  await page.goto(base+'/mydog/');await page.locator('#myTripDate').waitFor();assert.equal(await page.locator('#myTripDate').inputValue(),'');
   assert.ok((await page.locator('#myTripSummary').innerText()).includes('출국일을 입력해 주세요'));
   const dep=await page.evaluate(()=>PTTripPlan.iso(new Date(Date.now()+300*86400000)));
   await page.locator('#myTripDate').fill(dep);await page.locator('#myTripDate').press('Tab');
@@ -27,7 +27,7 @@ assert.equal(plan.project(jp,{dep:'2026-11-01'},today).tooSoon,true);
   assert.equal(await page.locator('#myTripProgress').getAttribute('value'),'1');
   await page.goto(base+'/#plan');await page.locator('#dep').waitFor();assert.equal(await page.locator('#dep').inputValue(),dep);
   await page.locator('#dest').selectOption('us');
-  await page.goto(base+'/mycard/');assert.equal(await page.locator('#myCheckCountry').inputValue(),'us');assert.equal(await page.locator('#myTripDate').inputValue(),dep);
+  await page.goto(base+'/mydog/');assert.equal(await page.locator('#myCheckCountry').inputValue(),'us');assert.equal(await page.locator('#myTripDate').inputValue(),dep);
   assert.equal(await page.locator('#myTripProgress').getAttribute('value'),'0');
   assert.equal(await page.evaluate(()=>localStorage.getItem('pp3c-jp')),'[0]');
   const earlier=await page.evaluate(()=>PTTripPlan.iso(new Date(Date.now()+86400000)));

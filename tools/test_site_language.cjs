@@ -8,7 +8,7 @@ const {chromium}=require('playwright');
     await context.route(/cdn\.jsdelivr\.net/,r=>r.abort());
     page.on('request',r=>{if(r.method()==='POST')external.push(r.url());});
     const base=process.env.PAWTRIP_TEST_URL||'http://127.0.0.1:8766';
-    await page.goto(base+'/mycard/');await page.locator('[data-site-language]').waitFor();
+    await page.goto(base+'/mydog/');await page.locator('[data-site-language]').waitFor();
     for(const [ui,card] of [['ko','ko'],['en','en'],['ja','ja'],['zh','zh-CN']]){
       await page.locator('[data-site-language]').selectOption(ui);
       await page.locator('[data-example]').click();
@@ -36,7 +36,7 @@ const {chromium}=require('playwright');
     await page.goto(base+'/#flights');await page.waitForFunction(()=>document.documentElement.lang==='zh-CN');
     await page.locator('[data-site-language]').selectOption('en');await page.waitForFunction(()=>document.querySelector('#navRail').textContent.includes('Prepare'));
     await page.setViewportSize({width:390,height:844});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
-    await page.goto(base+'/mycard/');await page.locator('[data-create]').waitFor();await page.screenshot({path:'C:/Dev/PetPassport/site-language-mobile.png'});
+    await page.goto(base+'/mydog/');await page.locator('[data-create]').waitFor();await page.screenshot({path:'C:/Dev/PetPassport/site-language-mobile.png'});
     await page.setViewportSize({width:1440,height:1000});await page.screenshot({path:'C:/Dev/PetPassport/site-language-desktop.png'});
     await page.locator('[data-site-language]').selectOption('ko');await page.getByRole('button',{name:'간단 정보 수정',exact:true}).waitFor();
     assert.equal(await page.locator('.site-language-note').isVisible(),false);assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('pt-wallet')).name),'항공편 선택');

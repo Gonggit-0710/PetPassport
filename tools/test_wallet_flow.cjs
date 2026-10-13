@@ -9,7 +9,7 @@ const {chromium}=require('playwright');
     let responseStatus=503;
     await context.route('https://wallet.example/api/wallet-pass',async route=>{requests.push(route.request().postDataJSON());await route.fulfill(responseStatus===503?{status:503,contentType:'application/json',body:JSON.stringify({message:'Wallet 카드 발급 준비 중입니다. PNG 저장을 이용해 주세요.'})}:{status:200,contentType:'application/vnd.apple.pkpass',body:Buffer.from('PK\x03\x04mock-test-pass')});});
     const base=process.env.PAWTRIP_TEST_URL||'http://127.0.0.1:8766';
-    await page.goto(base+'/mycard/');
+    await page.goto(base+'/mydog/');
     await page.evaluate(()=>localStorage.setItem('pt-wallet',JSON.stringify({name:'Bori',weight:'4.2',ownerTel:'+82 10-0000-0000',condNone:true,algNone:true,medsNone:true,rabiesDate:'2026-01-01',titerDate:'2026-02-01'})));
     await page.reload();await page.locator('[data-preview]').click();
     assert.equal(await page.locator('[data-wallet]').isDisabled(),true,'disabled without a service endpoint');

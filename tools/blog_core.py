@@ -91,12 +91,25 @@ def shell(title, description, path, body, cover='',post=None):
     if post:
         graph += [organization(),{'@type':'BlogPosting','headline':title,'description':description,'url':'https://pawtrip.us'+path,'mainEntityOfPage':'https://pawtrip.us'+path,'datePublished':post['date'],'image':['https://pawtrip.us'+cover] if cover else [],'inLanguage':'ko','author':{'@id':'https://pawtrip.us/#organization'},'publisher':{'@id':'https://pawtrip.us/#organization'}}]
     metadata=ld({'@context':'https://schema.org','@graph':graph})
+    # Measure public PawLog pages only; omit query/hash and all private dog data.
+    analytics_title = json.dumps('PawTrip · PawLog' + (' · ' + title if post else ''), ensure_ascii=False).replace('<', '\\u003c')
+    analytics_path = json.dumps(path)
+    analytics = f'''<script>
+(function(){{
+  if(!/(^|\\.)pawtrip\\.us$/.test(location.hostname)) return;
+  var ID='G-6G8CX7W76G';
+  window.dataLayer=window.dataLayer||[];window.gtag=function(){{dataLayer.push(arguments);}};
+  var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+ID;document.head.appendChild(s);
+  gtag('js',new Date());gtag('config',ID,{{send_page_view:false}});
+  gtag('event','page_view',{{page_title:{analytics_title},page_path:{analytics_path},page_location:location.origin+{analytics_path}}});
+}})();
+</script>'''
     return f'''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(title)} · PawLog</title><meta name="description" content="{esc(description)}"><link rel="canonical" href="https://pawtrip.us{path}">
 <meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(description)}"><meta property="og:url" content="https://pawtrip.us{path}">{image}
 <meta property="og:type" content="{'article' if post else 'website'}"><meta property="og:locale" content="ko_KR"><meta name="twitter:card" content="summary_large_image">{metadata}
-<link rel="icon" href="/media/icon-192.png"><link rel="stylesheet" href="/pawlog/blog.css?v=3"></head><body>
-<a class="skip" href="#main">본문으로 건너뛰기</a><header><a class="brand" href="/" aria-label="PawTrip 홈"><img src="/media/logo-light.svg" alt="PawTrip"></a><nav aria-label="PawLog 메뉴"><a href="/pawlog/">PawLog</a><a href="/mycard/">My Dog</a><a href="https://blog.naver.com/pawtrip">네이버 블로그</a></nav></header>
+<link rel="icon" href="/media/icon-192.png"><link rel="stylesheet" href="/pawlog/blog.css?v=3">{analytics}</head><body>
+<a class="skip" href="#main">본문으로 건너뛰기</a><header><a class="brand" href="/" aria-label="PawTrip 홈"><img src="/media/logo-light.svg" alt="PawTrip"></a><nav aria-label="PawLog 메뉴"><a href="/pawlog/">PawLog</a><a href="/mydog/">My Dog</a><a href="https://blog.naver.com/pawtrip">네이버 블로그</a></nav></header>
 <main id="main">{body}</main><footer><a href="/">PawTrip 여행 준비</a><span>© PawTrip · PawLog</span></footer></body></html>'''
 
 def build_blog():

@@ -62,7 +62,7 @@
 <header class="topbar">
   <div class="topbar-row">
     <a class="logo" href="/" aria-label="PawTrip 홈"><picture><source srcset="/media/logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/media/logo-light.svg" alt="PawTrip" style="height:34px;width:auto"></picture></a>
-    <span class="topbar-right"><span class="meta">확인일 <b>2026-10-08</b></span><a class="sos-btn my-card-button" href="/mycard/" aria-label="My Dog 열기">My Dog</a></span>
+    <span class="topbar-right"><span class="meta">확인일 <b>2026-10-08</b></span><a class="sos-btn my-card-button" href="/mydog/" aria-label="My Dog 열기">My Dog</a></span>
   </div>
   <nav class="tabs groups" id="navGroups" aria-label="메뉴 묶음"></nav>
   <nav class="tabs" id="navSub" aria-label="메뉴"></nav>
@@ -70,7 +70,7 @@
 <div class="shell">
   <aside class="rail" aria-label="사이트 메뉴">
     <a class="logo" href="/"><picture><source srcset="/media/logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/media/logo-light.svg" alt="PawTrip" style="height:38px;width:auto"></picture></a>
-    <a class="sos-rail my-card-primary" href="/mycard/"><span class="sos-btn" aria-hidden="true">MY</span><span><b>My Dog</b>우리 강아지 정보와 여행 기록을 한곳에</span></a>
+    <a class="sos-rail my-card-primary" href="/mydog/"><span class="sos-btn" aria-hidden="true">MY</span><span><b>My Dog</b>우리 강아지 정보와 여행 기록을 한곳에</span></a>
     <nav aria-label="메뉴" id="navRail"><p class="rail-g">준비하기</p><ol><li><a class="rl" href="/#flights"><span class="dot"></span>항공편 선택</a></li><li><a class="rl" href="/#plan"><span class="dot"></span>일정 계산</a></li><li><a class="rl" href="/#prep"><span class="dot"></span>준비 루틴</a></li><li><a class="rl" href="/titer/"><span class="dot"></span>항체가 검사</a></li><li><a class="rl" href="/cost/"><span class="dot"></span>비용 계산</a></li></ol><p class="rail-g">규정</p><ol><li><a class="rl" href="/countries/"><span class="dot"></span>국가별 규정</a></li><li><a class="rl" href="/airlines/"><span class="dot"></span>항공사 비교</a></li><li><a class="rl" href="/domestic/"><span class="dot"></span>국내 이동</a></li><li><a class="rl" href="/local/"><span class="dot"></span>현지 이동</a></li><li><a class="rl" href="/#return"><span class="dot"></span>귀국 검역</a></li></ol><a class="pawlog-nav" href="/pawlog/">PawLog</a></nav>
     <div class="meta"><strong>대한민국 출발 기준</strong>이 페이지 확인일 2026-10-08<br>출발 전 공식 출처에서 다시 확인하세요.</div>
   </aside>
@@ -108,11 +108,11 @@
   </div>
 </div>
 <script src="/site-language.js?v=3"></script>
-<script src="/nav.js?v=9"></script>
-<script src="/search.js?v=6"></script>
+<script src="/nav.js?v=10"></script>
+<script src="/search.js?v=7"></script>
 <script>
 PTNav.render('cost');
-try{ gtag('event','page_view',{page_path:location.pathname,page_title:document.title}); }catch(e){}
+try{ gtag('event','page_view',{page_location:location.origin+location.pathname,page_path:location.pathname,page_title:"PawTrip · 반려견 해외여행 비용 계산"}); }catch(e){}
 if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('/sw.js').catch(function(){});
 document.addEventListener('click',function(e){var a=e.target.closest('a.link[target="_blank"]'); if(a) try{gtag('event','source_click',{link_url:a.href,item_id:'cost'});}catch(x){}});
 </script>

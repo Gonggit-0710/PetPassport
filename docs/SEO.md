@@ -40,6 +40,13 @@ python tools/check_release.py
 
 ## 공식 기준
 
+GA 확인: PawLog 목록·글은 운영 도메인에서 페이지 조회를 수동 전송합니다. 과거 제목은 이전 방문 기록에 남으며 소급 변경하지 않습니다. 배포 후 실제 방문을 실시간 보고서에서 확인하고, 일반 보고서는 24~48시간 뒤 배포 이후 날짜 범위로 확인합니다. 인기 요약에서 누락된 글은 ‘페이지 및 화면’에서 PawLog 또는 경로로 검색합니다. My Dog 실제 경로는 `/mydog/`이며 `/mycard/`는 호환 이동용입니다.
+
+홈페이지 해시 메뉴도 수동 조회를 전송하므로 GA 데이터 스트림의 향상된 측정 > 페이지 조회 고급 설정에서 브라우저 기록 이벤트 기반 페이지 변경의 중복 측정 여부를 확인합니다. `send_page_view:false`만으로 향상된 측정의 기록 변경 조회까지 꺼지는 것은 아닙니다. 계정 설정은 이번 작업에서 변경하지 않았습니다.
+
+- [GA 데이터 반영 시간](https://support.google.com/analytics/answer/11198161)
+- [GA 수동 페이지 조회와 중복 방지](https://developers.google.com/analytics/devguides/collection/ga4/views)
+
 - [Google SEO 시작 가이드](https://developers.google.com/search/docs/fundamentals/seo-starter-guide)
 - [크롤링 가능한 링크](https://developers.google.com/search/docs/crawling-indexing/links-crawlable)
 - [사이트 이름](https://developers.google.com/search/docs/appearance/site-names)

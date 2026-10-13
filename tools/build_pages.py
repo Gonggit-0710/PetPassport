@@ -83,7 +83,7 @@ SHELL = '''<!doctype html>
 <header class="topbar">
   <div class="topbar-row">
     <a class="logo" href="/" aria-label="PawTrip 홈"><picture><source srcset="/media/logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/media/logo-light.svg" alt="PawTrip" style="height:34px;width:auto"></picture></a>
-    <span class="topbar-right"><span class="meta">확인일 <b>{verified}</b></span><a class="sos-btn my-card-button" href="/mycard/" aria-label="My Dog 열기">My Dog</a></span>
+    <span class="topbar-right"><span class="meta">확인일 <b>{verified}</b></span><a class="sos-btn my-card-button" href="/mydog/" aria-label="My Dog 열기">My Dog</a></span>
   </div>
   <nav class="tabs groups" id="navGroups" aria-label="메뉴 묶음"></nav>
   <nav class="tabs" id="navSub" aria-label="메뉴"></nav>
@@ -91,7 +91,7 @@ SHELL = '''<!doctype html>
 <div class="shell">
   <aside class="rail" aria-label="사이트 메뉴">
     <a class="logo" href="/"><picture><source srcset="/media/logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/media/logo-light.svg" alt="PawTrip" style="height:38px;width:auto"></picture></a>
-    <a class="sos-rail my-card-primary" href="/mycard/"><span class="sos-btn" aria-hidden="true">MY</span><span><b>My Dog</b>우리 강아지 정보와 여행 기록을 한곳에</span></a>
+    <a class="sos-rail my-card-primary" href="/mydog/"><span class="sos-btn" aria-hidden="true">MY</span><span><b>My Dog</b>우리 강아지 정보와 여행 기록을 한곳에</span></a>
     <nav aria-label="메뉴" id="navRail">{static_menu}</nav>
     <div class="meta"><strong>대한민국 출발 기준</strong>이 페이지 확인일 {verified}<br>출발 전 공식 출처에서 다시 확인하세요.</div>
   </aside>
@@ -111,11 +111,11 @@ SHELL = '''<!doctype html>
   </div>
 </div>
 <script src="/site-language.js?v=3"></script>
-<script src="/nav.js?v=9"></script>
-<script src="/search.js?v=6"></script>
+<script src="/nav.js?v=10"></script>
+<script src="/search.js?v=7"></script>
 <script>
 PTNav.render('{tab}');
-try{{ gtag('event','page_view',{{page_path:location.pathname,page_title:document.title}}); }}catch(e){{}}
+try{{ gtag('event','page_view',{{page_location:location.origin+location.pathname,page_path:location.pathname,page_title:{analytics_title}}}); }}catch(e){{}}
 if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('/sw.js').catch(function(){{}});
 document.addEventListener('click',function(e){{var a=e.target.closest('a.link[target="_blank"]'); if(a) try{{gtag('event','source_click',{{link_url:a.href,item_id:'{tab}'}});}}catch(x){{}}}});
 </script>
@@ -186,7 +186,7 @@ def domestic_body():
           <li><span>약관에 이동장 크기·무게 수치는 없습니다. 큰 이동장이면 코레일 고객센터(1544-7788)에 먼저 확인하세요</span></li></ul>
           <div class="links">{ext('https://www.letskorail.com','코레일 (약관: 한국철도공사 여객운송약관 휴대품 조항)')}</div></div>
       </div>
-      <p class="hint">예방접종 증명서는 요구받을 수 있으니 사진이나 <a href="/mycard/">펫 카드의 서류 사본</a>으로 챙겨 두세요.</p>
+      <p class="hint">예방접종 증명서는 요구받을 수 있으니 사진이나 <a href="/mydog/">펫 카드의 서류 사본</a>으로 챙겨 두세요.</p>
 
       <h2 id="etc">고속버스 · 여객선</h2>
       <p>고속버스 회사와 제주행 여객선사는 회사마다 기준이 다르고, 아직 공식 운송약관 원문을 모두 확인하지 못했습니다. 확인을 마치면 이 페이지에 추가합니다. 그 전에는 예매 전 각 회사에 반려동물 동반 기준을 물어보세요.</p>
@@ -403,6 +403,7 @@ def build():
         elif p['slug'].startswith('airlines/'): crumbs.append(('항공사 비교','/airlines/'))
         crumbs.append((p.get('heading',p['title']),f"/{p['slug']}/"))
         out = SHELL.format(title=html.escape(p['title']), desc=html.escape(p['desc']), url=url, verified=p.get('verified', VERIFIED),
+                           analytics_title=json.dumps('PawTrip · '+('My Dog' if p['tab']=='wallet' else p.get('heading',p['title'])),ensure_ascii=False).replace('<','\\u003c'),
                            group=html.escape(p['group']), lead=html.escape(p['lead']), body=body, tab=p['tab'], extra=p.get('extra',''),
                            page_class=p.get('page_class', ''), page_style=p.get('page_style', ''), heading=html.escape(p.get('heading', p['title'])),
                            seo_metadata=page_metadata(p['title'],p['desc'],f"/{p['slug']}/",crumbs),breadcrumbs=breadcrumbs_html(crumbs),static_menu=static_menu(),discovery=discovery(data))
@@ -414,6 +415,10 @@ def build():
     urls = [('/', max(VERIFIED, data['meta']['verified']))] + [(f"/{p['slug']}/", p.get('verified', VERIFIED)) for p in all_pages] + [('/privacy.html', '2026-10-08')]
     urls += [(path, '2026-10-12') for path in ['/games/', '/games/not-the-vacuum/', '/games/not-the-vacuum/privacy/']]
     urls += [('/pawlog/', max((p['date'] for p in blog_posts),default='2026-10-12'))] + [(f"/pawlog/{p['slug']}/",p['date']) for p in blog_posts]
+    # Keep bookmarks and edit/travel deep links working on static GitHub Pages.
+    legacy=os.path.join(ROOT,'mycard');os.makedirs(legacy,exist_ok=True)
+    with open(os.path.join(legacy,'index.html'),'w',encoding='utf-8',newline='\n') as f:
+        f.write('''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="robots" content="noindex,follow"><link rel="canonical" href="https://pawtrip.us/mydog/"><meta http-equiv="refresh" content="0;url=/mydog/"><title>My Dog로 이동 · PawTrip</title></head><body><p><a id="new-address" href="/mydog/">My Dog로 이동합니다.</a></p><script>var next='/mydog/'+location.search+location.hash;document.getElementById('new-address').href=next;location.replace(next);</script></body></html>''')
     urls=sitemap_dates(urls)
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{SITE}{u}</loc><lastmod>{d}</lastmod></url>\n' for u, d in urls) + '</urlset>\n'
     with open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8', newline='\n') as f: f.write(sm)

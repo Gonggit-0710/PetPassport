@@ -195,7 +195,7 @@ PTX.views.wallet = function(){
       editing ? '입력하는 즉시 이 기기에 저장됩니다. 다 넣었으면 아래 완료를 누르세요.' : '우리 강아지 정보와 여행 기록을 한곳에') +
     `<section class="mycard-privacy" aria-label="내 정보 보관 안내"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><div><h2>입력한 정보는 이 기기에 보관돼요</h2><p>반려견 정보·사진·서류는 지금 사용하는 브라우저에 저장돼요. 카드 작성만으로 PawTrip에 전송되거나 다른 사용자에게 공개되지 않아요.</p><p class="mycard-privacy-detail">직접 카드를 공유하거나 Apple Wallet 발급에 동의할 때만, 전달할 정보를 외부로 보내요. <a href="/privacy.html#s3">자세히 보기</a></p></div></section>` +
     (editing ? '' : `<div class="callout bad" style="margin-bottom:16px"><strong>원본 서류를 대신하지 않습니다</strong>공항 검역과 항공사 카운터는 수의사가 서명한 원본 증명서와 검역증명서를 확인합니다. 이 카드는 빠른 확인용 요약이니 원본은 반드시 챙기세요.</div>`) + `
-    ${editing ? '' : '<div id="medicalFlow" class="wsec"></div><div id="wprogress" class="wsec"></div><div class="links" style="margin-bottom:16px"><a class="link" href="/mycard/#trips">여행 기록 보기</a><a class="link" href="/#sos">기존 다국어 진료용 화면·현지 병원 찾기</a></div>'}
+    ${editing ? '' : '<div id="medicalFlow" class="wsec"></div><div id="wprogress" class="wsec"></div><div class="links" style="margin-bottom:16px"><a class="link" href="/mydog/#trips">여행 기록 보기</a><a class="link" href="/#sos">기존 다국어 진료용 화면·현지 병원 찾기</a></div>'}
     <div id="wbody"></div>
     ${editing ? '' : `<details class="panel wsec" id="wtrips"><summary>여행 기록</summary><div id="wtripsBody" style="margin-top:18px"></div></details>
     <div id="wdocs" class="wsec"></div>
@@ -273,9 +273,9 @@ window.addEventListener('storage', e => {
 PTX.views.sos = function(){
   const app = PT.app; const w = W();
   app.innerHTML = PT.head('My Dog · 진료용','다국어 진료용 카드','반려견이 아플 때 현지 동물병원에서 이 화면을 그대로 보여주세요. 인터넷이 없어도 열립니다.') + `
-    ${walletFilled(w) ? '' : '<div class="callout bad" style="margin-bottom:16px"><strong>아직 카드가 비어 있어요</strong>여행 전에 이름·마이크로칩 번호·지병·알레르기를 미리 넣어 두세요. <a href="/mycard/?edit=1" id="sosFill">반려견 정보 입력하기</a></div>'}
+    ${walletFilled(w) ? '' : '<div class="callout bad" style="margin-bottom:16px"><strong>아직 카드가 비어 있어요</strong>여행 전에 이름·마이크로칩 번호·지병·알레르기를 미리 넣어 두세요. <a href="/mydog/?edit=1" id="sosFill">반려견 정보 입력하기</a></div>'}
     <div id="wbody"></div>
-    <div class="links"><a class="link" href="/mycard/?edit=1" id="sosEdit">카드 내용 고치기</a></div>`;
+    <div class="links"><a class="link" href="/mydog/?edit=1" id="sosEdit">카드 내용 고치기</a></div>`;
   ['sosFill','sosEdit'].forEach(id => { const a = document.getElementById(id); if(a) a.addEventListener('click', () => { wTab = 'edit'; }); });
   renderSos(document.getElementById('wbody'));
   PT.track('sos_open', {source:'page'});
