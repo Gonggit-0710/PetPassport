@@ -1,4 +1,4 @@
-/* My Card creation and export. Personal data stays in the browser. */
+/* My Dog creation and export. Personal data stays in the browser. */
 (function(){
   'use strict';
   const PTX = window.PTX = window.PTX || {};
@@ -35,7 +35,7 @@
     }
     function card(w, url, example){
       return `<article class="medical-card" lang="${lang==='zh'?'zh-CN':lang}">
-        <header class="medical-card-head"><div><span class="medical-brand">PawTrip · My Card${example?' · SAMPLE':''}</span><h3>${L[lang].title}</h3><p>${esc(w.name||'—')}</p></div>${url?`<img class="medical-photo" src="${esc(url)}" alt="반려견 사진">`:''}</header>
+        <header class="medical-card-head"><div><span class="medical-brand">PawTrip · My Dog${example?' · SAMPLE':''}</span><h3>${L[lang].title}</h3><p>${esc(w.name||'—')}</p></div>${url?`<img class="medical-photo" src="${esc(url)}" alt="반려견 사진">`:''}</header>
         <dl>${rows(w).map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
         <footer><p>${esc(note())}</p><span>${esc(dateLabel(w))}</span><b>pawtrip.us</b></footer></article>`;
     }
@@ -119,7 +119,7 @@
         q('[data-export-status]').textContent='이미지가 준비됐어요. 선택한 언어로 저장됩니다.';
         q('[data-download]').onclick=()=>{const a=document.createElement('a');a.href=imageUrl;a.download=file.name;document.body.appendChild(a);a.click();a.remove();track('medical_image_download',{language:lang});q('[data-export-status]').textContent='이미지 내려받기를 요청했어요. 다운로드 폴더를 확인하세요.';};
         let canShare=false; try{canShare=!!(navigator.share && navigator.canShare && navigator.canShare({files:[file]}));}catch(_){}
-        if(canShare){q('[data-share]').hidden=false;q('[data-share]').onclick=async()=>{try{await navigator.share({files:[file],title:'PawTrip · My Card'});if(token===revision){track('medical_image_share',{language:lang});q('[data-export-status]').textContent='공유 메뉴를 열었어요. 선택한 앱에서 이미지가 첨부됐는지 확인하세요. 첨부되지 않으면 PNG를 내려받아 직접 첨부해 주세요.';}}catch(err){if(token===revision) q('[data-export-status]').textContent=err.name==='AbortError'?'공유를 취소했어요.':'공유하지 못했어요. 이미지 내려받기 또는 미리보기를 이용하세요.';}};}
+        if(canShare){q('[data-share]').hidden=false;q('[data-share]').onclick=async()=>{try{await navigator.share({files:[file],title:'PawTrip · My Dog'});if(token===revision){track('medical_image_share',{language:lang});q('[data-export-status]').textContent='공유 메뉴를 열었어요. 선택한 앱에서 이미지가 첨부됐는지 확인하세요. 첨부되지 않으면 PNG를 내려받아 직접 첨부해 주세요.';}}catch(err){if(token===revision) q('[data-export-status]').textContent=err.name==='AbortError'?'공유를 취소했어요.':'공유하지 못했어요. 이미지 내려받기 또는 미리보기를 이용하세요.';}};}
       }catch(_){if(token===revision) q('[data-export-status]').textContent='이미지를 만들지 못했어요. 인쇄·PDF 저장을 이용하거나 다시 시도해 주세요.';}
     }
     function walletPanel(panel,w,token,endpoint){
@@ -167,7 +167,7 @@
       cv.width=1440;cv.height=Math.ceil(height*2);g.scale(2,2);
       g.fillStyle='#fff';g.fillRect(0,0,720,height);g.fillStyle='#163449';g.fillRect(0,0,720,headerHeight);
       const text=(s,x,y,size,color,weight='400')=>{g.font=`${weight} ${size}px ${font}`;g.fillStyle=color;g.fillText(s,x,y);};
-      text('PawTrip · My Card',48,35,18,'#fff','700'); let y=73;
+      text('PawTrip · My Dog',48,35,18,'#fff','700'); let y=73;
       title.forEach(s=>{text(s,48,y,28,'#fff','700');y+=38;});name.forEach(s=>{text(s,48,y,24,'#fff');y+=34;});
       if(url){const img=new Image();await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=reject;img.src=url;});const scale=Math.min(100/img.width,100/img.height);g.drawImage(img,560+(100-img.width*scale)/2,25+(100-img.height*scale)/2,img.width*scale,img.height*scale);}
       y=headerHeight;
@@ -178,7 +178,7 @@
     function printCard(html){
       const frame=document.createElement('iframe');frame.className='medical-print-frame';frame.title='진료용 카드 인쇄';
       frame.onload=async()=>{try{const win=frame.contentWindow;await win.document.fonts.ready;await Promise.all(Array.from(win.document.images).map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=r;img.onerror=r;})));win.addEventListener('afterprint',()=>frame.remove(),{once:true});win.focus();win.print();track('medical_print_request',{language:lang});}catch(_){frame.remove();q('[data-export-status]').textContent='인쇄 화면을 열지 못했어요. 이미지를 내려받아 인쇄해 주세요.';}};
-      frame.srcdoc=`<!doctype html><html><head><meta charset="utf-8"><title>PawTrip My Card</title><style>@page{size:A4;margin:15mm}body{margin:0;font:14px Arial,"Malgun Gothic",sans-serif;color:#111}.medical-card{max-width:680px;margin:auto}.medical-card-head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #163449;padding-bottom:14px}.medical-brand{font-weight:bold}h3{font-size:24px;margin:8px 0}p{margin:8px 0}.medical-photo{width:90px;height:90px;object-fit:contain}dl{margin:16px 0}dt{font-weight:bold;break-after:avoid}dd{margin:4px 0 14px;white-space:pre-wrap;overflow-wrap:anywhere;break-inside:avoid}footer{border-top:1px solid #aaa;font-size:11px;padding-top:10px}footer b{display:block;margin-top:8px}</style></head><body>${html}</body></html>`;
+      frame.srcdoc=`<!doctype html><html><head><meta charset="utf-8"><title>PawTrip My Dog</title><style>@page{size:A4;margin:15mm}body{margin:0;font:14px Arial,"Malgun Gothic",sans-serif;color:#111}.medical-card{max-width:680px;margin:auto}.medical-card-head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #163449;padding-bottom:14px}.medical-brand{font-weight:bold}h3{font-size:24px;margin:8px 0}p{margin:8px 0}.medical-photo{width:90px;height:90px;object-fit:contain}dl{margin:16px 0}dt{font-weight:bold;break-after:avoid}dd{margin:4px 0 14px;white-space:pre-wrap;overflow-wrap:anywhere;break-inside:avoid}footer{border-top:1px solid #aaa;font-size:11px;padding-top:10px}footer b{display:block;margin-top:8px}</style></head><body>${html}</body></html>`;
       document.body.appendChild(frame);
     }
     home();

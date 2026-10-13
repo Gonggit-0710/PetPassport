@@ -1,5 +1,5 @@
 /* PawTrip 공통 메뉴: 앱(index.html)과 실제 주소 페이지(/domestic/ 등)가 함께 씀
-   모바일: 위 줄 = 묶음 3개, 아래 줄 = 고른 묶음의 메뉴 / 데스크톱: 왼쪽에 묶음별 목록 */
+   모바일: 위 줄 = 준비하기·규정 + PawLog, 아래 줄 = 고른 묶음의 메뉴 / 데스크톱: 왼쪽에 묶음별 목록 */
 (function(){
   'use strict';
   const NAV = [
@@ -16,12 +16,6 @@
       ['domestic','국내 이동','/domestic/'],
       ['local','현지 이동','/local/'],
       ['return','귀국 검역','/#return']
-    ]},
-    {id:'mypet', name:'내 반려견', items:[
-      ['wallet','My Card','/mycard/', true],
-      ['sos','다국어 진료용 카드','/#sos', true],
-      ['trips','여행 기록','/#trips'],
-      ['blog','PawLog','/pawlog/']
     ]}
   ];
   const EXTRA = [['about','기준과 출처','/#about'],['changes','변경 이력','/changes/']];
@@ -36,10 +30,11 @@
     const g = groupOf(active) || (shownGroup && NAV.find(x=>x.id===shownGroup)) || NAV[0];
     shownGroup = g.id;
     const gEl = document.getElementById('navGroups'), sEl = document.getElementById('navSub'), rEl = document.getElementById('navRail');
-    if(gEl) gEl.innerHTML = NAV.map(x => `<button type="button" data-group="${x.id}" aria-pressed="${x.id===g.id}">${esc(x.name)}</button>`).join('');
+    if(gEl) gEl.innerHTML = NAV.map(x => `<button type="button" data-group="${x.id}" aria-pressed="${x.id===g.id}">${esc(x.name)}</button>`).join('') + '<a class="pawlog-nav" href="/pawlog/">PawLog</a>';
     if(sEl){ sEl.innerHTML = g.items.map(i => link(i, active)).join('');
       const act = sEl.querySelector('[aria-current="page"]'); if(act) sEl.scrollTo({left: act.offsetLeft - (sEl.clientWidth - act.offsetWidth)/2}); }
     if(rEl) rEl.innerHTML = NAV.map(x => `<p class="rail-g">${esc(x.name)}</p><ol>${x.items.filter(i=>!i[3]).map(i => `<li>${link(i, active, 'rl')}</li>`).join('')}</ol>`).join('')
+      + '<a class="pawlog-nav" href="/pawlog/">PawLog</a>'
       + `<p class="rail-x">${EXTRA.map(i => `<a href="${i[2]}" aria-current="${i[0]===active?'page':'false'}">${esc(i[1])}</a>`).join(' · ')}</p>`;
     document.querySelectorAll('.sos-btn[href],.sos-rail').forEach(a => a.setAttribute('aria-current', active==='wallet'?'page':'false'));
   }

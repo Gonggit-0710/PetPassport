@@ -30,7 +30,7 @@ python tools/prepare_site.py
 
 마지막 명령은 공개 파일만 `_site/`에 모읍니다. 테스트에는 JavaScript 문법 검사를 위한 Node.js가 필요합니다.
 
-업로드 전에 `python tools/check_release.py`로 공개 파일과 내부 연결을 확인합니다. My Card 예시·간단 작성·PNG 저장·개인정보 안내의 이번 배포 절차는 [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)에 있습니다. Apple Wallet은 인증서와 실제 기기 검증 전까지 준비 중으로 유지합니다.
+업로드 전에 `python tools/check_release.py`로 공개 파일과 내부 연결을 확인합니다. My Dog 예시·간단 작성·PNG 저장·개인정보 안내의 이번 배포 절차는 [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)에 있습니다. Apple Wallet은 인증서와 실제 기기 검증 전까지 준비 중으로 유지합니다.
 
 ### GitHub Actions 배포로 전환할 때
 

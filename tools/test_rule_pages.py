@@ -106,9 +106,9 @@ class RulePagesTest(unittest.TestCase):
     def test_mycard_is_searchable_without_exposing_user_records(self):
         source = (ROOT / 'mycard/index.html').read_text(encoding='utf-8')
         self.assertIn('국가별 준비 체크리스트 관리', source)
-        self.assertIn('/mycard.js?v=2', source)
+        self.assertRegex(source, r'/mycard\.js\?v=\d+')
         index = json.loads((ROOT / 'search-index.json').read_text(encoding='utf-8'))
-        self.assertTrue(any(row['u'] == '/mycard/' and 'My Card' in row['t'] for row in index))
+        self.assertTrue(any(row['u'] == '/mycard/' and 'My Dog' in row['t'] for row in index))
         self.assertIn("'mycard.js'", (ROOT / 'tools/prepare_site.py').read_text(encoding='utf-8'))
 
     def test_javascript_syntax(self):

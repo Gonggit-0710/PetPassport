@@ -1,4 +1,4 @@
-/* Standalone My Card: reuse the existing wallet and browser storage. */
+/* Standalone My Dog: reuse the existing wallet and browser storage. */
 (function(){
   'use strict';
   const app = document.getElementById('main');
@@ -14,13 +14,13 @@
     if(new URLSearchParams(location.search).get('edit') === '1') window.PTX.editWallet();
     else window.PTX.views.wallet();
     function reveal(){
-      const targets = {medical:'medicalFlow', checklists:'wprogress', documents:'wdocs', backup:'wbk'};
+      const targets = {medical:'medicalFlow', checklists:'wprogress', documents:'wdocs', backup:'wbk', trips:'wtrips'};
       const target = document.getElementById(targets[location.hash.slice(1)]);
       if(target){ if(target.tagName === 'DETAILS') target.open = true; target.scrollIntoView(); }
     }
     window.addEventListener('hashchange', reveal);
     reveal();
   }).catch(() => {
-    app.insertAdjacentHTML('beforeend', '<div class="callout bad" role="alert"><strong>My Card를 불러오지 못했습니다.</strong>인터넷 연결을 확인하고 페이지를 새로고침해 주세요.</div>');
+    app.insertAdjacentHTML('beforeend', '<div class="callout bad" role="alert"><strong>My Dog를 불러오지 못했습니다.</strong>인터넷 연결을 확인하고 페이지를 새로고침해 주세요.</div>');
   });
 })();

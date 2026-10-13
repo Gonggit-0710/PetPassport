@@ -191,16 +191,19 @@ PTX.views.wallet = function(){
   if(previousFlow && previousFlow.disposeMedicalCard) previousFlow.disposeMedicalCard();
   // 한 화면 구성: 펫 카드(오른쪽 위 '정보 고치기') → 서류 사본 → 백업·복원(접힘). SOS는 상단 SOS 버튼·메뉴에서
   const app = PT.app; const editing = wTab === 'edit'; wTab = 'card'; // 편집 모드는 한 번만 (다른 메뉴 갔다 오면 카드로)
-  app.innerHTML = PT.head('내 반려견 · My Card', editing ? '반려견 정보 입력' : 'My Card',
-      editing ? '입력하는 즉시 이 기기에 저장됩니다. 다 넣었으면 아래 완료를 누르세요.' : '국가별 입국 준비, 반려견 정보와 서류를 한곳에서 관리하세요. 체크한 항목은 자동 저장됩니다.') +
+  app.innerHTML = PT.head('My Dog', editing ? '반려견 정보 입력' : 'My Dog',
+      editing ? '입력하는 즉시 이 기기에 저장됩니다. 다 넣었으면 아래 완료를 누르세요.' : '우리 강아지 정보와 여행 기록을 한곳에') +
     `<section class="mycard-privacy" aria-label="내 정보 보관 안내"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><div><h2>입력한 정보는 이 기기에 보관돼요</h2><p>반려견 정보·사진·서류는 지금 사용하는 브라우저에 저장돼요. 카드 작성만으로 PawTrip에 전송되거나 다른 사용자에게 공개되지 않아요.</p><p class="mycard-privacy-detail">직접 카드를 공유하거나 Apple Wallet 발급에 동의할 때만, 전달할 정보를 외부로 보내요. <a href="/privacy.html#s3">자세히 보기</a></p></div></section>` +
     (editing ? '' : `<div class="callout bad" style="margin-bottom:16px"><strong>원본 서류를 대신하지 않습니다</strong>공항 검역과 항공사 카운터는 수의사가 서명한 원본 증명서와 검역증명서를 확인합니다. 이 카드는 빠른 확인용 요약이니 원본은 반드시 챙기세요.</div>`) + `
-    ${editing ? '' : '<div id="medicalFlow" class="wsec"></div><div id="wprogress" class="wsec"></div><div class="links" style="margin-bottom:16px"><a class="link" href="/#sos">기존 다국어 진료용 화면·현지 병원 찾기</a></div>'}
+    ${editing ? '' : '<div id="medicalFlow" class="wsec"></div><div id="wprogress" class="wsec"></div><div class="links" style="margin-bottom:16px"><a class="link" href="/mycard/#trips">여행 기록 보기</a><a class="link" href="/#sos">기존 다국어 진료용 화면·현지 병원 찾기</a></div>'}
     <div id="wbody"></div>
-    ${editing ? '' : `<div id="wdocs" class="wsec"></div>
+    ${editing ? '' : `<details class="panel wsec" id="wtrips"><summary>여행 기록</summary><div id="wtripsBody" style="margin-top:18px"></div></details>
+    <div id="wdocs" class="wsec"></div>
     <details class="panel wsec" id="wbk"><summary>기기를 바꿀 때: 백업·복원</summary><div id="wbkBody" style="margin-top:14px"></div></details>`}
     <p class="hint" style="margin-top:16px">기기를 바꾸거나 사이트 데이터를 지우기 전, 백업 파일로 정보를 보관하세요. 다른 기기와 자동으로 동기화되지는 않아요.</p>`;
   if(editing){ renderEdit($('#wbody')); window.scrollTo({top:0}); return; }
+  const tripsSection=$('#wtrips');let tripsLoaded=false;
+  tripsSection.addEventListener('toggle',()=>{if(tripsSection.open&&!tripsLoaded){tripsLoaded=true;PTX.views.trips($('#wtripsBody'));}});
   renderProgress($('#wprogress')); renderCard($('#wbody')); renderDocs($('#wdocs')); renderBackup($('#wbkBody'));
   if(PTX.mountMedicalCard) PTX.mountMedicalCard($('#medicalFlow'), {
     esc:PT.esc, languages:L, conditions:CONDITIONS, allergies:ALLERGIES,
@@ -245,7 +248,7 @@ function renderProgress(el){
   el.querySelectorAll('[data-my-check]').forEach(box => box.addEventListener('change', () => {
     const done = [...el.querySelectorAll('[data-my-check]:checked')].map(x=>Number(x.dataset.myCheck));
     const ok = LS.set('pp3c-' + current.id, done);
-    $('#myCheckSaved').textContent = ok ? '저장됨 · My Card에서 언제든 이어서 확인하세요.' : '저장하지 못했어요. 브라우저 저장 공간을 확인하세요.';
+    $('#myCheckSaved').textContent = ok ? '저장됨 · My Dog에서 언제든 이어서 확인하세요.' : '저장하지 못했어요. 브라우저 저장 공간을 확인하세요.';
     refresh();
   }));
 }
@@ -269,7 +272,7 @@ window.addEventListener('storage', e => {
 
 PTX.views.sos = function(){
   const app = PT.app; const w = W();
-  app.innerHTML = PT.head('My Card · 진료용','다국어 진료용 카드','반려견이 아플 때 현지 동물병원에서 이 화면을 그대로 보여주세요. 인터넷이 없어도 열립니다.') + `
+  app.innerHTML = PT.head('My Dog · 진료용','다국어 진료용 카드','반려견이 아플 때 현지 동물병원에서 이 화면을 그대로 보여주세요. 인터넷이 없어도 열립니다.') + `
     ${walletFilled(w) ? '' : '<div class="callout bad" style="margin-bottom:16px"><strong>아직 카드가 비어 있어요</strong>여행 전에 이름·마이크로칩 번호·지병·알레르기를 미리 넣어 두세요. <a href="/mycard/?edit=1" id="sosFill">반려견 정보 입력하기</a></div>'}
     <div id="wbody"></div>
     <div class="links"><a class="link" href="/mycard/?edit=1" id="sosEdit">카드 내용 고치기</a></div>`;
@@ -705,10 +708,13 @@ function tripStats(trips){
   return {legs, km, countries, domestic, airports: airports.size};
 }
 const stampList = s => [...s.countries.map(c => ({code:c, name:CNAME[c]||''})), ...s.domestic.map(r => ({code:KR_CODE[r]||r, name:r, dom:true}))];
-PTX.views.trips = async function(){
-  const app = PT.app;
-  app.innerHTML = PT.head('내 반려견 · 여행 기록','우리 개가 함께 날아간 길','비행 구간을 기록하면 함께 이동한 거리와 다녀온 나라가 쌓이고, 인스타그램 스토리 크기의 결산 카드를 만들 수 있어요.') + '<p class="hint">공항 목록을 불러오는 중…</p>';
+PTX.views.trips = async function(target=null){
+  const app = target || PT.app;
+  const $ = (selector,root=app)=>root.querySelector(selector);
+  const $$ = (selector,root=app)=>Array.from(root.querySelectorAll(selector));
+  app.innerHTML = PT.head('My Dog · 여행 기록','우리 개가 함께 날아간 길','비행 구간을 기록하면 함께 이동한 거리와 다녀온 나라가 쌓이고, 인스타그램 스토리 크기의 결산 카드를 만들 수 있어요.') + '<p class="hint">공항 목록을 불러오는 중…</p>';
   try{ await loadAirports(); }catch(e){ app.insertAdjacentHTML('beforeend', '<div class="callout bad"><strong>공항 목록을 불러오지 못했어요</strong>인터넷 연결 후 다시 열어 주세요.</div>'); return; }
+  if(!app.isConnected)return;
   const all = LS.get('pt-trips', []).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
   const years = [...new Set(all.map(t=>(t.date||'').slice(0,4)).filter(Boolean))].sort().reverse();
   if(tripYear!=='all' && !years.includes(tripYear)) tripYear = 'all';
@@ -716,7 +722,7 @@ PTX.views.trips = async function(){
   const s = tripStats(trips);
   const opt = AIRPORTS.map(a => `<option value="${a[0]} · ${PT.esc(CNAME[a[3]]||a[3])} ${PT.esc(a[2]||'')} · ${PT.esc(a[1])}"></option>`).join('');
   const w = W();
-  app.innerHTML = PT.head('내 반려견 · 여행 기록','우리 개가 함께 날아간 길','비행 구간을 기록하면 함께 이동한 거리와 다녀온 나라가 쌓이고, 인스타그램 스토리 크기의 결산 카드를 만들 수 있어요.') + `
+  app.innerHTML = PT.head('My Dog · 여행 기록','우리 개가 함께 날아간 길','비행 구간을 기록하면 함께 이동한 거리와 다녀온 나라가 쌓이고, 인스타그램 스토리 크기의 결산 카드를 만들 수 있어요.') + `
     <div class="dgrid">
       <section class="panel">
         <h3 class="sec-h" style="margin-top:0">비행 구간 추가</h3>
@@ -765,9 +771,9 @@ PTX.views.trips = async function(){
     const list = LS.get('pt-trips', []); let seq = list.reduce((m,x)=>Math.max(m, x.seq||0), 0);
     for(let k=0;k<times;k++){ list.push({id:uid(), seq:++seq, date:d, from:f, to:t});
       if($('#lgBack').checked) list.push({id:uid(), seq:++seq, date:$('#lgBackDate').value || d, from:t, to:f}); }
-    LS.set('pt-trips', list); persistOnce(); PT.track('trip_add', {legs: list.length}); PTX.views.trips(); });
-  $$('[data-rmleg]', app).forEach(b => b.addEventListener('click', () => { if(!confirm('이 구간 기록을 삭제할까요?')) return; LS.set('pt-trips', LS.get('pt-trips', []).filter(x=>x.id!==b.dataset.rmleg)); PTX.views.trips(); }));
-  $$('[data-year]', app).forEach(b => b.addEventListener('click', () => { tripYear = b.dataset.year; PTX.views.trips(); }));
+    LS.set('pt-trips', list); persistOnce(); PT.track('trip_add', {legs: list.length}); PTX.views.trips(target); });
+  $$('[data-rmleg]', app).forEach(b => b.addEventListener('click', () => { if(!confirm('이 구간 기록을 삭제할까요?')) return; LS.set('pt-trips', LS.get('pt-trips', []).filter(x=>x.id!==b.dataset.rmleg)); PTX.views.trips(target); }));
+  $$('[data-year]', app).forEach(b => b.addEventListener('click', () => { tripYear = b.dataset.year; PTX.views.trips(target); }));
   $('#rcMake').addEventListener('click', async () => {
     const out = $('#rcOut'); out.innerHTML = '<p class="hint">카드를 그리는 중…</p>';
     try{ const blob = await drawRecap(s, $('#rcName').value.trim(), $('#rcTitle').value.trim());

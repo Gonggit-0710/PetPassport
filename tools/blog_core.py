@@ -89,7 +89,7 @@ def shell(title, description, path, body, cover=''):
 <title>{esc(title)} · PawLog</title><meta name="description" content="{esc(description)}"><link rel="canonical" href="https://pawtrip.us{path}">
 <meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(description)}"><meta property="og:url" content="https://pawtrip.us{path}">{image}
 <link rel="icon" href="/media/icon-192.png"><link rel="stylesheet" href="/pawlog/blog.css?v=3"></head><body>
-<a class="skip" href="#main">본문으로 건너뛰기</a><header><a class="brand" href="/" aria-label="PawTrip 홈"><img src="/media/logo-light.svg" alt="PawTrip"></a><nav aria-label="PawLog 메뉴"><a href="/pawlog/">PawLog</a><a href="/mycard/">My Card</a><a href="https://blog.naver.com/pawtrip">네이버 블로그</a></nav></header>
+<a class="skip" href="#main">본문으로 건너뛰기</a><header><a class="brand" href="/" aria-label="PawTrip 홈"><img src="/media/logo-light.svg" alt="PawTrip"></a><nav aria-label="PawLog 메뉴"><a href="/pawlog/">PawLog</a><a href="/mycard/">My Dog</a><a href="https://blog.naver.com/pawtrip">네이버 블로그</a></nav></header>
 <main id="main">{body}</main><footer><a href="/">PawTrip 여행 준비</a><span>© PawTrip · PawLog</span></footer></body></html>'''
 
 def build_blog():
