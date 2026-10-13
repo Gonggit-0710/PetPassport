@@ -1,0 +1,98 @@
+[
+  {
+    "slug": "gong-us-hotel-documents",
+    "source": "https://blog.naver.com/pawtrip/224427030356",
+    "date": "2026-09-30",
+    "photos": [
+      {
+        "file": "/blog/media/gong-us-hotel-documents-1.jpg",
+        "source": "local 01_jeju.jpg"
+      },
+      {
+        "file": "/blog/media/gong-us-hotel-documents-2.jpg",
+        "source": "local 02_tahoe.jpg"
+      },
+      {
+        "file": "/blog/media/gong-us-hotel-documents-3.jpg",
+        "source": "local 03_airport.jpg"
+      },
+      {
+        "file": "/blog/media/gong-us-hotel-documents-4.png",
+        "source": "local 04_plane.png"
+      }
+    ],
+    "paragraphs": 37,
+    "text_replacements": [
+      {
+        "section": "그날 배운 것",
+        "source": "C:/Dev/PawTrip4u_Blog/PawTrip_첫게시글.html",
+        "reason": "사용자 요청: 작은 스크린샷 대신 초안의 원문 목록 3개로 표시"
+      }
+    ]
+  },
+  {
+    "slug": "gong-us-travel-preparation",
+    "source": "https://blog.naver.com/pawtrip/224430395964",
+    "date": "2026-10-03",
+    "photos": [
+      {
+        "file": "/blog/media/gong-us-travel-preparation-1.jpg",
+        "source": "local post2_01_vet.jpg"
+      },
+      {
+        "file": "/blog/media/gong-us-travel-preparation-4.jpg",
+        "source": "local post2_02_timeline.jpg"
+      },
+      {
+        "file": "/blog/media/gong-us-travel-preparation-7.jpg",
+        "source": "local post2_03_scale.jpg"
+      }
+    ],
+    "paragraphs": 55,
+    "text_replacements": [
+      {
+        "source": "C:/Dev/PawTrip4u_Blog/PawTrip_두번째글.html",
+        "reason": "사용자 요청: 작은 스크린샷 5개를 초안의 원문 안내 4개와 서류 체크리스트 표로 대체",
+        "removed_images": [
+          "/blog/media/gong-us-travel-preparation-2.png",
+          "/blog/media/gong-us-travel-preparation-3.png",
+          "/blog/media/gong-us-travel-preparation-5.png",
+          "/blog/media/gong-us-travel-preparation-6.png",
+          "/blog/media/gong-us-travel-preparation-8.png"
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "gong-cabin-airline-experience",
+    "source": "https://blog.naver.com/pawtrip/224434792041",
+    "date": "2026-10-08",
+    "photos": [
+      {
+        "file": "/blog/media/gong-cabin-airline-experience-1.png",
+        "source": "local post3_01_airport.png"
+      },
+      {
+        "file": "/blog/media/gong-cabin-airline-experience-2.png",
+        "source": "local post3_02_compare.png"
+      },
+      {
+        "file": "/blog/media/gong-cabin-airline-experience-3.png",
+        "source": "published image.png"
+      },
+      {
+        "file": "/blog/media/gong-cabin-airline-experience-4.png",
+        "source": "local post3_03_business.png"
+      },
+      {
+        "file": "/blog/media/gong-cabin-airline-experience-5.png",
+        "source": "local post3_04_economy.png"
+      },
+      {
+        "file": "/blog/media/gong-cabin-airline-experience-6.png",
+        "source": "published image.png"
+      }
+    ],
+    "paragraphs": 75
+  }
+]

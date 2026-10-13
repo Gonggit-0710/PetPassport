@@ -6,3 +6,4 @@ node_modules/
 !.env.example
 wallet-service/certificates/
 *.pkpass
+.blog-admin/

@@ -20,7 +20,8 @@
     {id:'mypet', name:'내 반려견', items:[
       ['wallet','My Card','/mycard/', true],
       ['sos','다국어 진료용 카드','/#sos', true],
-      ['trips','여행 기록','/#trips']
+      ['trips','여행 기록','/#trips'],
+      ['blog','PawLog','/blog/']
     ]}
   ];
   const EXTRA = [['about','기준과 출처','/#about'],['changes','변경 이력','/changes/']];

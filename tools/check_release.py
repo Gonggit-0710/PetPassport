@@ -26,7 +26,7 @@ def check():
     files = sorted(p for p in site.rglob('*') if p.is_file())
     for file in files:
         relative = file.relative_to(site)
-        if any(part in {'wallet-service', 'node_modules', 'tools', 'docs', '.git', 'certificates'} for part in relative.parts):
+        if any(part in {'wallet-service', 'node_modules', 'tools', 'docs', '.git', 'certificates', '.blog-admin', 'blog-content'} for part in relative.parts):
             raise ValueError(f'Non-public directory: {relative}')
         if file.suffix.lower() in {'.pem', '.key', '.p12', '.pfx', '.pkpass'} or file.name.startswith('.env'):
             raise ValueError(f'Non-public file: {relative}')
@@ -48,6 +48,8 @@ def check():
             raise ValueError(f'Missing release file: {name}')
     if (site / 'app-ads.txt').read_bytes() != b'google.com, pub-6262324542700705, DIRECT, f08c47fec0942fa0\n':
         raise ValueError('Unexpected app-ads.txt content or encoding')
+    if not (site/'blog/index.html').is_file() or (site/'tools/blog-admin.html').exists():
+        raise ValueError('PawLog must be public and its editor must stay local')
     policy = (site / 'games/not-the-vacuum/privacy/index.html').read_text(encoding='utf-8')
     if 'id="ko"' not in policy or 'id="en"' not in policy or '<script' in policy.lower():
         raise ValueError('Game policy must retain both anchors and have no scripts')
