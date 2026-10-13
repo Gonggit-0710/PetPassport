@@ -5,7 +5,7 @@ import unittest
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parent.parent
-POLICY_SHA = 'c1f3b07d4b91df5cb41773b33078bafa9f878fb4fd08e64aece1d5a1b3f40764'
+POLICY_SHA = '080d7671e73da38d5813c6b1e20c1c782a99556e5d39aec88e369fe33b327d5c'
 
 
 class GamesTest(unittest.TestCase):

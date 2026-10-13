@@ -49,12 +49,12 @@ section+section{margin-top:56px}
 <li>게임 기록: 간식 통, 업적, 캐릭터, 미션 진행, 난이도별 기록과 통계</li>
 <li>물(게임 안 에너지) 값과 오늘 본 광고 횟수</li>
 <li>이어하기 정보: 진행 중인 판의 상태</li>
-<li>설정: 언어, 소리 크기, 마지막으로 고른 난이도 등</li>
+<li>설정: 언어, 소리 크기, 마지막으로 고른 난이도, 광고 동의 선택 상태 등</li>
 </ul>
 <p>이 정보는 앱을 삭제하면 함께 삭제됩니다. 기기의 백업 기능(Android의 Google 백업, iPhone의 iCloud 백업)이 켜져 있으면 게임 기록과 설정이 이용자의 백업에 함께 저장될 수 있습니다. 진행 중인 판의 이어하기 정보는 백업에서 제외됩니다. 이 백업은 이용자의 Google 또는 Apple 계정에 보관되며, 개발자는 볼 수 없습니다.</p>
 
 <h3>3. 광고(Google AdMob)</h3>
-<p>게임은 이용자가 게임 안 보상(예: 물 보충)을 받으려고 직접 선택할 때만 보상형 광고를 보여 줍니다. 광고를 제공하기 위해 Google LLC의 AdMob(Google 모바일 광고 SDK)이 게임 안에서 다음 정보를 처리할 수 있습니다.</p>
+<p>게임은 이용자가 게임 안 보상(예: 물 보충)을 받으려고 직접 선택할 때만 보상형 광고를 보여 줍니다. 다만 광고를 바로 보여 줄 수 있도록 게임을 켤 때부터 광고를 미리 불러오므로, 광고를 보지 않아도 Google LLC의 AdMob(Google 모바일 광고 SDK)이 게임 안에서 다음 정보를 처리할 수 있습니다.</p>
 <ul>
 <li>기기 식별자: 광고 식별자(Android 광고 ID, iOS에서는 이용자가 추적을 허용한 경우의 광고 식별자 IDFA)와 앱 세트 ID</li>
 <li>IP 주소와 이를 바탕으로 한 대략적인 위치</li>
@@ -89,9 +89,9 @@ section+section{margin-top:56px}
 <h3>7. 국외 이전</h3>
 <table>
 <tr><th>이전받는 자</th><th>국가</th><th>항목</th><th>시기와 방법</th><th>목적</th></tr>
-<tr><td>Google LLC</td><td>미국 등 Google 데이터센터 소재국</td><td>3항의 정보</td><td>광고를 불러오고 볼 때 네트워크로 전송</td><td>광고 제공·측정·부정 방지</td></tr>
+<tr><td>Google LLC</td><td>미국 등 Google 데이터센터 소재국</td><td>3항의 정보</td><td>게임을 켤 때(광고 미리 불러오기)와 광고를 볼 때 네트워크로 전송</td><td>광고 제공, 측정과 분석, 부정 방지</td></tr>
 </table>
-<p>국외 이전을 원하지 않으면 광고를 보지 않거나 4항의 방법으로 제한할 수 있습니다. 단, 광고 요청 자체를 막을 수는 없으며 광고 기능을 쓰지 않는 것이 가장 확실한 방법입니다.</p>
+<p>게임은 켜질 때부터 광고를 미리 불러오므로, 광고를 보지 않아도 3항의 정보가 Google로 전송될 수 있습니다. 4항의 방법(동의 선택, 광고 ID 재설정·삭제, iOS 추적 거부)으로 일부를 제한할 수 있습니다.</p>
 
 <h3>8. 아동의 개인정보</h3>
 <p>이 게임은 13세 미만 아동을 대상으로 하지 않으며, 개발자는 아동의 개인정보를 알면서 수집하지 않습니다. 13세 미만 아동의 정보가 광고 과정에서 처리되었다고 생각되면 <a href="mailto:help@pawtrip.us">help@pawtrip.us</a>로 알려 주세요. 확인하는 대로 필요한 조치를 하겠습니다.</p>
@@ -128,12 +128,12 @@ section+section{margin-top:56px}
 <li>Game records: treat jar, achievements, characters, missions, best times and statistics</li>
 <li>Water (in-game energy) and the number of ads watched today</li>
 <li>Resume data for a game in progress</li>
-<li>Settings such as language, volume, and last chosen level</li>
+<li>Settings such as language, volume, last chosen level, and your ad consent choices</li>
 </ul>
 <p>This data is deleted when you uninstall the Game. If your device backup is turned on (Google backup on Android, iCloud backup on iPhone), your game data and settings may be included in your backup. Resume data for a game in progress is excluded from backups. That backup is stored in your Google or Apple account, and we cannot see it.</p>
 
 <h3>3. Advertising (Google AdMob)</h3>
-<p>The Game shows a rewarded ad only when you choose to watch one to get an in-game reward (for example, to refill water). To serve ads, AdMob by Google LLC (the Google Mobile Ads SDK) may process the following within the Game:</p>
+<p>The Game shows a rewarded ad only when you choose to watch one to get an in-game reward (for example, to refill water). So that an ad is ready when you want one, the Game preloads ads when it starts. This means AdMob by Google LLC (the Google Mobile Ads SDK) may process the following within the Game even if you do not watch an ad:</p>
 <ul>
 <li>Device identifiers: your advertising identifier (Android Advertising ID; on iOS, the IDFA only if you allow tracking) and app set ID</li>
 <li>IP address and approximate location derived from it</li>
@@ -166,7 +166,7 @@ section+section{margin-top:56px}
 <p>We do not collect your personal information ourselves, so we do not share or sell it. To provide ads, Google LLC processes information within the Game as described in section 3.</p>
 
 <h3>7. International transfers</h3>
-<p>Information processed by Google may be transferred to and stored in the United States and other countries where Google operates data centers, when ads are loaded and shown.</p>
+<p>Information processed by Google may be transferred to and stored in the United States and other countries where Google operates data centers, when the Game starts (ad preloading) and when ads are shown. Because the Game preloads ads, the information in section 3 may be sent to Google even if you do not watch an ad. You can limit some of it using the options in section 4 (consent choices, resetting or deleting your advertising ID, and declining tracking on iOS).</p>
 
 <h3>8. Children</h3>
 <p>The Game is not directed at children under 13, and we do not knowingly collect personal information from children. If you believe information about a child under 13 has been processed through ads in the Game, please contact us at <a href="mailto:help@pawtrip.us">help@pawtrip.us</a> and we will take appropriate steps as soon as we can.</p>
