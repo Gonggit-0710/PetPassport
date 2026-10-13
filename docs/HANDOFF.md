@@ -1,5 +1,23 @@
 # PawTrip 작업 인수인계
 
+## PawLog 코럴 발바닥 B안 적용 — 2026-10-13 / Codex
+
+- 사용자 B 선택. 중앙 정렬된 왼쪽 PawLog 이름 뒤에 기존 `logo-dark.svg` 발바닥 path를 재사용한 22px 코럴 아이콘 추가. `media/paw-coral.svg`, `nav.js`, `tools/seo.py`, `base.css` 수정. 제목+발바닥 그룹 전체를 밑줄 중앙 정렬, 설명/색/아래 선 유지. 장식 이미지 alt 빈 값으로 링크 이름 중복 방지. 로고 원본 변경 없음, 모바일 짧은 PawLog 메뉴 유지.
+- base v26, nav v12, sw v54. 아이콘 오프라인 캐시/공개 묶음 포함. Python 16개·공개 파일101개 검사, 홈/My Dog/일본 상세에서 아이콘 로드/중앙 정렬/클릭 이동 확인. 검수 `C:\Dev\PetPassport\pawlog-coral-paw-final.png`.
+- 중앙 정렬·코럴 발바닥 사용자 선택을 AGENTS에 확정 기록. 로컬 반영·배포 준비 완료, 이번 변경 커밋·푸시·운영 배포 미실행.
+
+## PawLog 발바닥 두 색 비교 — 2026-10-13 / Codex
+
+- 사용자 요청: Log 뒤에 다크모드 로고 발바닥과 코럴 버전 보기. `media/logo-dark.svg` 확인 결과 발바닥 자체는 이미 #FF6B5B 코럴이므로 동일 원본 path를 사용해 A 남색 #1E3A8A/B 코럴 #FF6B5B 비교 제공. 새 발바닥을 그리거나 로고 원본을 변경하지 않음.
+- 가운데 정렬된 PawLog 이름 뒤 22px 아이콘, 설명/밑줄 유지. 비교 HTML·PNG는 저장소 밖 `C:\Dev\PetPassport\pawlog-paw-options.html`, `C:\Dev\PetPassport\pawlog-paw-options.png`. 실제 브라우저 폰트 로드·모양 직접 검수.
+- 발바닥은 비교 시안 전용, 홈페이지에는 아직 적용하지 않음. 사용자 색상 선택 후 확정 버전 반영. 직전 PawLog 중앙 정렬 로컬 반영은 유지, 이번에는 인계문서만 추가.
+
+## PawLog 밑줄 기준 중앙 정렬 보기 — 2026-10-13 / Codex
+
+- 사용자 요청: PawLog 제목·설명을 밑줄 너비 중앙에 배치. `base.css` 왼쪽 PawLog에 align-items center/text-align center 적용. 기존 코럴 제목·남색 아래 선/서체/설명 유지. My Dog와 모바일 묶음 링크는 유지. 시안 확인 요청에 따라 로컬에 반영했으며 영구 선호로 AGENTS에 확정하지 않음.
+- base v25, sw v53, 생성/공개 묶음 갱신. Python 16개·공개 파일 100개 검사 통과, Chrome에서 제목·설명 중심이 밑줄 중심과 일치 확인. 이미지 `C:\Dev\PetPassport\pawlog-centered.png`.
+- 로컬 반영 완료. 이번 중앙 정렬 커밋·푸시·운영 배포 미실행.
+
 ## 로고를 데스크톱 상단 왼쪽으로 이동 — 2026-10-13 / Codex
 
 - 사용자 요청: 상단 메뉴바 왼쪽에 PawTrip 로고. `features.css`에서 기존 topbar 로고를 데스크톱에도 표시하고 rail 중복 로고 숨김. 상단 왼쪽 로고 52.8px, 오른쪽 검색/언어/확인일/My Dog, 바 높이 80px로 여백 확보. sticky rail top/height도 80px 기준. 모바일은 기존 배치 유지.

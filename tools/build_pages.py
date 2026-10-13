@@ -41,7 +41,7 @@ SHELL = '''<!doctype html>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="/base.css?v=24">
+<link rel="stylesheet" href="/base.css?v=26">
 <link rel="stylesheet" href="/features.css?v=17">
 {page_style}
 <script>
@@ -111,7 +111,7 @@ SHELL = '''<!doctype html>
   </div>
 </div>
 <script src="/site-language.js?v=4"></script>
-<script src="/nav.js?v=11"></script>
+<script src="/nav.js?v=12"></script>
 <script src="/search.js?v=8"></script>
 <script>
 PTNav.render('{tab}');

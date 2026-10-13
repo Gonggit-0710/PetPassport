@@ -31,7 +31,7 @@ def static_menu():
     out=''
     for name,items in groups:
         out+='<p class="rail-g">'+name+'</p><ol>'+''.join(f'<li><a class="rl" href="{path}"><span class="dot"></span>{label}</a></li>' for label,path in items)+'</ol>'
-    return out+'<a class="pawlog-nav" href="/pawlog/"><b>PawLog</b><span class="pawlog-description">공이와 함께, 여행도 일상도.</span></a>'
+    return out+'<a class="pawlog-nav" href="/pawlog/"><b>PawLog<img class="pawlog-paw" src="/media/paw-coral.svg" alt="" aria-hidden="true" width="22" height="22"></b><span class="pawlog-description">공이와 함께, 여행도 일상도.</span></a>'
 
 def discovery(data):
     groups=[('국가별 반려견 입국 준비',[(c['name'],f"/countries/{c['id']}/") for c in data['countries']]),('항공사별 반려동물 탑승 안내',[(a['name'],f"/airlines/{a['id']}/") for a in data['airlines']])]

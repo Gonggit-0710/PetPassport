@@ -332,8 +332,9 @@ table.cmp .dots{font-size:13px}
 .rail nav .rail-g,.rail nav a.rl{color:var(--ink)}
 .rail nav a.rl .dot{background:var(--ink)}
 .rail nav a.pawlog-nav,.tabs.groups a.pawlog-nav{font-family:var(--brand-font);font-size:24px;font-weight:700;letter-spacing:0;color:var(--logo-coral);text-decoration:none;line-height:1.3}
-.rail nav a.pawlog-nav{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin-top:22px;padding:12px 0;border:0;border-bottom:2px solid var(--logo-navy);border-radius:0;background:transparent;color:var(--logo-coral)}
-.rail nav a.pawlog-nav b{font-size:22px;font-weight:700}
+.rail nav a.pawlog-nav{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;margin-top:22px;padding:12px 0;border:0;border-bottom:2px solid var(--logo-navy);border-radius:0;background:transparent;color:var(--logo-coral)}
+.rail nav a.pawlog-nav b{display:inline-flex;align-items:center;gap:8px;font-size:22px;font-weight:700}
+.rail nav a.pawlog-nav .pawlog-paw{width:22px;height:22px;flex:none}
 .rail nav a.pawlog-nav .pawlog-description{font-family:var(--f);font-size:12px;font-weight:400;color:var(--ink);line-height:1.4}
 .tabs.groups a.pawlog-nav{display:flex;align-items:center;padding:4px 12px;font-size:21px}
 .rail nav a.pawlog-nav:hover{background:transparent}
