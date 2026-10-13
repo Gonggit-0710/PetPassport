@@ -1,5 +1,6 @@
 """Release contract for independent game URLs and the approved policy."""
 import hashlib
+import json
 from pathlib import Path
 import unittest
 import xml.etree.ElementTree as ET
@@ -26,10 +27,33 @@ class GamesTest(unittest.TestCase):
                 self.assertIn(f'/games/assets/{dog}.png', source)
             self.assertIn('Coming soon', source)
         intro = (ROOT / 'games/not-the-vacuum/index.html').read_text(encoding='utf-8')
-        self.assertIn('로그인 없이 바로 시작. 광고는 원할 때만 골라 보는 보상형 광고예요.', intro)
-        self.assertIn('No login. Ads play only when you choose to watch one for a reward.', intro)
+        self.assertIn('로그인 없이 바로 시작.', intro)
+        self.assertIn('No login needed.', intro)
         self.assertIn('/privacy/#ko', intro)
         self.assertIn('/privacy/#en', intro)
+
+    def test_current_assets_and_approved_screenshot_order(self):
+        manifest = json.loads((ROOT/'tools/game-assets.json').read_text(encoding='utf-8'))
+        for asset in [manifest['icon']] + manifest['screenshots']:
+            raw = (ROOT/asset['path'].lstrip('/')).read_bytes()
+            self.assertEqual(len(raw), asset['bytes'])
+            self.assertEqual(hashlib.sha256(raw).hexdigest(), asset['sha256'])
+        for name in ['games/index.html','games/not-the-vacuum/index.html']:
+            source = (ROOT/name).read_text(encoding='utf-8')
+            self.assertEqual(source.count('/games/assets/app-icon-v2.png'),3)
+            for stale in ['app-icon.png','원할 때만','only when']:
+                self.assertNotIn(stale, source)
+        intro = (ROOT/'games/not-the-vacuum/index.html').read_text(encoding='utf-8')
+        for lang in ['ko','en']:
+            section = intro.split(f'<section id="{lang}" lang="{lang}">')[1].split('</section>')[0]
+            previous = section.index('</ul>')
+            for asset in [s for s in manifest['screenshots'] if s['language']==lang]:
+                position = section.index(asset['path'])
+                self.assertGreater(position,previous)
+                self.assertIn(asset['alt'],section)
+                previous = position
+            self.assertLess(previous, section.index('<div class="actions">'))
+        self.assertNotIn('assets/screenshots/',(ROOT/'games/index.html').read_text(encoding='utf-8'))
 
     def test_root_ad_seller_file_and_sitemap(self):
         self.assertEqual((ROOT / 'app-ads.txt').read_bytes(), b'google.com, pub-6262324542700705, DIRECT, f08c47fec0942fa0\n')

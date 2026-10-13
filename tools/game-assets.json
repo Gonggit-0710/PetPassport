@@ -1,0 +1,51 @@
+{
+  "icon": {
+    "path": "/games/assets/app-icon-v2.png",
+    "bytes": 122416,
+    "sha256": "34636cba9c6c487cfd99146fe663ee3a2da8b12cae0e332f737c8821a1a3e1e2"
+  },
+  "screenshots": [
+    {
+      "language": "ko",
+      "path": "/games/assets/screenshots/ko_01_20261013-153425.png",
+      "bytes": 252226,
+      "sha256": "e39c5e9b79f68fa0d954f8c3dad4ba45ebf6f13528f30b4b6514859c0db78a8f",
+      "alt": "초보 9x9 판. 숫자는 주변 8칸에 숨은 청소기 수예요. 발바닥 도장으로 청소기 자리를 표시하고, 이 판의 트릿 8개를 모두 찾았어요."
+    },
+    {
+      "language": "ko",
+      "path": "/games/assets/screenshots/ko_02_20261013-153507.png",
+      "bytes": 163154,
+      "sha256": "f2e340ebdc6e700fe4a3d045ec70c15eae956eb6b2fc3aba474bea1a49f74690",
+      "alt": "오늘의 미션 화면. 간식 보상이 있는 매일 미션 3개 중 2개 완료, 물을 주는 숨은 미션 2개."
+    },
+    {
+      "language": "ko",
+      "path": "/games/assets/screenshots/ko_03_20261013-153315.png",
+      "bytes": 200320,
+      "sha256": "7f5c95023bfcf5bfbc6eac42c9972b8c9be93613a90c2b86ec84b47ad1f27507",
+      "alt": "업적북 레어 탭. 업적 조건을 채우면 모이는 강아지들이에요. 잠긴 강아지는 실루엣과 진행 상황으로 보여요."
+    },
+    {
+      "language": "en",
+      "path": "/games/assets/screenshots/en_01_20261013-152827.png",
+      "bytes": 217907,
+      "sha256": "5ebfa024831d6b185f1871f09736489c55d1c7dd8ad9277038abd6e54b9025b9",
+      "alt": "Rookie 9x9 board in Sniff mode. Each number shows how many vacuums hide in the 8 cells around it. All 8 treats on this board are found."
+    },
+    {
+      "language": "en",
+      "path": "/games/assets/screenshots/en_03_20261013-153517.png",
+      "bytes": 183575,
+      "sha256": "0f4045e05065d104199f7a990a68b547be5967a006ef026be6746f1221f26bcf",
+      "alt": "Missions screen: three daily missions with treat rewards, two of them done, and two hidden missions that give water."
+    },
+    {
+      "language": "en",
+      "path": "/games/assets/screenshots/en_04_20261013-153243.png",
+      "bytes": 240018,
+      "sha256": "0b90e1da6f17c9886a2a6c6c3296b524708502694d257acf8fab694384cb5ba8",
+      "alt": "Pup Album, Rare tab: dogs you collect by reaching achievement goals. Locked dogs show as silhouettes with their progress."
+    }
+  ]
+}

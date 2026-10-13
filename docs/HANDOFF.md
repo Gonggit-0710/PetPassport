@@ -1,5 +1,13 @@
 # PawTrip 작업 인수인계
 
+## 게임 아이콘·소개·스크린샷 개정 — 2026-10-13 / Codex
+
+- 사용자 지시서 `C:\Dev\Not the Vacuum\release\pawtrip-games-handoff.md` 10-13 16:28 개정본 다시 읽음. 새 아이콘122416바이트/SHA34636cba9c6c487cfd99146fe663ee3a2da8b12cae0e332f737c8821a1a3e1e2 확인 후 app-icon-v2.png로 복사, 두 페이지의 본문/favicon/og:image 6곳 변경. 옛 파일은 외부 캐시/이전 참조 호환용으로 남아 있지만 새 두 페이지의 옛 이름 참조는0.
+- `games/not-the-vacuum/index.html`의 승인 소개에서 광고 문장만 삭제(한국어 로그인 없이 바로 시작./영어 No login needed.). 그 외 소개 문장·게임 이름·보리/Tori/구름 이름 유지. 방침 파일·#ko/#en·루트 app-ads.txt 바이트와 원본 게임 저장소 변경 없음.
+- 확정 스크린샷6장 원본 그대로 `games/assets/screenshots/`에 복사. #ko: ko_01→ko_02→ko_03, #en: en_01→en_03→en_04, 정확한 alt/순서. 소개 목록 아래 버튼 위, PC 언어별3장/모바일 가로 스냅, 자르기/늘이기/문구 덧씌우기 없음. 목록 페이지에는 없음. games CSS v3.
+- 내부 검증명세 `tools/game-assets.json`(각파일 바이트/SHA/alt), tests/check_release에 규약 추가. Python18개·공개 묶음108개 검사 통과. 기존 게임 브라우저 회귀(서비스워커/정책 언어 위치/스크립트 없음/app-ads MIME) 및 PC1440/모바일390·320px의6장 로드/1080×1920/9:16/순서/정확alt/가로 넘침 없음/스냅 검증. PC 스크린샷 직접 검수 `C:\Dev\PetPassport\game-screenshots-desktop.png`, 모바일 `game-screenshots-mobile.png`.
+- 이번 사용자 요청은 배포 커밋과 게시본 확인 보고까지 포함하므로 이 범위만 커밋/푸시하여 배포 진행. 이 기록 시점은 로컬검증 완료·배포 직전이며 실제 게시 결과/커밋은 완료 보고와 후속 기록에서 구분. Cloudflare 이전은 수행하지 않음. 기획 창으로 메시지는 전송하지 않음.
+
 ## 기준·변경 이력 링크를 확인일 아래로 이동 — 2026-10-13 / Codex
 
 - 사용자 요청: ‘기준과 출처 · 변경 이력’을 왼쪽 하단 확인일 아래에. `nav.js`에서 PawLog 아래의 링크 생성 제거, `index.html`과 `tools/build_pages.py`의 rail meta 확인일/출발 전 안내 아래에 정적 링크 배치. nav는 data-tab 기준 aria-current만 갱신. `base.css` 링크 여백12px/왼쪽 정렬.

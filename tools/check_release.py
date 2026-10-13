@@ -1,5 +1,6 @@
 """Check the static Pages artifact before upload; never inspect private inputs."""
 import json
+import hashlib
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
@@ -48,6 +49,15 @@ def check():
             raise ValueError(f'Missing release file: {name}')
     if (site / 'app-ads.txt').read_bytes() != b'google.com, pub-6262324542700705, DIRECT, f08c47fec0942fa0\n':
         raise ValueError('Unexpected app-ads.txt content or encoding')
+    game_assets = json.loads((ROOT/'tools/game-assets.json').read_text(encoding='utf-8'))
+    for asset in [game_assets['icon']] + game_assets['screenshots']:
+        raw = (site/asset['path'].lstrip('/')).read_bytes()
+        if len(raw)!=asset['bytes'] or hashlib.sha256(raw).hexdigest()!=asset['sha256']:
+            raise ValueError(f'Game asset differs from approved source: {asset["path"]}')
+    for name in ['games/index.html','games/not-the-vacuum/index.html']:
+        source = (site/name).read_text(encoding='utf-8')
+        if any(stale in source for stale in ['app-icon.png','원할 때만','only when']):
+            raise ValueError(f'Stale game icon or advertising copy: {name}')
     if not (site/'pawlog/index.html').is_file() or (site/'tools/blog-admin.html').exists():
         raise ValueError('PawLog must be public and its editor must stay local')
     legacy=(site/'mycard/index.html').read_text(encoding='utf-8')
