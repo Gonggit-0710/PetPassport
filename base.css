@@ -333,3 +333,5 @@ table.cmp .dots{font-size:13px}
 .tabs.groups a.pawlog-nav{display:flex;align-items:center;padding:4px 12px;font-size:21px}
 .rail nav a.pawlog-nav:hover,.tabs.groups a.pawlog-nav:hover{text-decoration:underline;text-underline-offset:5px}
 #wtrips>summary{font-weight:700;cursor:pointer}#wtripsBody>.page-head h1{font-size:var(--t-h3)!important}
+
+.seo-breadcrumb{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;font-size:13px;color:var(--ink)}.seo-discovery{margin:0 0 24px;font-size:14px}.seo-discovery summary{cursor:pointer;font-weight:700}.seo-discovery p{margin:16px 0 8px}.seo-discovery .links{gap:12px;flex-wrap:wrap}

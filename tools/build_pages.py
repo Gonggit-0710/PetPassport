@@ -7,6 +7,7 @@
 """
 import os, html, json, datetime, re
 from rule_pages import pages as rule_pages
+from seo import page_metadata, breadcrumbs_html, static_menu, update_home, discovery, sitemap_dates
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 VERIFIED = '2026-10-08'
@@ -34,12 +35,13 @@ SHELL = '''<!doctype html>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#FAFAFA">
 <link rel="canonical" href="{url}">
+{seo_metadata}
 <link rel="icon" href="/media/mark.svg?v=4" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/media/apple-touch-icon.png?v=4">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="/base.css?v=15">
+<link rel="stylesheet" href="/base.css?v=16">
 <link rel="stylesheet" href="/features.css?v=9">
 {page_style}
 <script>
@@ -90,15 +92,17 @@ SHELL = '''<!doctype html>
   <aside class="rail" aria-label="사이트 메뉴">
     <a class="logo" href="/"><picture><source srcset="/media/logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/media/logo-light.svg" alt="PawTrip" style="height:38px;width:auto"></picture></a>
     <a class="sos-rail my-card-primary" href="/mycard/"><span class="sos-btn" aria-hidden="true">MY</span><span><b>My Dog</b>우리 강아지 정보와 여행 기록을 한곳에</span></a>
-    <nav aria-label="메뉴" id="navRail"></nav>
+    <nav aria-label="메뉴" id="navRail">{static_menu}</nav>
     <div class="meta"><strong>대한민국 출발 기준</strong>이 페이지 확인일 {verified}<br>출발 전 공식 출처에서 다시 확인하세요.</div>
   </aside>
   <div class="content">
     <main id="main" class="doc {page_class}" tabindex="-1">
+      {breadcrumbs}
       <header class="page-head"><span class="num">{group}</span><h1 style="font-size:var(--t-h2);font-weight:800;letter-spacing:-.03em;line-height:1.3;margin:8px 0 10px">{heading}</h1><p>{lead}</p><p class="updated">공식 출처 확인일 {verified}</p></header>
 {body}
     </main>
     <footer class="foot">
+      {discovery}
       <nav class="links" aria-label="여행 규정과 카드 안내"><a href="/countries/">국가별 입국 규정</a><a href="/airlines/">항공사 반려동물 규정</a><a href="/sos/">My Dog 안내</a></nav>
       <p>PawTrip은 공식 출처를 요약한 참고 자료입니다. 항공사·철도 운영사·각국 기관은 규정을 예고 없이 바꿉니다. 출발 전 각 항목의 출처 링크에서 최신 내용을 다시 확인하세요.</p>
       <p><a href="/#about">기준과 출처</a> · <a href="/changes/">규정 변경 이력</a> · <a href="/privacy.html"><strong>개인정보처리방침</strong></a> · 문의 <a href="mailto:help@pawtrip.us">help@pawtrip.us</a></p>
@@ -388,14 +392,20 @@ def build():
     blog_posts = build_blog()
     with open(os.path.join(ROOT, 'data.json'), encoding='utf-8') as f:
         data = json.load(f)
+    update_home(data)
     all_pages = PAGES + rule_pages(data)
     index = []
     for p in all_pages:
         url = f"{SITE}/{p['slug']}/"
         body = p['body']()
+        crumbs=[('PawTrip','/')]
+        if p['slug'].startswith('countries/'): crumbs.append(('국가별 규정','/countries/'))
+        elif p['slug'].startswith('airlines/'): crumbs.append(('항공사 비교','/airlines/'))
+        crumbs.append((p.get('heading',p['title']),f"/{p['slug']}/"))
         out = SHELL.format(title=html.escape(p['title']), desc=html.escape(p['desc']), url=url, verified=p.get('verified', VERIFIED),
                            group=html.escape(p['group']), lead=html.escape(p['lead']), body=body, tab=p['tab'], extra=p.get('extra',''),
-                           page_class=p.get('page_class', ''), page_style=p.get('page_style', ''), heading=html.escape(p.get('heading', p['title'])))
+                           page_class=p.get('page_class', ''), page_style=p.get('page_style', ''), heading=html.escape(p.get('heading', p['title'])),
+                           seo_metadata=page_metadata(p['title'],p['desc'],f"/{p['slug']}/",crumbs),breadcrumbs=breadcrumbs_html(crumbs),static_menu=static_menu(),discovery=discovery(data))
         d = os.path.join(ROOT, p['slug']); os.makedirs(d, exist_ok=True)
         with open(os.path.join(d, 'index.html'), 'w', encoding='utf-8', newline='\n') as f: f.write(out)
         index += sections(p, body)
@@ -404,6 +414,7 @@ def build():
     urls = [('/', max(VERIFIED, data['meta']['verified']))] + [(f"/{p['slug']}/", p.get('verified', VERIFIED)) for p in all_pages] + [('/privacy.html', '2026-10-08')]
     urls += [(path, '2026-10-12') for path in ['/games/', '/games/not-the-vacuum/', '/games/not-the-vacuum/privacy/']]
     urls += [('/pawlog/', max((p['date'] for p in blog_posts),default='2026-10-12'))] + [(f"/pawlog/{p['slug']}/",p['date']) for p in blog_posts]
+    urls=sitemap_dates(urls)
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{SITE}{u}</loc><lastmod>{d}</lastmod></url>\n' for u, d in urls) + '</urlset>\n'
     with open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8', newline='\n') as f: f.write(sm)
     print('built', len(all_pages), 'pages, search entries', len(index))

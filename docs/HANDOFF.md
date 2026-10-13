@@ -1,5 +1,15 @@
 # PawTrip 작업 인수인계
 
+## Google 검색 최적화·사이트맵 제출 확인 — 2026-10-13 / Codex
+
+- 사용자 요청: Google 검색 노출 개선. Search Console 캡처에 속성 등록·색인 페이지 1개/검색 클릭 0회, 사이트맵 제출 없음 표시. 공개 sitemap(36 URL) HTTP 200 확인 후 제출 방법 안내, 사용자가 ‘제출 성공’ 확인. 실제 색인 미발견 사유를 전체 보고서 없이 단정하지 않았습니다.
+- `tools/seo.py`, `tools/build_pages.py`, `index.html`: 정적 메뉴/목적지·항공사 상세 링크·홈페이지 안내, 검색 제목/단일 h1, 실제 경로 안내와 BreadcrumbList/WebPage, WebSite/Organization JSON-LD. 기존 화면·히어로·JS 계산기 유지. 국가 규정·개인 저장 데이터 변경 없음.
+- `tools/blog_core.py`: 실제 PawLog 게시일/대표 이미지/제목으로 BlogPosting JSON-LD, Open Graph 유형·locale·Twitter 메타. 소개의 잘못된 ‘일상도.을’ 문구도 자연스럽게 수정. 본문/대표 장면 보존.
+- `seo-dates.json`: 본문/메타데이터 지문 기준 실제 변경에만 사이트맵 lastmod 갱신, 반복 빌드와 캐시 토큰으로 날짜를 올리지 않음. 공식 verified는 별도 유지. `404.html`, prepare_site.py: 탐색 가능한 noindex 404 안내 포함. base.css v16, sw v39. Games 승인 방침은 변경하지 않음.
+- `tools/test_seo.py`, `docs/SEO.md`: SEO 계약 검사, 공식 자료와 배포 후 Search Console/Rich Results 확인 절차.
+- 검증: Python 16개·공개 묶음 97개·JavaScript 비활성 상태의 HTML/정적 링크/경로 안내/단일 제목·PC 1440·모바일 390/320px·4개 UI 언어·My Dog 여행 기록/결산·진료용 PNG/공유/인쇄/오프라인 회귀 통과. JSON-LD 구문/실제 글 원본 일치·재빌드 날짜 안정성 확인. PC 화면 검수·diff 통과. Google Rich Results Test는 아직 운영 새 코드 기준으로 수행하지 않음.
+- 상태: 코드/페이지/배포 준비는 로컬 완료, 이번 SEO 개선 커밋·푸시·운영 배포 미실행. Search Console 사이트맵 제출은 사용자 완료. 배포 후 대표 URL 검사·필요 시 색인 요청·보고서 추적이 남아 있습니다. 순위/색인 보장은 하지 않습니다.
+
 ## 홈페이지 My Dog 명칭 적용 — 2026-10-12 / Codex
 
 - 사용자 확정: 앱 이름은 나중에 검토하고 홈페이지는 My Dog로 변경. 공통 규칙 AGENTS.md에 명칭 반영. 기존 /mycard/·#trips 주소, CSS/DOM 식별자와 브라우저 저장 키는 유지합니다.

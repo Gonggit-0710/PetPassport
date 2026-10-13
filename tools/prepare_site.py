@@ -5,7 +5,7 @@ import json
 from rule_pages import pages
 
 ROOT = Path(__file__).resolve().parent.parent
-FILES = ['.nojekyll', 'CNAME', 'index.html', 'privacy.html', 'base.css',
+FILES = ['.nojekyll', 'CNAME', 'index.html', '404.html', 'privacy.html', 'base.css',
          'features.css', 'rules.css', 'features.js', 'trip-plan.js', 'site-language.js', 'medical-card.js', 'wallet-config.js', 'mycard.js', 'nav.js', 'search.js', 'search-index.json',
          'data.json', 'airports.json', 'sitemap.xml', 'robots.txt', 'sw.js',
          'manifest.webmanifest', 'app-ads.txt']

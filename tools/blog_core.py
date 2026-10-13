@@ -6,6 +6,7 @@ import datetime
 import html
 import json
 import re
+from seo import ld, breadcrumb, organization
 
 ROOT = Path(__file__).resolve().parent.parent
 CONTENT = ROOT / 'blog-content'
@@ -83,11 +84,17 @@ def validate(post):
 def posts():
     return sorted([validate(json.loads(p.read_text(encoding='utf-8'))) for p in POSTS.glob('*.json')], key=lambda p:(p['date'],p['slug']), reverse=True)
 
-def shell(title, description, path, body, cover=''):
+def shell(title, description, path, body, cover='',post=None):
     image = f'<meta property="og:image" content="https://pawtrip.us{esc(cover)}">' if cover else ''
+    crumbs=[('PawTrip','/'),('PawLog','/pawlog/')]
+    graph=[breadcrumb(crumbs+([(title,path)] if post else []))]
+    if post:
+        graph += [organization(),{'@type':'BlogPosting','headline':title,'description':description,'url':'https://pawtrip.us'+path,'mainEntityOfPage':'https://pawtrip.us'+path,'datePublished':post['date'],'image':['https://pawtrip.us'+cover] if cover else [],'inLanguage':'ko','author':{'@id':'https://pawtrip.us/#organization'},'publisher':{'@id':'https://pawtrip.us/#organization'}}]
+    metadata=ld({'@context':'https://schema.org','@graph':graph})
     return f'''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(title)} · PawLog</title><meta name="description" content="{esc(description)}"><link rel="canonical" href="https://pawtrip.us{path}">
 <meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(description)}"><meta property="og:url" content="https://pawtrip.us{path}">{image}
+<meta property="og:type" content="{'article' if post else 'website'}"><meta property="og:locale" content="ko_KR"><meta name="twitter:card" content="summary_large_image">{metadata}
 <link rel="icon" href="/media/icon-192.png"><link rel="stylesheet" href="/pawlog/blog.css?v=3"></head><body>
 <a class="skip" href="#main">본문으로 건너뛰기</a><header><a class="brand" href="/" aria-label="PawTrip 홈"><img src="/media/logo-light.svg" alt="PawTrip"></a><nav aria-label="PawLog 메뉴"><a href="/pawlog/">PawLog</a><a href="/mycard/">My Dog</a><a href="https://blog.naver.com/pawtrip">네이버 블로그</a></nav></header>
 <main id="main">{body}</main><footer><a href="/">PawTrip 여행 준비</a><span>© PawTrip · PawLog</span></footer></body></html>'''
@@ -102,11 +109,11 @@ def build_blog():
         target.mkdir(exist_ok=True)
         source = ''  # Keep provenance in the content record, not the public header.
         body = f'<article><a class="back" href="/pawlog/">← PawLog 전체 이야기</a><p class="eyebrow">공이와 함께, 여행도 일상도.</p><h1>{esc(p["title"])}</h1><div class="meta"><time datetime="{p["date"]}">{p["date"]}</time>{source}</div><div class="story">{p["body"]}</div><aside class="next"><a href="/pawlog/">다른 이야기 읽기 →</a></aside></article>'
-        (target / 'index.html').write_text(shell(p['title'],p['excerpt'],path,body,p['cover']),encoding='utf-8')
+        (target / 'index.html').write_text(shell(p['title'],p['excerpt'],path,body,p['cover'],p),encoding='utf-8')
         cover = f'<img src="{esc(p["cover"])}" alt="{esc(p["title"])}" loading="lazy">' if p['cover'] else '<div class="empty-cover">🐾 PawLog</div>'
         cards.append(f'<a class="post-card" href="{path}">{cover}<div><time>{p["date"]}</time><h2>{esc(p["title"])}</h2><p>{esc(p["excerpt"])}</p><span>이야기 읽기 →</span></div></a>')
-    body = '<section class="intro"><p class="eyebrow">PAWLOG</p><h1>공이와 함께,<br>여행도 일상도.</h1><p>여행에서 만난 뜻밖의 순간부터 소소한 일상까지.<br>공이와 함께, 여행도 일상도.을 기록합니다.</p></section><section class="post-grid" aria-label="PawLog 이야기">'+''.join(cards)+'</section>'
-    (ROOT/'pawlog/index.html').write_text(shell('공이와 함께, 여행도 일상도.','여행과 일상 속 공이와 함께, 여행도 일상도.을 기록합니다.','/pawlog/',body),encoding='utf-8')
+    body = '<section class="intro"><p class="eyebrow">PAWLOG</p><h1>공이와 함께,<br>여행도 일상도.</h1><p>여행에서 만난 뜻밖의 순간부터 소소한 일상까지.<br>공이와 함께한 여행과 일상의 순간을 기록합니다.</p></section><section class="post-grid" aria-label="PawLog 이야기">'+''.join(cards)+'</section>'
+    (ROOT/'pawlog/index.html').write_text(shell('공이와 함께, 여행도 일상도.','여행과 일상 속 공이와 함께한 여행과 일상의 순간을 기록합니다.','/pawlog/',body),encoding='utf-8')
     # GitHub Pages has no server redirect rules: keep explicit legacy entry pages.
     for slug in [''] + [p['slug'] for p in items]:
         old = ROOT/'blog'/slug
