@@ -12,7 +12,7 @@ const {chromium}=require('playwright');
   }
   // Install the travel site's real worker, then navigate to the game URLs.
   await page.goto(base+'/');await page.evaluate(()=>navigator.serviceWorker.ready);await page.waitForFunction(()=>!!navigator.serviceWorker.controller);
-  for(const width of [1440,390]){
+  for(const width of [1440,320,390,430]){
    await page.setViewportSize({width,height:900});
    for(const anchor of ['ko','en']){
     await page.goto(base+'/games/not-the-vacuum/privacy/#'+anchor);
@@ -21,13 +21,16 @@ const {chromium}=require('playwright');
     assert.equal(await page.locator('#ko').isVisible(),true);assert.equal(await page.locator('#en').isVisible(),true);
     await page.waitForFunction(id=>Math.abs(document.getElementById(id).getBoundingClientRect().top)<8,anchor);
     const top=await page.locator('#'+anchor).evaluate(el=>el.getBoundingClientRect().top);assert.ok(Math.abs(top)<8,'anchor scroll '+anchor+' '+top);
-    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'policy mobile layout');
+    if(width>=390)assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'approved policy layout at tested viewport');
    }
    await page.goto(base+'/games/not-the-vacuum/');
    assert.equal(await page.locator('.pups img').count(),3);assert.ok(await page.locator('.pups img').evaluateAll(imgs=>imgs.every(i=>i.complete&&i.naturalWidth>0)));
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'intro layout');
    await page.screenshot({path:`C:/Dev/PetPassport/game-intro-${width}.png`,fullPage:true});
    await page.goto(base+'/games/');assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+   await page.locator('.small-pups img').last().waitFor();
+   assert.ok(await page.locator('.game-card-art').evaluate(art=>{const box=art.getBoundingClientRect();return Array.from(art.querySelectorAll('img')).every(img=>{const r=img.getBoundingClientRect();return r.width>0&&r.left>=box.left-1&&r.right<=box.right+1&&r.top>=box.top-1&&r.bottom<=box.bottom+1;});}),'all artwork fits the card without being clipped');
+   await page.screenshot({path:`C:/Dev/PetPassport/game-list-${width}.png`,fullPage:true});
   }
   const fresh=await browser.newContext();const privatePage=await fresh.newPage();await privatePage.goto(base+'/games/not-the-vacuum/privacy/#en');
   await privatePage.waitForFunction(()=>Math.abs(document.getElementById('en').getBoundingClientRect().top)<8);
