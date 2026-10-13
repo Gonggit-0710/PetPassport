@@ -1,5 +1,22 @@
 # PawTrip 작업 인수인계
 
+## 게임 영역 작업 — 2026-10-12 / Codex
+
+- 사용자 요청: 지시서 `C:\Dev\Not the Vacuum\release\pawtrip-games-handoff.md` 20:05 개정본과 `privacy/index.html` 최종본을 확인한 뒤 네 독립 URL 제작. 게임 메뉴 링크는 출시 후 추가하도록 사용자 답변 받았습니다. 원본 게임 폴더는 읽기와 그림 복사만 수행했습니다.
+- `games/index.html`, `games/not-the-vacuum/index.html`, `games/games.css`, `games/assets/`: 독립 게임 목록과 한국어·영어 소개·지원. 승인된 소개 문장 그대로 사용, 다른 게임 언급/광고 없는 약속/어린이용 표현 없음. 실제 제공된 앱 아이콘·타이틀 로고와 보리/토리/구름 calm PNG 복사, 스토어는 곧 출시 표시이며 깨진 다운로드 링크 없음. 연락처 help@pawtrip.us.
+- `games/not-the-vacuum/privacy/index.html`: 제공된 최종 HTML 그대로 복사. 정규화 SHA-256 `c1f3b07d4b91df5cb41773b33078bafa9f878fb4fd08e64aece1d5a1b3f40764`, 원본 일치. `id="ko"`·`id="en"`, 두 언어·날짜·본문 유지, 어떤 스크립트도 추가하지 않음. 여행 방침 privacy.html 유지.
+- `app-ads.txt`: 루트에 지정된 한 줄, ASCII 호환 UTF-8/BOM 없음. 사용자가 지시서에 확정한 AdMob pub ID 사용, AdMob 콘솔의 해당 줄을 직접 확인한 것은 아님.
+- `tools/prepare_site.py`, `tools/check_release.py`: games 전체와 app-ads를 공개 묶음에 포함하고 필수 파일·광고 텍스트·앵커/스크립트 제외를 검증. `tools/build_pages.py`, `sitemap.xml`: 게임 URL 3개 추가, 기존 검색 색인과 여행 페이지 생성 유지. `sw.js` v32: games와 app-ads를 처리하지 않도록 제외. 여행 메뉴 nav.js와 홈페이지는 변경하지 않음.
+- 검증: Python 9개·공개 파일 검사·게임 브라우저 검증 통과. 로컬 네 URL HTTP 200/무리디렉션, app-ads text/plain/한 줄 정확성, PC 1440px·모바일 390px의 정책 #ko/#en 진입과 두 번 새로고침, 기존 SW 제어 브라우저와 새 격리 컨텍스트, 양 언어 표시/정책 스크립트 없음, 게임 그림 로드·가로 넘침 없음, 게임 파일 SW 캐시 없음 확인. 게임 소개 PC/모바일 스크린샷 직접 검수. 여행 방침·메뉴·규정·홈페이지는 HEAD와 동일.
+- 상태: 로컬 페이지와 공개 배포 묶음 준비 완료. Git 커밋·푸시·운영 배포 미실행. 실제 휴대폰과 운영 URL 200/앵커/MIME·AdMob 콘솔 검증은 배포 후 확인해야 합니다. 운영 주소 4개 및 절차는 `docs/GAMES-DEPLOYMENT.md`. 배포 커밋 ID는 아직 없습니다.
+
+## 운영 배포 확인 — 2026-10-12 / Codex
+
+- 사용자가 홈페이지 배포 완료를 알렸습니다. 로컬 작업 폴더는 깨끗한 상태였습니다.
+- 운영 `https://pawtrip.us/mycard/`와 features.js/css, medical-card.js, trip-plan.js, site-language.js, wallet-config.js, sw.js의 GET 응답 8개가 모두 HTTP 200이며 로컬 최신 파일과 줄바꿈 정규화 후 일치했습니다. 카드·견종/중성화·상단 언어·일정 연동·개인정보 안내의 최신 코드가 운영에 반영됐습니다.
+- Wallet endpoint는 현재 빈 값으로 준비 중 유지. 이번 확인에서는 운영 사용자 입력이나 공유/분석 이벤트를 발생시키지 않았습니다. 실제 휴대폰 저장·공유와 운영 GA 이벤트 수신은 별도 확인 항목입니다.
+- 상태: 사용자가 운영 배포 완료, Codex는 공개 파일 반영을 읽기 전용으로 확인. 이 인수인계 기록 추가는 새 로컬 변경이며 아직 커밋·푸시하지 않았습니다. 아래 과거 기록의 배포 전 상태는 각 작업 당시 기준입니다.
+
 ## 일정 계산기와 My Card 연결 — 2026-10-12 / Codex
 
 - 사용자가 같은 채팅에서 이어서 진행을 허용해 기존 일정 계산기를 My Card에 연결했습니다. 새 채팅은 만들지 않았습니다.

@@ -43,9 +43,14 @@ def check():
                 target /= 'index.html'
             if not target.resolve().is_relative_to(site.resolve()) or not target.is_file():
                 raise ValueError(f'{relative}: missing public reference {ref}')
-    for name in ('medical-card.js', 'wallet-config.js', 'mycard.js', 'features.js', 'features.css', 'privacy.html', 'sw.js', 'mycard/index.html'):
+    for name in ('medical-card.js', 'wallet-config.js', 'mycard.js', 'features.js', 'features.css', 'privacy.html', 'sw.js', 'mycard/index.html', 'games/index.html', 'games/not-the-vacuum/index.html', 'games/not-the-vacuum/privacy/index.html', 'app-ads.txt'):
         if not (site / name).is_file():
             raise ValueError(f'Missing release file: {name}')
+    if (site / 'app-ads.txt').read_bytes() != b'google.com, pub-6262324542700705, DIRECT, f08c47fec0942fa0\n':
+        raise ValueError('Unexpected app-ads.txt content or encoding')
+    policy = (site / 'games/not-the-vacuum/privacy/index.html').read_text(encoding='utf-8')
+    if 'id="ko"' not in policy or 'id="en"' not in policy or '<script' in policy.lower():
+        raise ValueError('Game policy must retain both anchors and have no scripts')
     if "endpoint:''" not in (site / 'wallet-config.js').read_text(encoding='utf-8'):
         raise ValueError('This release keeps Apple Wallet disabled until real-device verification')
     if (site / 'CNAME').read_text(encoding='utf-8').strip() != 'pawtrip.us':

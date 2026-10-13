@@ -399,6 +399,7 @@ def build():
         index += sections(p, body)
     with open(os.path.join(ROOT, 'search-index.json'), 'w', encoding='utf-8', newline='\n') as f: json.dump(index, f, ensure_ascii=False, separators=(',', ':'))
     urls = [('/', max(VERIFIED, data['meta']['verified']))] + [(f"/{p['slug']}/", p.get('verified', VERIFIED)) for p in all_pages] + [('/privacy.html', '2026-10-08')]
+    urls += [(path, '2026-10-12') for path in ['/games/', '/games/not-the-vacuum/', '/games/not-the-vacuum/privacy/']]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{SITE}{u}</loc><lastmod>{d}</lastmod></url>\n' for u, d in urls) + '</urlset>\n'
     with open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8', newline='\n') as f: f.write(sm)
     print('built', len(all_pages), 'pages, search entries', len(index))

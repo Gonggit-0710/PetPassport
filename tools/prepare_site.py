@@ -8,8 +8,8 @@ ROOT = Path(__file__).resolve().parent.parent
 FILES = ['.nojekyll', 'CNAME', 'index.html', 'privacy.html', 'base.css',
          'features.css', 'rules.css', 'features.js', 'trip-plan.js', 'site-language.js', 'medical-card.js', 'wallet-config.js', 'mycard.js', 'nav.js', 'search.js', 'search-index.json',
          'data.json', 'airports.json', 'sitemap.xml', 'robots.txt', 'sw.js',
-         'manifest.webmanifest']
-DIRS = ['media', 'domestic', 'titer', 'cost', 'local', 'changes']
+         'manifest.webmanifest', 'app-ads.txt']
+DIRS = ['media', 'domestic', 'titer', 'cost', 'local', 'changes', 'games']
 
 
 def stage():
