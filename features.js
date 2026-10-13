@@ -210,25 +210,31 @@ function completed(c){
 }
 function renderProgress(el){
   const countries = PT.data().countries;
-  const selected = LS.get('pt-check-dest', PT.state.dest);
+  const storedPlan=LS.get('pp3',{});
+  const plan={...PT.state,...storedPlan};
+  const selected = plan.dest || LS.get('pt-check-dest', PT.state.dest);
   const current = countries.find(c => c.id === selected) || countries[0];
   const expanded = !!el.querySelector('details[open]');
   el.innerHTML = `<section class="panel"><h3 class="sec-h" style="margin-top:0">여행 준비 진행 상황</h3>
     <div class="chips" id="myProgressChips"></div>
-    <div class="field" style="max-width:360px"><label for="myCheckCountry">체크리스트 관리할 나라</label><select id="myCheckCountry">${countries.map(c=>`<option value="${c.id}" ${c.id===current.id?'selected':''}>${PT.esc(c.name)}</option>`).join('')}</select></div>
+    <div class="form-grid two"><div class="field"><label for="myCheckCountry">목적지</label><select id="myCheckCountry">${countries.map(c=>`<option value="${c.id}" ${c.id===current.id?'selected':''}>${PT.esc(c.name)}</option>`).join('')}</select></div><div class="field"><label for="myTripDate">희망 출국일</label><input type="date" id="myTripDate" value="${PT.esc(plan.dep||'')}"></div></div>
+    <div id="myTripSummary" class="my-trip-summary"></div>
     <details class="my-checklist" ${expanded?'open':''}><summary><b>${PT.esc(current.name)} 입국 준비</b> <span id="myCheckCount"></span></summary>
     <ul class="card-checks">${current.requirements.map((r,i)=>`<li><label><input type="checkbox" data-my-check="${i}"><span>${PT.esc(r)}</span></label></li>`).join('')}</ul></details>
     <p class="hint" id="myCheckSaved" role="status">자동 저장 · 이 브라우저에 보관됩니다.</p>
-    <div class="links"><a class="link" href="/countries/${current.id}/">규정과 출처 보기</a><a class="link" href="/?dest=${current.id}#plan">이 나라로 일정 계산</a></div></section>`;
+    <div class="links"><a class="link" href="/countries/${current.id}/">규정과 출처 보기</a><a class="link" href="/?dest=${current.id}#plan">전체 일정 보기·수정</a></div></section>`;
   const refresh = () => {
     const done = completed(current);
     el.querySelectorAll('[data-my-check]').forEach(box => { box.checked = done.includes(Number(box.dataset.myCheck)); });
     $('#myCheckCount').textContent = `${done.length} / ${current.requirements.length} 완료`;
     $('#myProgressChips').innerHTML = countries.filter(c=>c.id===current.id || completed(c).length).map(c=>`<button type="button" class="chip" data-check-country="${c.id}" aria-pressed="${c.id===current.id}">${PT.esc(c.name)} · ${completed(c).length}/${c.requirements.length}</button>`).join('');
+    renderTripSummary(current,plan,done);
   };
   refresh();
-  $('#myCheckCountry').addEventListener('change', e => { LS.set('pt-check-dest', e.target.value); renderProgress(el); });
-  $('#myProgressChips').addEventListener('click', e => { const b = e.target.closest('[data-check-country]'); if(!b) return; LS.set('pt-check-dest', b.dataset.checkCountry); renderProgress(el); });
+  const setCountry=id=>{const next={...LS.get('pp3',{}),dest:id};if(!LS.set('pp3',next)){$('#myCheckSaved').textContent='저장하지 못했어요. 브라우저 저장 공간을 확인하세요.';return;}Object.assign(PT.state,next);LS.set('pt-check-dest',id);renderProgress(el);};
+  $('#myCheckCountry').addEventListener('change',e=>setCountry(e.target.value));
+  $('#myProgressChips').addEventListener('click', e => { const b = e.target.closest('[data-check-country]'); if(b)setCountry(b.dataset.checkCountry); });
+  $('#myTripDate').addEventListener('change',e=>{const value=e.target.value;if(value&&!window.PTTripPlan.parse(value))return;const next={...LS.get('pp3',{}),dep:value,dest:current.id};if(LS.set('pp3',next)){Object.assign(PT.state,next);plan.dep=value;renderTripSummary(current,plan,completed(current));$('#myCheckSaved').textContent='자동 저장 · 이 브라우저에 보관됩니다.';}else{$('#myCheckSaved').textContent='저장하지 못했어요. 브라우저 저장 공간을 확인하세요.';}});
   el.querySelectorAll('[data-my-check]').forEach(box => box.addEventListener('change', () => {
     const done = [...el.querySelectorAll('[data-my-check]:checked')].map(x=>Number(x.dataset.myCheck));
     const ok = LS.set('pp3c-' + current.id, done);
@@ -236,8 +242,21 @@ function renderProgress(el){
     refresh();
   }));
 }
+function renderTripSummary(country,plan,done){
+  const el=document.getElementById('myTripSummary');if(!el||!window.PTTripPlan)return;
+  const result=PTTripPlan.project(country,plan),today=new Date(),left=result.daysLeft;
+  const nextIndex=country.requirements.findIndex((_,i)=>!done.includes(i));
+  const nextStep=result.departure&&left>=0&&nextIndex>=0?result.steps.find(step=>PTTripPlan.days(step.date,today)>=0):null;
+  const badge=left===null?'출국일을 입력해 주세요':left>0?'D-'+left:left===0?'오늘 출국':'출국일이 지났어요';
+  el.innerHTML=`<div class="my-trip-heading"><b>${PT.esc(country.name)}</b><strong class="flag ${left!==null&&left<0?'warn':'ok'}">${PT.esc(badge)}</strong></div><label class="hint" for="myTripProgress">준비 체크 진행률</label><progress id="myTripProgress" max="${country.requirements.length}" value="${done.length}">${done.length}/${country.requirements.length}</progress>
+    <p class="hint">체크 완료는 날짜 요건 충족이나 입국 허가를 의미하지 않습니다.</p>
+    ${result.tooSoon&&left>=0?`<p class="callout bad"><strong>희망 출국일보다 준비 기간이 짧아요</strong>계산기 기준 가장 빠른 날: ${PT.esc(fmtDot(PTTripPlan.iso(result.earliest)))}. 날짜 요건을 전체 일정에서 확인하세요.</p>`:''}
+    <div class="my-trip-next"><b>다음 할 일</b><p>${PT.esc(nextIndex<0?'모든 준비사항을 체크했어요. 원본 서류와 날짜 요건을 다시 확인하세요.':country.requirements[nextIndex])}</p>
+    ${nextStep?`<p class="hint"><span>가장 가까운 준비 일정</span> · ${PT.esc(fmtDot(PTTripPlan.iso(nextStep.date)))}<br>${PT.esc(nextStep.t)}</p>`:''}</div>
+    <p class="hint"><span>${!result.departure?'출국일을 넣으면 준비 일정을 보여드려요.':result.tooSoon?'준비 일정은 계산기의 가장 빠른 출국 가능일 기준입니다.':'준비 일정은 희망 출국일 기준의 권장 시점입니다.'}</span> <span>체크 항목과 일정은 별도로 확인하세요.</span></p>`;
+}
 window.addEventListener('storage', e => {
-  if(!PT || !(e.key === null || (e.key||'').startsWith('pp3c-'))) return;
+  if(!PT || !(e.key === null || e.key==='pp3' || (e.key||'').startsWith('pp3c-'))) return;
   const el = document.getElementById('wprogress'); if(el) renderProgress(el);
 });
 

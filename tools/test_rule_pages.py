@@ -120,7 +120,7 @@ class RulePagesTest(unittest.TestCase):
                 path = Path(temp) / f'script-{i}.js'
                 path.write_text(script, encoding='utf-8')
                 subprocess.run(['node', '--check', str(path)], check=True, capture_output=True)
-        for name in ('nav.js', 'search.js', 'features.js', 'site-language.js', 'medical-card.js', 'wallet-config.js', 'mycard.js', 'sw.js'):
+        for name in ('nav.js', 'search.js', 'features.js', 'trip-plan.js', 'site-language.js', 'medical-card.js', 'wallet-config.js', 'mycard.js', 'sw.js'):
             subprocess.run(['node', '--check', str(ROOT / name)], check=True, capture_output=True)
 
 

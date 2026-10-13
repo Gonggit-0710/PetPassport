@@ -195,6 +195,11 @@ html.srch-open{overflow:hidden}
 /* 펫 카드 화면 정리 */
 .pet-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .wsec{margin-top:16px}
+.my-trip-summary{margin:16px 0;padding:16px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--navy-soft)}
+.my-trip-heading{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.my-trip-summary progress{display:block;width:100%;height:12px;margin:8px 0;accent-color:var(--navy)}
+.my-trip-next{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.my-trip-next p{margin:8px 0;overflow-wrap:anywhere}
 .mycard-privacy{display:flex;gap:14px;align-items:flex-start;margin:0 0 20px;padding:18px 20px;border:1px solid #bcd8cf;border-left:4px solid #28715c;border-radius:var(--r-md);background:#f0f8f4;color:#193e32}
 .mycard-privacy>svg{width:28px;height:28px;flex:none;margin-top:2px;color:#28715c}
 .mycard-privacy>div{min-width:0}
