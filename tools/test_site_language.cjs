@@ -9,6 +9,13 @@ const {chromium}=require('playwright');
     page.on('request',r=>{if(r.method()==='POST')external.push(r.url());});
     const base=process.env.PAWTRIP_TEST_URL||'http://127.0.0.1:8766';
     await page.goto(base+'/mycard/');await page.locator('[data-site-language]').waitFor();
+    for(const [ui,card] of [['ko','ko'],['en','en'],['ja','ja'],['zh','zh-CN']]){
+      await page.locator('[data-site-language]').selectOption(ui);
+      await page.locator('[data-example]').click();
+      assert.equal(await page.locator('.medical-card').getAttribute('lang'),card,'unselected card language follows current homepage language');
+      assert.equal(await page.evaluate(()=>localStorage.getItem('pt-sos-lang')),null,'default does not overwrite an explicit card preference');
+    }
+    await page.reload();await page.locator('[data-site-language]').waitFor();
     await page.locator('[data-site-language]').selectOption('en');
     await page.getByRole('button',{name:'Create my card',exact:true}).waitFor();
     assert.equal(await page.locator('html').getAttribute('lang'),'en');assert.equal(await page.locator('.topbar').isVisible(),true,'language is visible on desktop');

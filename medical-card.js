@@ -6,7 +6,7 @@
     const {esc, languages:L, conditions, allergies, wallet, save, photo, savePhoto, track} = api;
     const sample = {name:'보리 / Bori', breed:'Maltese', weight:'4.2', owner:'Sample owner', ownerTel:'+82 10-0000-0000', condNone:true, alg:['chicken'], medsNone:true};
     let lang = api.language(), revision = 0, imageUrl = null, walletUrl = null, file = null;
-    if(!L[lang]) lang = 'en';
+    if(!L[lang]) lang = 'ko';
     const q = s => root.querySelector(s);
     const ready = w => !!(w.name && w.weight && w.ownerTel);
     const choiceText = (list, ids) => list.filter(o=>(ids||[]).includes(o.id)).map(o=>lang==='ko'?o.ko:o[lang]+' / '+o.ko).join('\n');
@@ -30,7 +30,8 @@
     const note = () => ({ko:'보호자 제공 정보 · 직접 쓴 메모와 약 이름은 원문입니다. 원본 증명서를 대신하지 않습니다.',en:'Owner-provided information. Free-text notes and medication names remain in their original language. This is not an official certificate.',ja:'飼い主が提供した情報です。自由記入のメモ・薬名は原文のままです。公的な証明書ではありません。',zh:'信息由主人提供。自由填写的备注及药名保留原文。本卡不是官方证明。'})[lang];
     function dateLabel(w){
       const value=(w.updatedAt||new Date().toISOString()).slice(0,10);
-      return (w.updatedAt?'Updated / 更新 / 수정일: ':'Created / 作成 / 생성일: ')+value;
+      const labels={ko:['수정일','생성일'],en:['Updated','Created'],ja:['更新日','作成日'],zh:['更新日期','创建日期']};
+      return labels[lang][w.updatedAt?0:1]+': '+value;
     }
     function card(w, url, example){
       return `<article class="medical-card" lang="${lang==='zh'?'zh-CN':lang}">
@@ -88,6 +89,7 @@
       q('[name="name"]').focus();
     }
     async function preview(example){
+      lang=api.language();if(!L[lang]) lang='ko';
       const token=++revision; clearImage();const w=example?sample:wallet();
       q('.medical-stage').innerHTML=`<section class="medical-preview"><h3 class="sec-h">${example?'예시 카드 · 가상 정보':'내 진료용 카드'}</h3><div class="chips" role="group" aria-label="저장할 카드 언어">${['en','ja','zh','ko'].map(k=>`<button class="chip" type="button" data-medical-lang="${k}" aria-pressed="${lang===k}">${L[k].name}</button>`).join('')}</div><div data-medical-card></div><p class="save-state" role="status" data-export-status>카드를 준비하고 있어요…</p><div class="row-btns">${example?'<button class="btn btn-primary" type="button" data-use-example>내 카드 만들기</button>':'<button class="btn btn-primary" type="button" data-download disabled>PNG 이미지 내려받기</button><button class="btn btn-sm" type="button" data-share hidden>공유·저장</button><button class="btn btn-sm" type="button" data-print disabled>인쇄·PDF 저장</button><button class="btn btn-sm" type="button" data-edit>정보 수정</button>'}</div>${example?'':'<p class="hint">내려받은 이미지는 파일·다운로드 폴더에서 확인하세요. 사진첩에 보관하려면 공유·저장 또는 이미지 미리보기를 이용하세요. 연락처와 건강 정보가 포함되므로 전달 전에 확인하세요.</p><details class="medical-image-fallback"><summary>이미지 미리보기·저장 방법</summary><p class="hint">휴대폰에서 이미지를 길게 누르거나 공유 메뉴로 저장하세요. 기기마다 저장 메뉴가 다를 수 있습니다. PC 카카오톡에서 이미지가 붙지 않으면 PNG를 내려받은 뒤 채팅창에 파일을 끌어 넣거나 파일 첨부를 이용하세요.</p><div data-export-image></div></details><p class="hint">마이크로칩·비상 연락처·병원 정보를 추가하려면 <a href="/mycard/?edit=1">상세 정보 수정</a>을 이용하세요.</p>'}</section>`;
       q('[data-medical-card]').innerHTML=card(w,null,example);

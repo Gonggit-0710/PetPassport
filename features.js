@@ -20,6 +20,13 @@ const LS = {
   get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
   set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } }
 };
+function cardLanguage(){
+  const supported=['ko','en','ja','zh'], selected=LS.get('pt-sos-lang',null);
+  if(supported.includes(selected)) return selected;
+  let ui=window.PTLanguage?.get();
+  if(!ui){try{ui=localStorage.getItem('pt-ui-language');}catch(_){}}
+  return supported.includes(ui)?ui:'ko';
+}
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 const $ = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => [...r.querySelectorAll(s)];
@@ -199,7 +206,7 @@ PTX.views.wallet = function(){
     esc:PT.esc, languages:L, conditions:CONDITIONS, allergies:ALLERGIES,
     breedFields, bindBreed, readBreed, breedText, sexFields, sexText,
     wallet:W, save:saveW, photo:async()=>{ const p=await DB.get('photo'); return p && p.blob ? blobToDataUrl(p.blob) : null; }, track:PT.track,
-    language:()=>LS.get('pt-sos-lang','en'), setLanguage:lang=>LS.set('pt-sos-lang',lang),
+    language:cardLanguage, setLanguage:lang=>LS.set('pt-sos-lang',lang),
     savePhoto:async file=>{ const blob=await shrinkImage(file,600,.85); await DB.put({id:'photo',kind:'photo',title:'사진',type:blob.type,blob,added:Date.now()}); }
   });
 };
@@ -370,7 +377,7 @@ function renderEdit(el){
 
 function renderSos(el){
   const w = W();
-  const def = LS.get('pt-sos-lang', 'en');
+  const def = cardLanguage();
   const destId = (PT.state && PT.state.dest) || 'jp';
   const countries = PT.data().countries;
   el.innerHTML = `

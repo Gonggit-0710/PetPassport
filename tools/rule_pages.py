@@ -324,5 +324,5 @@ def pages(data):
                     heading='My Card', desc='반려견 다국어 진료용 카드를 만들고 PNG 이미지·인쇄·PDF로 보관하세요. 국가별 입국 준비 체크리스트, 반려견 정보와 검역 서류 관리, 자동 저장과 백업을 지원합니다.',
                     lead='국가별 준비사항과 반려견 정보, 서류를 한곳에서 관리하세요.', group='내 반려견 · My Card',
                     body=lambda: mycard, verified=verified(data),
-                    extra='<script src="/trip-plan.js?v=1"></script><script src="/features.js?v=13"></script><script src="/wallet-config.js?v=1"></script><script src="/medical-card.js?v=3"></script><script src="/mycard.js?v=2"></script>'))
+                    extra='<script src="/trip-plan.js?v=1"></script><script src="/features.js?v=14"></script><script src="/wallet-config.js?v=1"></script><script src="/medical-card.js?v=4"></script><script src="/mycard.js?v=2"></script>'))
     return out
