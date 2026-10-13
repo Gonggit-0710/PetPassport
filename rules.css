@@ -35,6 +35,9 @@
 .rules-page .rule-fold>summary::after{content:'⌄';font-size:20px;line-height:1;flex:none;transition:transform .2s}
 .rules-page .rule-fold[open]>summary::after{transform:rotate(180deg)}
 .rules-page .rule-fold>summary>h2{font-size:16px;font-weight:700;margin:0;line-height:1.5}
+.rules-page .country-faq>h2{margin:0 0 12px}
+.rules-page .country-faq .rule-fold>summary>h3{font-size:16px;font-weight:700;margin:0;line-height:1.5}
+.rules-page .country-faq .src{overflow-wrap:anywhere}
 .rules-page .rule-fold-body{padding:0 0 16px;font-size:14px}
 .rules-page .rule-fold-body h3{font-size:15px;margin:16px 0 10px}
 .rules-page .rule-fold-body .tablewrap{margin-top:0}

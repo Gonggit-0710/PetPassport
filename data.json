@@ -117,6 +117,95 @@
           "title": "CDC Dog Import Form 안내",
           "url": "https://www.cdc.gov/importation/dogs/dog-import-form-instructions.html"
         }
+      ],
+      "faqVerified": "2026-10-13",
+      "faq": [
+        {
+          "question": "강아지 미국 여행에 어떤 서류가 필요한가요?",
+          "answer": "최근 6개월 동안 한국 등 CDC 저위험·광견병 청정 국가에만 머문 반려견은 미국 CDC 기준으로 Dog Import Form 접수증이 필요합니다. 입국 시 생후 6개월 이상, 건강한 상태, 스캐너로 읽을 수 있는 마이크로칩 조건도 충족해야 합니다. 한국 출국 검역증명서와 항공사·도착 주의 추가 조건은 별도로 확인하세요.",
+          "sources": [
+            {
+              "title": "CDC 저위험 국가 입국 조건",
+              "url": "https://www.cdc.gov/importation/dogs/rabies-free-low-risk-countries.html"
+            },
+            {
+              "title": "검역본부 출국·귀국 절차",
+              "url": "https://www.mafra.go.kr/bbs/home/792/574492/artclView.do"
+            }
+          ],
+          "links": [
+            {
+              "title": "입국 체크리스트 확인",
+              "url": "#requirements"
+            }
+          ]
+        },
+        {
+          "question": "미국 여행도 반드시 6개월 전부터 준비해야 하나요?",
+          "answer": "모든 반려견에게 6개월의 준비 대기기간이 필요한 것은 아닙니다. CDC의 ‘최근 6개월’은 어느 국가에 머물렀는지 확인하는 기간이고, ‘생후 6개월 이상’은 입국 가능한 나이 조건입니다. 칩·접종 기록, 한국 귀국 준비, 항공사 예약까지 함께 살펴 준비 일정을 잡으세요.",
+          "sources": [
+            {
+              "title": "CDC 저위험 국가 입국 조건",
+              "url": "https://www.cdc.gov/importation/dogs/rabies-free-low-risk-countries.html"
+            }
+          ],
+          "links": [
+            {
+              "title": "미국 여행 일정 계산",
+              "url": "/?dest=us#plan"
+            },
+            {
+              "title": "공이의 서류 준비 경험 읽기",
+              "url": "/pawlog/gong-us-travel-preparation/"
+            }
+          ]
+        },
+        {
+          "question": "마이크로칩과 광견병 접종은 어떤 순서로 확인하나요?",
+          "answer": "먼저 칩이 읽히는지와 기존 접종·검사 서류의 칩 번호가 일치하는지 동물병원에서 확인하세요. 최근 6개월 저위험 국가 체류 조건에서는 CDC가 광견병 접종증명서를 추가로 요구하지 않지만, 항공사·도착 주와 한국 귀국 요건은 따로 적용됩니다. 고위험 국가 방문 이력이 있으면 접종·칩 관련 추가 조건을 확인해야 합니다.",
+          "sources": [
+            {
+              "title": "CDC 서류 안내와 고위험 국가 분기",
+              "url": "https://www.cdc.gov/importation/dogs/dog-import-form-instructions.html"
+            }
+          ],
+          "links": [
+            {
+              "title": "우리 강아지 기록 확인",
+              "url": "/mydog/"
+            }
+          ]
+        },
+        {
+          "question": "CDC 접수증은 언제 작성하고, 휴대폰으로 보여줘도 되나요?",
+          "answer": "저위험 국가에서 출발할 때는 여행 당일에도 작성할 수 있지만, CDC는 며칠 전에 준비하는 것을 권합니다. 제출 후 이메일 인증을 마치고 받은 접수증은 출력하거나 휴대폰으로 제시할 수 있습니다. 같은 출발 국가 기준 발급일부터 6개월간 사용할 수 있으며, 출발 국가 변경·유효기간 만료 또는 고위험 국가 방문 시 조건을 다시 확인하세요.",
+          "sources": [
+            {
+              "title": "CDC Dog Import Form 작성·접수증 안내",
+              "url": "https://www.cdc.gov/importation/dogs/dog-import-form-instructions.html"
+            }
+          ]
+        },
+        {
+          "question": "미국에서 한국으로 돌아올 때도 서류가 필요한가요?",
+          "answer": "네. 미국 입국용 CDC 접수증만으로 한국 귀국 검역을 대신할 수 없습니다. 미국 본토에서 한국으로 오는 일반적인 생후 90일 이상 개는 마이크로칩과 광견병 항체가 0.5 IU/ml 이상 결과, 검역 서류를 준비해야 합니다. 한국 출국 때 받은 검역증명서로 재입국하는 조건은 검역본부에 확인하세요. 미국에서 증명서를 발급받는 경우 USDA 공인 수의사 발급·APHIS 승인이 필요하므로 귀국 전 미리 준비하세요.",
+          "sources": [
+            {
+              "title": "검역본부 한국 귀국 절차",
+              "url": "https://www.mafra.go.kr/bbs/home/792/574492/artclView.do"
+            },
+            {
+              "title": "USDA 미국→한국 서류 안내",
+              "url": "https://www.aphis.usda.gov/pet-travel/us-to-another-country-export/pet-travel-us-korea"
+            }
+          ],
+          "links": [
+            {
+              "title": "한국 귀국 검역 안내",
+              "url": "/#return"
+            }
+          ]
+        }
       ]
     },
     {

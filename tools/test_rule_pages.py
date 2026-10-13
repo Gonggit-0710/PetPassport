@@ -10,7 +10,7 @@ import unittest
 from urllib.parse import urlsplit, unquote
 import xml.etree.ElementTree as ET
 
-from rule_pages import pages, validate
+from rule_pages import pages, validate, verified
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = json.loads((ROOT / 'data.json').read_text(encoding='utf-8'))
@@ -47,6 +47,22 @@ class Document(HTMLParser):
 
 
 class RulePagesTest(unittest.TestCase):
+    def test_country_faq_is_scoped_and_keeps_its_own_source_date(self):
+        data = copy.deepcopy(DATA)
+        country = next(c for c in data['countries'] if c['id'] == 'us')
+        country['faq'][0]['question'] = '서류 <질문>'
+        country['faq'][0]['answer'] = '내용 <script>개인정보</script>'
+        generated = {p['slug']:p for p in pages(data)}
+        output = generated['countries/us']['body']()
+        self.assertIn('서류 &lt;질문&gt;', output)
+        self.assertIn('내용 &lt;script&gt;개인정보&lt;/script&gt;', output)
+        self.assertIn(country['faqVerified'], output)
+        self.assertEqual(generated['countries/us']['verified'], verified(data, country))
+        self.assertNotIn('country-faq', generated['countries/jp']['body']())
+        country['faq'][0]['sources'][0]['url'] = 'javascript:alert(1)'
+        with self.assertRaises(ValueError):
+            validate(data)
+
     def test_data_updates_change_static_rules_and_verified_date(self):
         data = copy.deepcopy(DATA)
         data['meta']['verified'] = '2026-11-01'

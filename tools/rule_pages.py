@@ -28,6 +28,13 @@ def validate(data):
             if not sources or any(not s or not s.get('url', '').startswith('https://') for s in sources):
                 raise ValueError(f'Missing HTTPS source for {kind}: {key}')
             if kind == 'countries':
+                if item.get('faq'):
+                    datetime.date.fromisoformat(item['faqVerified'])
+                    for faq in item['faq']:
+                        if not faq.get('question') or not faq.get('answer') or not faq.get('sources'):
+                            raise ValueError(f'Missing FAQ answer/source: {key}')
+                        if any(not source.get('url','').startswith('https://') for source in faq['sources']):
+                            raise ValueError(f'Invalid FAQ source: {key}')
                 if not item.get('requirements'):
                     raise ValueError(f'Missing requirements: {key}')
                 if not isinstance(item.get('difficulty'), int) or not 1 <= item['difficulty'] <= 5:
@@ -63,7 +70,7 @@ def page(slug, tab, title, desc, lead, body, date, extra=''):
     return dict(slug=slug, tab=tab, title=title, desc=desc, lead=lead,
                 group='규정 · 국가별' if tab == 'countries' else '규정 · 항공사' if tab == 'airlines' else '내 반려견 · My Dog',
                 body=lambda: body, verified=date, extra=extra + DISCLOSURE_JS + (CHECKLIST_JS if tab == 'countries' else ''),
-                page_class='rules-page', page_style='<link rel="stylesheet" href="/rules.css?v=3">', heading=title)
+                page_class='rules-page', page_style='<link rel="stylesheet" href="/rules.css?v=4">', heading=title)
 
 
 DISCLOSURE_JS = '''<script>
@@ -194,6 +201,16 @@ def country_page(data, c):
     key, name = c['id'], c['name']
     body = link('/countries/', '← 국가별 규정 목록', 'back')
     body += '<div class="list still rule-country-list">' + country_card(data, c, opened=True) + '</div>'
+    if c.get('faq'):
+        body += '<section class="panel country-faq" aria-labelledby="faq"><h2 id="faq">강아지 미국 여행 자주 묻는 질문</h2>'
+        body += f'<p class="hint">미국 본토 여행을 준비하는 보호자를 위한 안내입니다. 공식 출처 확인일 {esc(c["faqVerified"])} · 최근 방문 국가와 귀국 조건을 함께 확인하세요.</p>'
+        for i, faq in enumerate(c['faq'], 1):
+            body += f'<details class="rule-fold" id="faq-{i}"><summary><h3>{esc(faq["question"])}</h3></summary><div class="rule-fold-body"><p>{esc(faq["answer"])}</p>'
+            body += '<p class="src">공식 출처: ' + ' · '.join(f'<a href="{esc(s["url"])}" target="_blank" rel="noopener">{esc(s["title"])}</a>' for s in faq['sources']) + '</p>'
+            if faq.get('links'):
+                body += '<div class="links">' + ''.join(link(s['url'], s['title']) for s in faq['links']) + '</div>'
+            body += '</div></details>'
+        body += '</section>'
     result = page(f'countries/{key}', 'countries', f'{name} 강아지 입국 규정과 해외여행 준비',
                 f'한국 출발 반려견의 {name} 입국 요건, 준비 타임라인, 도착 검역과 한국 귀국 준비를 출처와 함께 안내합니다.',
                 '입국 요건과 준비 일정을 확인하고, 체크리스트와 일정 계산으로 이어서 준비하세요.', body, verified(data, c))
