@@ -41,8 +41,8 @@ SHELL = '''<!doctype html>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="/base.css?v=23">
-<link rel="stylesheet" href="/features.css?v=15">
+<link rel="stylesheet" href="/base.css?v=24">
+<link rel="stylesheet" href="/features.css?v=16">
 {page_style}
 <script>
 (function(){{
