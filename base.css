@@ -323,6 +323,7 @@ table.cmp .dots{font-size:13px}
 .rail-g{margin:14px 0 4px 12px;font-size:var(--t-micro);font-weight:700;letter-spacing:.06em;opacity:.7}
 .rail-g:first-child{margin-top:0}
 .rail-x{margin:16px 0 0 12px;font-size:var(--t-small)}
+.rail .meta .rail-x{margin:12px 0 0}
 .rail-x a{text-decoration:none}
 .rail-x a:hover,.rail-x a[aria-current="page"]{text-decoration:underline}
 @media (min-width:1024px){.rail{overflow-y:auto;gap:24px}.rail nav ol{margin-bottom:4px}}
@@ -332,7 +333,7 @@ table.cmp .dots{font-size:13px}
 .rail nav .rail-g,.rail nav a.rl{color:var(--ink)}
 .rail nav a.rl .dot{background:var(--ink)}
 .rail nav a.pawlog-nav,.tabs.groups a.pawlog-nav{font-family:var(--brand-font);font-size:24px;font-weight:700;letter-spacing:0;color:var(--logo-coral);text-decoration:none;line-height:1.3}
-.rail nav a.pawlog-nav{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;margin-top:22px;padding:12px 0;border:0;border-bottom:2px solid var(--logo-navy);border-radius:0;background:transparent;color:var(--logo-coral)}
+.rail nav a.pawlog-nav{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;margin-top:22px;padding:16px 0 12px;border:0;border-top:2px solid var(--logo-navy);border-radius:0;background:transparent;color:var(--logo-coral)}
 .rail nav a.pawlog-nav b{display:inline-flex;align-items:center;gap:8px;font-size:22px;font-weight:700}
 .rail nav a.pawlog-nav .pawlog-paw{width:22px;height:22px;flex:none}
 .rail nav a.pawlog-nav .pawlog-description{font-family:var(--f);font-size:12px;font-weight:400;color:var(--ink);line-height:1.4}

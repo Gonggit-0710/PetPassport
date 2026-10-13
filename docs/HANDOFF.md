@@ -1,5 +1,17 @@
 # PawTrip 작업 인수인계
 
+## 기준·변경 이력 링크를 확인일 아래로 이동 — 2026-10-13 / Codex
+
+- 사용자 요청: ‘기준과 출처 · 변경 이력’을 왼쪽 하단 확인일 아래에. `nav.js`에서 PawLog 아래의 링크 생성 제거, `index.html`과 `tools/build_pages.py`의 rail meta 확인일/출발 전 안내 아래에 정적 링크 배치. nav는 data-tab 기준 aria-current만 갱신. `base.css` 링크 여백12px/왼쪽 정렬.
+- base v28, nav v13, sw v59. 생성/공개 묶음 갱신, Python17개·공개 파일101개 검사 통과. 홈/미국 상세/변경 이력에서 중복 링크 없음·확인 안내 아래 위치·활성 표시와 기준 페이지 이동 검증. AGENTS 기준 저장.
+- 로컬 반영·배포 준비 완료, 이번 변경 커밋·푸시·운영 배포 미실행. PawLog 위 구분선 유지.
+
+## PawLog 구분선 위로 이동 — 2026-10-13 / Codex
+
+- 사용자 요청: 규정 메뉴와 PawLog를 구분하도록 PawLog의 아래 선을 위로 이동. `base.css`: border-bottom 제거, Paw 남색 border-top 2px, 위쪽 내부 여백16px. 중앙 정렬/설명/코럴 이름·발바닥 유지. My Dog 아래 선 유지, 모바일 묶음 메뉴 유지. AGENTS 최종 기준 갱신.
+- base v27, sw v58, 생성/공개 묶음 갱신. Python17개·공개 파일101개 검사, 홈/미국 상세에서 위 선2px·아래 선0·색/정렬/발바닥·My Dog 아래 선 보존 및 모바일390/320px 넘침 없음 확인. 검수 `C:\Dev\PetPassport\pawlog-top-divider.png`.
+- 로컬 반영·배포 준비 완료, 이번 변경 커밋·푸시·운영 배포 미실행. 미국 FAQ 푸시는 사용자 완료 보고, 실제 운영 반영 여부는 별도 확인.
+
 ## 미국 규정 페이지 자주 묻는 질문 추가 — 2026-10-13 / Codex
 
 - 사용자 요청: 기존 미국 규정 페이지 안에 질문/답 접기 영역 추가. `data.json` 미국 항목에 5개 faq와 faqVerified 2026-10-13 추가(서류, 6개월 준비 오해, 칩/접종 기록, CDC 접수증, 한국 귀국). 기존 요건·체크 키·전체 meta/country verified·PawLog 원문 보존. FAQ만 확인했으므로 전체 국가 규정 재검증으로 표시하지 않음.

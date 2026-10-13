@@ -41,7 +41,7 @@ SHELL = '''<!doctype html>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="/base.css?v=26">
+<link rel="stylesheet" href="/base.css?v=28">
 <link rel="stylesheet" href="/features.css?v=19">
 {page_style}
 <script>
@@ -93,7 +93,7 @@ SHELL = '''<!doctype html>
     <a class="logo" href="/"><picture><source srcset="/media/logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/media/logo-light.svg" alt="PawTrip" style="height:38px;width:auto"></picture></a>
     <a class="sos-rail my-card-primary" href="/mydog/"><span class="sos-btn" aria-hidden="true">My</span><span><b>My Dog</b>우리 강아지 정보와 여행 기록을 한곳에</span></a>
     <nav aria-label="메뉴" id="navRail">{static_menu}</nav>
-    <div class="meta"><strong>대한민국 출발 기준</strong>이 페이지 확인일 {verified}<br>출발 전 공식 출처에서 다시 확인하세요.</div>
+    <div class="meta"><strong>대한민국 출발 기준</strong>이 페이지 확인일 {verified}<br>출발 전 공식 출처에서 다시 확인하세요.<p class="rail-x"><a href="/#about" data-tab="about">기준과 출처</a> · <a href="/changes/" data-tab="changes">변경 이력</a></p></div>
   </aside>
   <div class="content">
     <main id="main" class="doc {page_class}" tabindex="-1">
@@ -111,7 +111,7 @@ SHELL = '''<!doctype html>
   </div>
 </div>
 <script src="/site-language.js?v=4"></script>
-<script src="/nav.js?v=12"></script>
+<script src="/nav.js?v=13"></script>
 <script src="/search.js?v=8"></script>
 <script>
 PTNav.render('{tab}');
