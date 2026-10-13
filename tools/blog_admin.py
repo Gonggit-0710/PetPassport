@@ -44,6 +44,11 @@ class Handler(BaseHTTPRequestHandler):
         if not self.trusted():
             return self.respond({'error':'잘못된 관리자 주소입니다.'},403)
         path = urlsplit(self.path).path
+        if path == '/blog' or path.startswith('/blog/'):
+            self.send_response(302)
+            self.send_header('Location', self.path.replace('/blog','/pawlog',1))
+            self.end_headers()
+            return
         if path in {'/','/admin/'}:
             page = (ROOT/'tools/blog-admin.html').read_text(encoding='utf-8').replace('__TOKEN__',TOKEN)
             return self.respond(page.encode(),mime='text/html; charset=utf-8')
@@ -53,13 +58,13 @@ class Handler(BaseHTTPRequestHandler):
                 p['_version'] = hashlib.sha256((POSTS/(p['slug']+'.json')).read_bytes()).hexdigest()
             return self.respond({'posts':published,'drafts':[json.loads(f.read_text(encoding='utf-8')) for f in (STATE/'drafts').glob('*.json')]})
         public_media = {'/media/icon-192.png', '/media/logo-light.svg'}
-        if path.startswith('/blog/') or path in public_media:
+        if path.startswith('/pawlog/') or path in public_media:
             target = (ROOT/path.lstrip('/')).resolve()
-            allowed = (ROOT/'blog').resolve()
+            allowed = (ROOT/'pawlog').resolve()
             if not target.is_relative_to(allowed) and path not in public_media:
                 return self.respond({'error':'찾을 수 없습니다.'},404)
             if target.is_dir(): target /= 'index.html'
-            if not target.is_file() and re.fullmatch(r'/blog/media/[a-f0-9]{32}\.(jpg|png|webp)',path):
+            if not target.is_file() and re.fullmatch(r'/pawlog/media/[a-f0-9]{32}\.(jpg|png|webp)',path):
                 target = STATE/'uploads'/Path(path).name
             if target.is_file():
                 return self.respond(target.read_bytes(),mime=(mimetypes.guess_type(target)[0] or 'application/octet-stream')+('; charset=utf-8' if target.suffix in {'.html','.css'} else ''))
@@ -83,7 +88,7 @@ class Handler(BaseHTTPRequestHandler):
                     target = STATE/'uploads'/name
                     target.parent.mkdir(parents=True,exist_ok=True)
                     target.write_bytes(raw)
-                    return self.respond({'url':'/blog/media/'+name})
+                    return self.respond({'url':'/pawlog/media/'+name})
                 if path == '/api/draft':
                     draft_id = data.get('draftId') or uuid.uuid4().hex
                     if not re.fullmatch('[a-f0-9]{32}',draft_id): raise ValueError('초안 번호 오류')
@@ -96,7 +101,7 @@ class Handler(BaseHTTPRequestHandler):
                     original = data.get('original','')
                     if original and original != p.get('slug'): raise ValueError('기존 글의 주소는 바꿀 수 없습니다.')
                     # Validate first; only publish photos belonging to a valid article.
-                    urls = re.findall(r'/blog/media/[a-zA-Z0-9_-]+\.(?:png|jpg|jpeg|webp)',p.get('body','')+' '+p.get('cover',''))
+                    urls = re.findall(r'/pawlog/media/[a-zA-Z0-9_-]+\.(?:png|jpg|jpeg|webp)',p.get('body','')+' '+p.get('cover',''))
                     p = validate(p)
                     target = POSTS/(p['slug']+'.json')
                     if target.exists():
@@ -120,7 +125,7 @@ class Handler(BaseHTTPRequestHandler):
                         raise ValueError('페이지 생성에 실패했습니다. 기존 글은 복원했습니다.')
                     draft = data.get('draftId','')
                     if re.fullmatch('[a-f0-9]{32}',draft): (STATE/'drafts'/(draft+'.json')).unlink(missing_ok=True)
-                    return self.respond({'url':'/blog/'+p['slug']+'/','version':hashlib.sha256(target.read_bytes()).hexdigest(),'message':'홈페이지 파일에 게시했습니다. GitHub Desktop에서 변경 내용을 커밋하고 Push origin을 누르면 운영에 반영됩니다.'})
+                    return self.respond({'url':'/pawlog/'+p['slug']+'/','version':hashlib.sha256(target.read_bytes()).hexdigest(),'message':'홈페이지 파일에 게시했습니다. GitHub Desktop에서 변경 내용을 커밋하고 Push origin을 누르면 운영에 반영됩니다.'})
                 return self.respond({'error':'지원하지 않는 작업입니다.'},404)
         except (ValueError,KeyError,TypeError) as e:
             self.respond({'error':str(e)},400)

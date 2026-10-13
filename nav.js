@@ -21,7 +21,7 @@
       ['wallet','My Card','/mycard/', true],
       ['sos','다국어 진료용 카드','/#sos', true],
       ['trips','여행 기록','/#trips'],
-      ['blog','PawLog','/blog/']
+      ['blog','PawLog','/pawlog/']
     ]}
   ];
   const EXTRA = [['about','기준과 출처','/#about'],['changes','변경 이력','/changes/']];

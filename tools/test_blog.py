@@ -21,7 +21,7 @@ class BlogTest(unittest.TestCase):
         self.assertNotIn('secret',result)
         self.assertNotIn('javascript',result)
         with self.assertRaises(ValueError): clean_html('<img src="https://example.com/tracker.png">')
-        with self.assertRaises(ValueError): clean_html('<img src="/blog/media/../../data.json">')
+        with self.assertRaises(ValueError): clean_html('<img src="/pawlog/media/../../data.json">')
     def test_post_path_validation(self):
         p=posts()[0].copy()
         for slug in ['../privacy','admin','media','index','My Story']:

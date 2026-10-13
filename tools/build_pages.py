@@ -107,7 +107,7 @@ SHELL = '''<!doctype html>
   </div>
 </div>
 <script src="/site-language.js?v=2"></script>
-<script src="/nav.js?v=7"></script>
+<script src="/nav.js?v=8"></script>
 <script src="/search.js?v=5"></script>
 <script>
 PTNav.render('{tab}');
@@ -399,11 +399,11 @@ def build():
         d = os.path.join(ROOT, p['slug']); os.makedirs(d, exist_ok=True)
         with open(os.path.join(d, 'index.html'), 'w', encoding='utf-8', newline='\n') as f: f.write(out)
         index += sections(p, body)
-    index += [{'t':p['title'],'u':f"/blog/{p['slug']}/",'g':'PawLog','x':p['excerpt']+' '+text_of(p['body'])} for p in blog_posts]
+    index += [{'t':p['title'],'u':f"/pawlog/{p['slug']}/",'g':'PawLog','x':p['excerpt']+' '+text_of(p['body'])} for p in blog_posts]
     with open(os.path.join(ROOT, 'search-index.json'), 'w', encoding='utf-8', newline='\n') as f: json.dump(index, f, ensure_ascii=False, separators=(',', ':'))
     urls = [('/', max(VERIFIED, data['meta']['verified']))] + [(f"/{p['slug']}/", p.get('verified', VERIFIED)) for p in all_pages] + [('/privacy.html', '2026-10-08')]
     urls += [(path, '2026-10-12') for path in ['/games/', '/games/not-the-vacuum/', '/games/not-the-vacuum/privacy/']]
-    urls += [('/blog/', max((p['date'] for p in blog_posts),default='2026-10-12'))] + [(f"/blog/{p['slug']}/",p['date']) for p in blog_posts]
+    urls += [('/pawlog/', max((p['date'] for p in blog_posts),default='2026-10-12'))] + [(f"/pawlog/{p['slug']}/",p['date']) for p in blog_posts]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{SITE}{u}</loc><lastmod>{d}</lastmod></url>\n' for u, d in urls) + '</urlset>\n'
     with open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8', newline='\n') as f: f.write(sm)
     print('built', len(all_pages), 'pages, search entries', len(index))

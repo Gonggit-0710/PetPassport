@@ -48,7 +48,7 @@ def check():
             raise ValueError(f'Missing release file: {name}')
     if (site / 'app-ads.txt').read_bytes() != b'google.com, pub-6262324542700705, DIRECT, f08c47fec0942fa0\n':
         raise ValueError('Unexpected app-ads.txt content or encoding')
-    if not (site/'blog/index.html').is_file() or (site/'tools/blog-admin.html').exists():
+    if not (site/'pawlog/index.html').is_file() or (site/'tools/blog-admin.html').exists():
         raise ValueError('PawLog must be public and its editor must stay local')
     policy = (site / 'games/not-the-vacuum/privacy/index.html').read_text(encoding='utf-8')
     if 'id="ko"' not in policy or 'id="en"' not in policy or '<script' in policy.lower():

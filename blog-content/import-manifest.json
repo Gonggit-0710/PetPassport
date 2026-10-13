@@ -5,19 +5,19 @@
     "date": "2026-09-30",
     "photos": [
       {
-        "file": "/blog/media/gong-us-hotel-documents-1.jpg",
+        "file": "/pawlog/media/gong-us-hotel-documents-1.jpg",
         "source": "local 01_jeju.jpg"
       },
       {
-        "file": "/blog/media/gong-us-hotel-documents-2.jpg",
+        "file": "/pawlog/media/gong-us-hotel-documents-2.jpg",
         "source": "local 02_tahoe.jpg"
       },
       {
-        "file": "/blog/media/gong-us-hotel-documents-3.jpg",
+        "file": "/pawlog/media/gong-us-hotel-documents-3.jpg",
         "source": "local 03_airport.jpg"
       },
       {
-        "file": "/blog/media/gong-us-hotel-documents-4.png",
+        "file": "/pawlog/media/gong-us-hotel-documents-4.png",
         "source": "local 04_plane.png"
       }
     ],
@@ -36,15 +36,15 @@
     "date": "2026-10-03",
     "photos": [
       {
-        "file": "/blog/media/gong-us-travel-preparation-1.jpg",
+        "file": "/pawlog/media/gong-us-travel-preparation-1.jpg",
         "source": "local post2_01_vet.jpg"
       },
       {
-        "file": "/blog/media/gong-us-travel-preparation-4.jpg",
+        "file": "/pawlog/media/gong-us-travel-preparation-4.jpg",
         "source": "local post2_02_timeline.jpg"
       },
       {
-        "file": "/blog/media/gong-us-travel-preparation-7.jpg",
+        "file": "/pawlog/media/gong-us-travel-preparation-7.jpg",
         "source": "local post2_03_scale.jpg"
       }
     ],
@@ -54,11 +54,11 @@
         "source": "C:/Dev/PawTrip4u_Blog/PawTrip_두번째글.html",
         "reason": "사용자 요청: 작은 스크린샷 5개를 초안의 원문 안내 4개와 서류 체크리스트 표로 대체",
         "removed_images": [
-          "/blog/media/gong-us-travel-preparation-2.png",
-          "/blog/media/gong-us-travel-preparation-3.png",
-          "/blog/media/gong-us-travel-preparation-5.png",
-          "/blog/media/gong-us-travel-preparation-6.png",
-          "/blog/media/gong-us-travel-preparation-8.png"
+          "/pawlog/media/gong-us-travel-preparation-2.png",
+          "/pawlog/media/gong-us-travel-preparation-3.png",
+          "/pawlog/media/gong-us-travel-preparation-5.png",
+          "/pawlog/media/gong-us-travel-preparation-6.png",
+          "/pawlog/media/gong-us-travel-preparation-8.png"
         ]
       }
     ]
@@ -69,27 +69,27 @@
     "date": "2026-10-08",
     "photos": [
       {
-        "file": "/blog/media/gong-cabin-airline-experience-1.png",
+        "file": "/pawlog/media/gong-cabin-airline-experience-1.png",
         "source": "local post3_01_airport.png"
       },
       {
-        "file": "/blog/media/gong-cabin-airline-experience-2.png",
+        "file": "/pawlog/media/gong-cabin-airline-experience-2.png",
         "source": "local post3_02_compare.png"
       },
       {
-        "file": "/blog/media/gong-cabin-airline-experience-3.png",
+        "file": "/pawlog/media/gong-cabin-airline-experience-3.png",
         "source": "published image.png"
       },
       {
-        "file": "/blog/media/gong-cabin-airline-experience-4.png",
+        "file": "/pawlog/media/gong-cabin-airline-experience-4.png",
         "source": "local post3_03_business.png"
       },
       {
-        "file": "/blog/media/gong-cabin-airline-experience-5.png",
+        "file": "/pawlog/media/gong-cabin-airline-experience-5.png",
         "source": "local post3_04_economy.png"
       },
       {
-        "file": "/blog/media/gong-cabin-airline-experience-6.png",
+        "file": "/pawlog/media/gong-cabin-airline-experience-6.png",
         "source": "published image.png"
       }
     ],

@@ -8,15 +8,15 @@ const fs=require('node:fs');
   const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   const base=process.env.PAWTRIP_TEST_URL||'http://127.0.0.1:8766';
   for(const width of [1440,390,320]){
-   await page.setViewportSize({width,height:900});await page.goto(base+'/blog/');
-   assert.equal(await page.locator('.post-card').count(),3);assert.match(await page.locator('h1').innerText(),/공이와 함께\s*한 시간들/);
+   await page.setViewportSize({width,height:900});await page.goto(base+'/pawlog/');
+   assert.equal(await page.locator('.post-card').count(),3);assert.match(await page.locator('h1').innerText(),/공이와 함께,\s*여행도 일상도\./);
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
    const links=await page.locator('.post-card').evaluateAll(a=>a.map(x=>x.getAttribute('href')));
    await page.screenshot({path:`C:/Dev/PetPassport/pawlog-list-${width}.png`,fullPage:true});
    for(const link of links){await page.goto(base+link);await page.locator('.story img').last().scrollIntoViewIfNeeded();await page.waitForFunction(()=>[...document.querySelectorAll('.story img')].every(x=>x.complete&&x.naturalWidth>0));assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));assert.equal(await page.locator('.story script,.story iframe').count(),0)}
    await page.screenshot({path:`C:/Dev/PetPassport/pawlog-story-${width}.png`,fullPage:true});
   }
-  await page.goto(base+'/mycard/');await page.locator('#navRail a[href="/blog/"]').waitFor({state:'attached'});
+  await page.goto(base+'/mycard/');await page.locator('#navRail a[href="/pawlog/"]').waitFor({state:'attached'});
   const admin=process.env.PAWLOG_ADMIN_URL;if(!admin)throw Error('Set PAWLOG_ADMIN_URL to an isolated test editor, not the live editor.');
   await page.setViewportSize({width:1200,height:950});await page.goto(admin+'/admin/');
   await page.locator('#postList button').first().waitFor();
@@ -25,14 +25,14 @@ const fs=require('node:fs');
   await page.locator('#caption').fill('산책하는 공이');
   await page.locator('#photo').setInputFiles('C:/Dev/PawTrip4u_Blog/Images/01_jeju.jpg');
   await page.waitForFunction(()=>document.querySelector('#editor img'));
-  await page.locator('#editor img').click();await page.locator('#caption').fill('공이와 함께 한 시간들');await page.locator('#photoCaption').click();
-  assert.equal(await page.locator('#editor img').getAttribute('alt'),'공이와 함께 한 시간들');
+  await page.locator('#editor img').click();await page.locator('#caption').fill('공이와 함께, 여행도 일상도.');await page.locator('#photoCaption').click();
+  assert.equal(await page.locator('#editor img').getAttribute('alt'),'공이와 함께, 여행도 일상도.');
   await page.locator('#photoUp').click();await page.locator('#photoDown').click();
   await page.locator('#saveDraft').click();await page.locator('#message').filter({hasText:'초안을 이 PC에 저장'}).waitFor();
   await page.reload();await page.locator('#draftList button').first().click();assert.equal(await page.locator('#title').inputValue(),'공이의 일상 테스트');
   await page.locator('#previewButton').click();assert.equal(await page.frameLocator('#preview').locator('h1').innerText(),'공이의 일상 테스트');
   await page.locator('#publish').click();await page.locator('#message').filter({hasText:'GitHub Desktop'}).waitFor();
-  let response=await page.request.get(admin+'/blog/test-gong-day/');assert.equal(response.status(),200);assert.ok((await response.text()).includes('오늘도 함께 산책했어요.'));
+  let response=await page.request.get(admin+'/pawlog/test-gong-day/');assert.equal(response.status(),200);assert.ok((await response.text()).includes('오늘도 함께 산책했어요.'));
   // Edit an existing imported post using its real version, then reject a stale update.
   const data=await (await page.request.get(admin+'/api/posts')).json();const p=data.posts.find(p=>p.slug==='test-gong-day');
   const token=await page.evaluate(()=>token);
