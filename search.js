@@ -148,10 +148,8 @@
   function mount(){
     const tb = document.querySelector('.topbar-right');
     if(tb && !tb.querySelector('.srch-btn')) tb.insertAdjacentHTML('afterbegin', `<button type="button" class="srch-btn" aria-label="사이트 검색 (단축키 /)" title="검색">${ICON}</button>`);
-    const rail = document.querySelector('.rail');
-    if(rail && !rail.querySelector('.srch-rail')){ const nav = rail.querySelector('.my-card-primary') || rail.querySelector('nav'); nav && nav.insertAdjacentHTML('beforebegin', `<button type="button" class="srch-rail">${ICON}<span>검색</span><kbd>/</kbd></button>`); }
   }
-  document.addEventListener('click', e => { if(e.target.closest('.srch-btn,.srch-rail')) open(); });
+  document.addEventListener('click', e => { if(e.target.closest('.srch-btn')) open(); });
   document.addEventListener('keydown', e => {
     if(e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) && !document.activeElement.isContentEditable){ e.preventDefault(); open(); }
   });

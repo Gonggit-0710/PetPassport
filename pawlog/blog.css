@@ -5,3 +5,6 @@
 .story .note-box{background:#edf1f6;border-left:4px solid var(--accent);border-radius:10px;padding:22px 24px;margin:28px 0}.story .note-box p:last-child{margin-bottom:0}.story .table-wrap{overflow-x:auto;margin:24px 0}.story table{max-width:100%;font-size:15px}.story th,.story td{min-width:120px}@media(max-width:800px){.story .note-box{padding:18px}}
 
 @media(max-width:800px){.story .table-wrap::before{content:"표를 좌우로 밀어 모든 항목을 확인하세요.";display:block;font-size:13px;color:var(--sub);margin-bottom:12px}}
+
+@font-face{font-family:"Fredoka";src:url('/media/fonts/fredoka-variable.ttf') format('truetype');font-style:normal;font-weight:300 700;font-display:swap}
+header nav a[href="/pawlog/"],header nav a[href="/mydog/"]{font-family:"Fredoka","Arial Rounded MT Bold",sans-serif;font-weight:700;font-size:20px;color:#FF6B5B;letter-spacing:0}

@@ -1,5 +1,77 @@
 # PawTrip 작업 인수인계
 
+## 메뉴 디자인 확정·사용자 배포 대기 — 2026-10-13 / Codex
+
+- 사용자가 최종 화면을 확인하고 현재 디자인 확정. 데스크톱 로고 52.8px, My Dog 남색 제목/코럴 밑줄·My 아이콘, PawLog 코럴 제목/남색 밑줄과 설명, Fredoka, PC·모바일 상단 검색 하나로 유지. 이전 카드/색 조합/로고 크기 시안은 재적용하지 않음.
+- 최종 캐시: base v23, features CSS v15, search v8, nav v11, site-language v4, sw v50. 공개 묶음 `_site` 준비 완료. Python 16개 및 변경별 브라우저 검증은 직전 기록대로 통과. 마지막 공개 파일 100개·참조 검사/diff 검사 통과, Games/data.json 변경 없음 확인.
+- 배포 방법: GitHub Desktop에서 이번 변경 전체(로컬 폰트와 라이선스, 생성 HTML, 코드, 인계문서/지침 포함)를 검토 후 커밋 → Push origin → Pages 배포 성공 확인. 운영에서 `/mydog/`, 이전 `/mycard/#trips` 호환, 상단 검색, 새 메뉴/로고/PawLog 표시 확인. 필요 시 새로고침 후 재확인.
+- 상태: 로컬 확정·배포 준비 완료. Codex는 커밋·푸시·운영 배포를 수행하지 않음. 사용자가 직접 배포할 예정. 내일 운영/GA/Search Console 확인과 성장 과제는 아래 세션 종료 계획 유지.
+
+## 왼쪽 로고 현재 크기에서 20% 확대 — 2026-10-13 / Codex
+
+- 사용자 ‘20프로’ 요청: 직전 44px 기준 20% 확대하여 52.8px 적용. `base.css` 데스크톱 로고의 width auto/max-width none으로 원본 비율 유지, 실제 로고 너비 약 210px가 220px 레일 안에 들어오는지 확인. 밑줄/색/서체·모바일 상단 로고 유지.
+- base v23, sw v50, 생성/공개 묶음 갱신. Python 16개·공개 파일 100개 검사 통과, 홈/My Dog 1440·1024px에서 높이/레일 내부 수용 확인 및 390·320px 포함 가로 넘침 없음 검증. AGENTS 최종 치수 저장.
+- 로컬 반영 완료. 이번 변경 커밋·푸시·운영 배포 미실행.
+
+## 밑줄 메뉴 유지·왼쪽 로고 소폭 확대 — 2026-10-13 / Codex
+
+- 사용자 후속 요청으로 데스크톱 왼쪽 PawTrip 로고 높이 38→44px(약 16% 확대). `base.css`에서 기존 SVG/이미지 비율과 max-width 유지. My Dog·PawLog 밑줄/색/서체 유지, 모바일 상단 로고 크기는 그대로. AGENTS 최종 기준 반영.
+- base v22, sw v49, 생성 HTML/공개 묶음 갱신. Python 16개·공개 파일 100개 검사, 홈/My Dog의 데스크톱 44px 및 1440·1024·390·320px 가로 넘침 없음 확인.
+- 로컬 반영·배포 준비 완료. 이번 변경 커밋·푸시·운영 배포 미실행. 직전 B안의 ‘로고 38px 유지’는 이 후속 요청으로 변경됨.
+
+## B안 확정: 기존 로고·밑줄 메뉴 — 2026-10-13 / Codex
+
+- 사용자 B 선택. `features.css`, `base.css`: 왼쪽 My Dog·PawLog의 전체 박스 테두리/둥근 모서리 제거, 아래 선 2px만 유지하고 좌우 padding 0으로 시안 반영. 로고 높이 38px·현재 Fredoka·제목/설명·My 아이콘 유지. My Dog 남색 제목/코럴 아래 선, PawLog 코럴 제목/남색 아래 선. 기본·선택·호버 모두 배경 없음. 모바일 상단 메뉴 유지.
+- base v21, features CSS v15, sw v48. 생성 HTML/공개 묶음 갱신, AGENTS 최종 기준 업데이트. 이전 카드/로고 확대 기록은 선택 과정의 이력이며 다시 적용하지 않음.
+- 검증: Python 16개·공개 파일 100개 검사 통과. 홈/My Dog 실제 브라우저에서 위/좌/우 테두리 0·아래 2px 및 색/배경/호버/38px 로고 확인, 모바일 390·320px 가로 넘침 없음, PawLog 이동 확인. 검수 이미지 `C:\Dev\PetPassport\menu-underline-final.png`.
+- 로컬 적용·배포 준비 완료. 이번 변경 커밋·푸시·운영 배포 미실행.
+
+## 로고·메뉴 강조 비교 시안 — 2026-10-13 / Codex
+
+- 사용자 요청: 현재 컬러를 유지하고 A(로고 확대+카드 유지), B(기존 로고+밑줄 메뉴) 두 옵션 비교. 현재 메뉴 DOM/스타일을 사용한 별도 미리보기 제작, Fredoka 실제 로드와 화면 직접 확인.
+- A: 로고 높이 38→48px, 2px 카드 유지. B: 로고 38px 유지, My Dog 코럴 아래 선/PawLog 남색 아래 선만 표시하고 둥근 전체 테두리 제거. 제목·설명·My 아이콘·색상 유지.
+- 비교 파일은 공개 저장소 밖 `C:\Dev\PetPassport\menu-options-preview.html`, `C:\Dev\PetPassport\menu-options-preview.png`. 시안 전용이며 실제 홈페이지 소스/배포 묶음에는 적용하지 않았음. 사용자가 A/B를 선택하면 확정안만 구현. 아직 선택되지 않았으므로 AGENTS의 기존 카드 기준은 유지.
+
+## My 표시 대소문자·서체 크기와 테두리 조정 — 2026-10-13 / Codex
+
+- 사용자 피드백: 상단 My Dog와 왼쪽 MY의 Y/y가 달라 보임. 두 요소는 Fredoka 700이지만 기존 MY는 13px, 상단은 17px였음. `features.css`에서 둘 다 17px/700으로 맞추고, `index.html`·`tools/build_pages.py`의 왼쪽 표기를 `MY` → `My`로 변경하여 소문자 y 통일.
+- 양쪽 My Dog·PawLog 카드 테두리를 1px → 2px로 변경. 직전 남색/코럴 조합과 배경 없음 유지. base v20, features CSS v14, 최종 sw v47, 생성 HTML/공개 묶음 갱신. AGENTS에 최종 기준 반영.
+- 검증: Python 16개·공개 파일 100개 검사 통과, Chrome 버튼/아이콘 서체·크기·두께 일치와 2px 카드 테두리 및 모바일 390·320px 가로 넘침 없음 확인. 최종 대소문자 수정 후 재생성/공개 파일 검사 통과. 로컬 완료, 커밋·푸시·운영 배포 미실행.
+
+## My Dog·PawLog 색상 서로 교체 — 2026-10-13 / Codex
+
+- 사용자 후속 요청에 따라 두 카드 색상 교체: My Dog는 Paw #1E3A8A 제목/Trip #FF6B5B 테두리, PawLog는 Trip 코럴 제목/Paw 남색 테두리. 배경 없음과 설명/Fredoka 유지. MY 아이콘·상단 My Dog 버튼은 남색 배경/코럴 글자로 맞춤.
+- `features.css`, `base.css`, 생성기 캐시 토큰 갱신: base v19, features CSS v13, sw v45. AGENTS 최신 기준, 메뉴 색 회귀 기준 갱신. 생성/공개 묶음 100개 검사 및 Chrome 기본/선택/호버 양 카드 색상·배경 없음, 모바일 390·320px 헤더/가로 넘침, 여행 기록 회귀 통과. 검수 이미지 `C:\Dev\PetPassport\menu-colors-swapped.png`.
+- 로컬 수정·배포 준비 완료. 커밋·푸시·운영 배포 미실행. 아래 이전 색상 기록은 변경 이력으로만 참고.
+
+## PawLog 카드와 반대 색상 적용 — 2026-10-13 / Codex
+
+- 사용자 요청: 왼쪽 PawLog도 My Dog처럼 카드 형태와 하단 설명, 색상은 반대로. `nav.js`, `tools/seo.py` 정적 메뉴에 이름+‘공이와 함께, 여행도 일상도.’ 추가. `base.css`에서 둥근 카드, 배경 없음, Paw 남색 #1E3A8A 제목/Trip 코럴 #FF6B5B 테두리 적용. My Dog는 기존 코럴 제목/남색 테두리 유지. 모바일 묶음 메뉴는 기존 간단 PawLog 링크 유지.
+- `site-language.js`에 설명 한/영/일/중 번역 추가. base v18, nav v11, site-language v4, sw v44. 생성 HTML/배포 묶음 갱신.
+- 검증: Python 16개·공개 파일 100개 검사, PawLog 카드 문구/반대 색상/기본·호버 배경 없음/클릭 이동, 모바일 390·320px 가로 넘침 없음, 여행 기록 회귀와 4언어 UI 회귀 통과. 카드 검수 이미지 `C:\Dev\PetPassport\pawlog-menu-card.png` 직접 확인.
+- 로컬 저장·배포 준비 완료. 이번 수정 커밋·푸시·운영 배포 미실행. AGENTS.md 최신 기준 반영.
+
+## 왼쪽 My Dog 배경 제거·Paw 테두리 — 2026-10-13 / Codex
+
+- 사용자 후속 선택: 왼쪽 My Dog 큰 영역의 코럴 배경 제거, 테두리는 Paw #1E3A8A. `features.css`에서 기본/선택/호버 상태 모두 배경 transparent, 테두리 logo-navy로 변경. My Dog 제목·MY 아이콘·상단 버튼·Fredoka는 직전 선택 유지.
+- features CSS v12, sw v43. 생성기·HTML·배포 묶음 갱신. Python 16개·공개 파일 100개 검사 통과, 홈/My Dog 실제 브라우저에서 기본/선택/호버 배경 및 테두리 확인. 검수 이미지 `C:\Dev\PetPassport\mydog-outline.png`.
+- 로컬 저장·배포 준비 완료, 이번 수정 커밋·푸시·운영 배포 미실행. AGENTS.md에 최종 스타일 기록.
+
+## My Dog·PawLog 브랜드 서체와 색상 — 2026-10-13 / Codex
+
+- 사용자 요청: My Dog에 Trip 코럴색 적용, My Dog·PawLog 메뉴 서체를 PawTrip 로고와 비슷한 느낌으로. `base.css`, `features.css`, `pawlog/blog.css`: Fredoka 700을 상단/왼쪽 My Dog·PawLog와 PawLog 헤더 메뉴에 적용. My Dog 코럴 배경 #FF6B5B와 짙은 남색 글자, 왼쪽 제목 코럴/옅은 코럴 패널. 실제 SVG 로고·본문·규정 메뉴 서체 유지.
+- 서체는 Google Fonts 공식 저장소의 Fredoka 가변 TTF를 `media/fonts/fredoka-variable.ttf`로 보관, 동일 폴더 `Fredoka-OFL.txt` 라이선스 동봉. 출처: https://github.com/google/fonts/tree/main/ofl/fredoka . 외부 폰트 서비스 요청 없이 로컬 제공, 서비스 워커 저장 목록 포함. Games의 철회된 폰트 시안을 재적용한 것이 아니며 Games 파일은 변경하지 않음.
+- 캐시: base v17, features CSS v11, PawLog CSS v4, sw v42. 생성기와 공개 HTML/배포 묶음 갱신. 이전 중복 검색 제거 변경도 보존.
+- 검증: Python 16개·공개 파일 100개 검사 통과. 실제 Chrome에서 로컬 폰트 로드/Trip 색/공유 서체 확인, 1440·390·320px My Dog/PawLog 가로 넘침 없음. 여행 기록/기존 저장/메뉴 회귀 통과, 모바일 화면 직접 검수. 검수 이미지 `C:\Dev\PetPassport\brand-menu-{width}.png`는 배포 대상 아님.
+- 상태: 로컬 저장·배포 준비 완료. 이번 색/서체 변경과 중복 검색 제거는 커밋·푸시·운영 배포 미실행. 공통 지침에 사용자 선택 기록.
+
+## 중복 검색 제거 — 2026-10-13 / Codex
+
+- 사용자 최종 선택: PC·모바일 모두 상단 검색만 남기고 로고 아래 검색 제거. `search.js`의 rail 검색 생성/클릭 연결과 `features.css`의 사용하지 않는 rail 검색 스타일 제거. 상단 검색·`/` 키·검색 결과 기능 유지. AGENTS.md에 선택 기록.
+- `index.html`, `tools/build_pages.py`: search v8, features CSS v10. sw v41 및 생성 HTML/배포 묶음 갱신.
+- 검증: Python 16개·공개 파일 98개 검사 통과. 홈/My Dog/일본 상세에서 1440·1024·390·320px 상단 검색 표시, rail 검색 없음, 검색창 열기/My Dog 결과/Escape 닫기·가로 넘침 없음 확인.
+- 상태: 로컬 수정·배포 준비 완료. 이번 수정은 커밋·푸시·운영 배포 미실행. 직전 인계문서/지침 푸시는 사용자 완료 보고.
+
 ## 세션 종료 요약·다음 작업 순서 — 2026-10-13 / Codex
 
 **다음 담당자는 이 요약과 AGENTS.md를 먼저 읽으세요. 아래 작업별 배포 상태는 작업 당시의 이력입니다.**

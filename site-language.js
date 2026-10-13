@@ -6,6 +6,7 @@
   const dictionary={};
   function add(ko,en,ja,zh){dictionary[ko]={en,ja,zh};}
   const words=[
+    ['공이와 함께, 여행도 일상도.','Travel and everyday moments with Gong.','コンイと一緒に、旅も日常も。','与Gong一起，旅行与日常。'],
     ['우리 강아지 정보와 여행 기록을 한곳에','Dog information and travel records in one place','愛犬の情報と旅の記録をひとつに','狗狗信息和旅行记录，一处管理'],
     ['준비하기','Prepare','準備','准备'],['규정','Rules','規則','规定'],['내 반려견','My dog','愛犬','我的狗'],
     ['항공편 선택','Find flights','航空便を選ぶ','选择航班'],['일정 계산','Travel timeline','日程計算','行程计算'],['준비 루틴','Preparation routine','準備ルーティン','准备计划'],['항체가 검사','Rabies antibody test','狂犬病抗体検査','狂犬病抗体检测'],['비용 계산','Cost calculator','費用計算','费用计算'],

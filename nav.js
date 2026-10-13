@@ -34,7 +34,7 @@
     if(sEl){ sEl.innerHTML = g.items.map(i => link(i, active)).join('');
       const act = sEl.querySelector('[aria-current="page"]'); if(act) sEl.scrollTo({left: act.offsetLeft - (sEl.clientWidth - act.offsetWidth)/2}); }
     if(rEl) rEl.innerHTML = NAV.map(x => `<p class="rail-g">${esc(x.name)}</p><ol>${x.items.filter(i=>!i[3]).map(i => `<li>${link(i, active, 'rl')}</li>`).join('')}</ol>`).join('')
-      + '<a class="pawlog-nav" href="/pawlog/">PawLog</a>'
+      + '<a class="pawlog-nav" href="/pawlog/"><b>PawLog</b><span class="pawlog-description">공이와 함께, 여행도 일상도.</span></a>'
       + `<p class="rail-x">${EXTRA.map(i => `<a href="${i[2]}" aria-current="${i[0]===active?'page':'false'}">${esc(i[1])}</a>`).join(' · ')}</p>`;
     document.querySelectorAll('.sos-btn[href],.sos-rail').forEach(a => a.setAttribute('aria-current', active==='wallet'?'page':'false'));
   }

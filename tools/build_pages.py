@@ -41,8 +41,8 @@ SHELL = '''<!doctype html>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="/base.css?v=16">
-<link rel="stylesheet" href="/features.css?v=9">
+<link rel="stylesheet" href="/base.css?v=23">
+<link rel="stylesheet" href="/features.css?v=15">
 {page_style}
 <script>
 (function(){{
@@ -91,7 +91,7 @@ SHELL = '''<!doctype html>
 <div class="shell">
   <aside class="rail" aria-label="사이트 메뉴">
     <a class="logo" href="/"><picture><source srcset="/media/logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/media/logo-light.svg" alt="PawTrip" style="height:38px;width:auto"></picture></a>
-    <a class="sos-rail my-card-primary" href="/mydog/"><span class="sos-btn" aria-hidden="true">MY</span><span><b>My Dog</b>우리 강아지 정보와 여행 기록을 한곳에</span></a>
+    <a class="sos-rail my-card-primary" href="/mydog/"><span class="sos-btn" aria-hidden="true">My</span><span><b>My Dog</b>우리 강아지 정보와 여행 기록을 한곳에</span></a>
     <nav aria-label="메뉴" id="navRail">{static_menu}</nav>
     <div class="meta"><strong>대한민국 출발 기준</strong>이 페이지 확인일 {verified}<br>출발 전 공식 출처에서 다시 확인하세요.</div>
   </aside>
@@ -110,9 +110,9 @@ SHELL = '''<!doctype html>
     </footer>
   </div>
 </div>
-<script src="/site-language.js?v=3"></script>
-<script src="/nav.js?v=10"></script>
-<script src="/search.js?v=7"></script>
+<script src="/site-language.js?v=4"></script>
+<script src="/nav.js?v=11"></script>
+<script src="/search.js?v=8"></script>
 <script>
 PTNav.render('{tab}');
 try{{ gtag('event','page_view',{{page_location:location.origin+location.pathname,page_path:location.pathname,page_title:{analytics_title}}}); }}catch(e){{}}
