@@ -1,5 +1,11 @@
 # PawTrip 작업 인수인계
 
+## 로고를 데스크톱 상단 왼쪽으로 이동 — 2026-10-13 / Codex
+
+- 사용자 요청: 상단 메뉴바 왼쪽에 PawTrip 로고. `features.css`에서 기존 topbar 로고를 데스크톱에도 표시하고 rail 중복 로고 숨김. 상단 왼쪽 로고 52.8px, 오른쪽 검색/언어/확인일/My Dog, 바 높이 80px로 여백 확보. sticky rail top/height도 80px 기준. 모바일은 기존 배치 유지.
+- features CSS v17, sw v52, 생성 HTML/배포 묶음 갱신. Python 16개·공개 파일 100개 검사, 홈/My Dog/일본 상세의 1920·1440·1024px 상단 로고 표시/중복 로고 없음/도구와 겹침 없음, 모바일 390·320px 포함 가로 넘침 없음 및 검색 열기/닫기, 4언어 UI 회귀 통과. 화면 `C:\Dev\PetPassport\logo-in-header.png` 직접 확인.
+- AGENTS 최종 배치 저장. 로컬 반영 완료, 이번 변경 커밋·푸시·운영 배포 미실행.
+
 ## 상단 도구 오른쪽 정렬·로고 위로 이동 — 2026-10-13 / Codex
 
 - 사용자 운영 배포 완료 보고와 캡처 확인 후 추가 요청: 상단 검색/언어/규정 확인일/My Dog 오른쪽 정렬, PawTrip 로고 위로 이동. `features.css` 데스크톱 규칙을 `.has-site-language`로 구체화하여 홈에서 뒤에 로드된 base.css의 space-between에 덮어쓰이지 않게 함. 상단 max-width 1440px/좌우40px, 도구 margin-left auto. `base.css` 레일 상단 여백 40→24px, 로고 16px 위로 이동(52.8px 크기 유지). 모바일 탐색/밑줄 메뉴/색/서체 유지.
