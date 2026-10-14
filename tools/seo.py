@@ -50,6 +50,19 @@ def update_home(data):
         if re.search(pattern,source,re.S):source=re.sub(pattern,lambda _:block,source,flags=re.S)
         else:source=source.replace(anchor,(block+'\n'+anchor) if name=='metadata' else (anchor+'\n'+block),1)
     source=re.sub(r'(<nav aria-label="메뉴" id="navRail">).*?(</nav>)',lambda m:m[1]+static_menu()+m[2],source,count=1,flags=re.S)
+    # Render the same input layout as viewFlights, using only public build data.
+    match=re.search(r"app.innerHTML = head\('준비하기 · 항공편 선택','(.*?)','(.*?)'\) \+ `(.*?)`;",source,re.S)
+    if not match: raise ValueError('Flight view template not found')
+    options=''.join(f'<option value="{html.escape(c["id"],quote=True)}"'+(' selected' if c['id']=='jp' else '')+f'>{html.escape(c["name"])}</option>' for c in data['countries'])
+    form=match[3].replace('${opts}',options).replace('${esc(state.weight)}','6').replace("${esc(state.breed||'')}",'').replace("${state.brachy?'checked':''}",'')
+    if '${' in form: raise ValueError('Unresolved initial flight template')
+    initial=f'<header class="page-head"><span class="num">준비하기 · 항공편 선택</span><h2>{match[1]}</h2><p>{match[2]}</p></header>'+form
+    source=re.sub(r'(<main id="app" tabindex="-1">).*?(</main>)',lambda m:m[1]+initial+m[2],source,count=1,flags=re.S)
+    # Avoid a network wait before rendering saved selections and airline results.
+    block='<script id="initial-rules" type="application/json">'+json.dumps(data,ensure_ascii=False,separators=(',',':')).replace('<','\\u003c')+'</script>'
+    pattern=r'<script id="initial-rules" type="application/json">.*?</script>'
+    if re.search(pattern,source,re.S): source=re.sub(pattern,lambda _:block,source,flags=re.S)
+    else: source=source.replace('<script src="/trip-plan.js',block+'\n<script src="/trip-plan.js',1)
     path.write_text(source,encoding='utf-8')
 
 def sitemap_dates(urls):

@@ -91,5 +91,6 @@
     apply();
   }
   window.PTLanguage={get:()=>lang,t:translate,refresh:()=>apply()};
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
+  if(document.querySelector('.topbar-right') || document.readyState!=='loading')mount();
+  else document.addEventListener('DOMContentLoaded',mount,{once:true});
 })();

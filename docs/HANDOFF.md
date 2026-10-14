@@ -1,5 +1,14 @@
 # PawTrip 작업 인수인계
 
+## 새로고침 시 레이아웃 이동 수정 — 2026-10-13 / Codex
+
+- 사용자 요청: 영상에서 확인한 새로고침 시 상단/본문 튐 수정. features.css에서 상단 배치를 has-site-language의 뒤늦은 클래스 추가에 의존하지 않도록 변경. PC 80px 상단/레일 위치를 첫 CSS부터 유지, 모바일 도구 행48px·전체 첫행120px·묶음48px·하위메뉴54px 공간 확보. 기존 로고·색·두 줄 모바일 배치 유지.
+- site-language.js/search.js는 상단 DOM이 있으면 DOMContentLoaded까지 기다리지 않고 도구를 장착. tools/seo.py는 실제 viewFlights 템플릿에서 초기 항공편 입력 화면을 생성하고, 빌드한 공개 data.json을 안전하게 이스케이프한 initial-rules JSON으로 홈페이지에 포함. index.html은 이 배포 데이터로 저장된 pp3/URL dest를 즉시 적용하여 네트워크 응답을 기다리는 안내문→계산기 교체 제거. 포함 데이터가 없는 경우에만 기존 fetch 실패 안내로 대체. 개인 입력 정보는 HTML에 포함하지 않음. 규정 수정 시 기존 의무 build_pages.py 실행으로 포함 데이터도 갱신하며 verified는 변경하지 않음.
+- 항공편 카드 첫 등장 rise 애니메이션 제거, 계산/카드 펼침/해시 이동·검색·저장 키 보존. features CSS20/site-language5/search9/SW60, 생성 페이지 참조 및 sitemap/seo-dates 갱신. Games/정책/게임 원본/규정 원본/Hero 미디어 변경 없음.
+- 검증: Python19개(빌드 데이터 반영과 </script> 삽입 안전성 포함) 통과, prepare/check_release 공개108개 통과, git diff --check 통과. Chrome1440/390/320/768px·라이트/다크, data.json 요청 차단 상태에서 결과6개 즉시 출력·목적지/무게 저장 및 새로고침 복원·plan/flights 이동·검색·미국 FAQ5개·넘침 없음 확인. JS 비활성 상태에서도 초기 입력 화면 표시. 저장 복원 첫 테스트는 테스트 자체가 새로고침 때 저장값을 덮어써 실패했으며, 최초 1회만 입력하는 격리 컨텍스트로 수정 후 통과.
+- PerformanceObserver 직접 측정: 글꼴 요청을 차단한 PC 이동 합계 약0.00198/390px0.00059/320px0.00072, 실제 글꼴 로딩 PC약0.00099/390px약0.00074. 기존 진단의 상단81px 이동0.05625 및 안내문 교체0.0925와 비교하여 큰 이동 제거. 환경별 글꼴 교체에 따른 작은 이동은 가능하며 모든 실제 기기에서 CLS0을 보장하지 않음. 검수 C:\Dev\PetPassport\reload-fix-mobile.png.
+- 상태: 로컬 수정·배포 준비 완료. 커밋·푸시·운영 배포 미실행, 사용자 GitHub Desktop 배포 후 실제 사이트 확인 필요. Cloudflare/야미 경로 이전은 이번 작업에서 실행하지 않음.
+
 ## 게임 개정 운영 배포·게시본 대조 완료 — 2026-10-13 / Codex
 
 - 배포 커밋 `e444b6f57fdd211580995f5dc59954ba42f473f1`. Codex가 요청 범위16개 파일 커밋, CLI 푸시는 인증 부재로 실패(인증 팝업 실행 안 함). 사용자가 GitHub Desktop 푸시 완료 보고, fetch 후 HEAD/origin/main 0/0 확인. Actions `38484958013` 및 Pages `38484957681` 모두 completed/success 확인.

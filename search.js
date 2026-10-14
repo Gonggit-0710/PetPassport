@@ -153,6 +153,7 @@
   document.addEventListener('keydown', e => {
     if(e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) && !document.activeElement.isContentEditable){ e.preventDefault(); open(); }
   });
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount); else mount();
+  if(document.querySelector('.topbar-right') || document.readyState !== 'loading') mount();
+  else document.addEventListener('DOMContentLoaded', mount);
   window.PTSearch = { open, close, search: q => load().then(() => search(q)) };
 })();
