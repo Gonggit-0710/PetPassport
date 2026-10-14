@@ -6,7 +6,7 @@ from blog_core import ROOT, posts, validate, clean_html
 class BlogTest(unittest.TestCase):
     def test_imported_articles_and_photos_are_local(self):
         manifest = json.loads((ROOT/'blog-content/import-manifest.json').read_text(encoding='utf-8'))
-        self.assertEqual(len(manifest),3)
+        self.assertEqual(len(manifest),4)
         for record in manifest:
             p=json.loads((ROOT/'blog-content/posts'/(record['slug']+'.json')).read_text(encoding='utf-8'))
             self.assertEqual(p['source'],record['source'])

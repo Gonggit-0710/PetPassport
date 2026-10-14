@@ -9,7 +9,7 @@ const fs=require('node:fs');
   const base=process.env.PAWTRIP_TEST_URL||'http://127.0.0.1:8766';
   for(const width of [1440,390,320]){
    await page.setViewportSize({width,height:900});await page.goto(base+'/pawlog/');
-   assert.equal(await page.locator('.post-card').count(),3);assert.match(await page.locator('h1').innerText(),/공이와 함께,\s*여행도 일상도\./);
+   assert.equal(await page.locator('.post-card').count(),4);assert.match(await page.locator('h1').innerText(),/공이와 함께,\s*여행도 일상도\./);
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
    const links=await page.locator('.post-card').evaluateAll(a=>a.map(x=>x.getAttribute('href')));
    await page.screenshot({path:`C:/Dev/PetPassport/pawlog-list-${width}.png`,fullPage:true});
@@ -20,7 +20,7 @@ const fs=require('node:fs');
   const admin=process.env.PAWLOG_ADMIN_URL;if(!admin)throw Error('Set PAWLOG_ADMIN_URL to an isolated test editor, not the live editor.');
   await page.setViewportSize({width:1200,height:950});await page.goto(admin+'/admin/');
   await page.locator('#postList button').first().waitFor();
-  assert.equal(await page.locator('#postList button').count(),3);
+  assert.equal(await page.locator('#postList button').count(),4);
   await page.locator('#title').fill('공이의 일상 테스트');await page.locator('#slug').fill('test-gong-day');await page.locator('#excerpt').fill('산책을 다녀온 공이');await page.locator('#editor').fill('오늘도 함께 산책했어요.');
   await page.locator('#caption').fill('산책하는 공이');
   await page.locator('#photo').setInputFiles('C:/Dev/PawTrip4u_Blog/Images/01_jeju.jpg');
@@ -42,6 +42,6 @@ const fs=require('node:fs');
   response=await page.request.post(admin+'/api/publish',{headers:{Origin:admin,'X-PawLog-Token':token},data:{post:{...p,slug:'../privacy'},original:''}});assert.equal(response.status(),400);
   assert.equal((await page.request.get(admin+'/tools/blog_admin.py')).status(),404);
   await page.screenshot({path:'C:/Dev/PetPassport/pawlog-admin.png',fullPage:true});assert.deepEqual(errors,[]);
-  console.log('PASS: three migrated posts and all photos, desktop/mobile layouts, PawLog navigation, upload/draft/reload/preview/publish/edit, stale edit rejection, CSRF and path protection.');
+  console.log('PASS: four migrated posts and all photos, desktop/mobile layouts, PawLog navigation, upload/draft/reload/preview/publish/edit, stale edit rejection, CSRF and path protection.');
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

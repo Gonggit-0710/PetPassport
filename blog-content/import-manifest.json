@@ -94,5 +94,65 @@
       }
     ],
     "paragraphs": 75
+  },
+  {
+    "slug": "gong-second-us-trip",
+    "source": "https://blog.naver.com/pawtrip/224442008839",
+    "date": "2026-10-15",
+    "published_at": "Thu, 15 Oct 2026 01:01:26 +0900",
+    "date_note": "네이버 게시일(한국 시간) 보존. 미국 서부 현지 날짜는 2026-10-14.",
+    "photos": [
+      {
+        "file": "/pawlog/media/gong-second-us-trip-1.png",
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMTVfMTUw/MDAxNzkxOTkzMTU1MjIw.nYyzjU67FnKtA68T4hZUPhT0vuYeJJlEwZ5eS3g22I4g.4I3chQqWCKStx0ZUTrI27OBpUk6-au_UME5O__nao_Eg.PNG/post4_01_airport.png",
+        "local_source": "C:\\Dev\\PawTrip4u_Blog\\Images\\post4_01_airport.png"
+      },
+      {
+        "file": "/pawlog/media/gong-second-us-trip-2.png",
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMTVfMjUg/MDAxNzkxOTkzMzI5Njg3.u6kwhHjDO-QI9QuxXSHmgO-GzP6RZ2idihrHgP6uklsg.VST54PoN1ebuDF-qKKZKopoEkqtHnzFAKGyvBj1cMJYg.PNG/post4_02_business.png",
+        "local_source": "C:\\Dev\\PawTrip4u_Blog\\Images\\post4_02_business.png"
+      },
+      {
+        "file": "/pawlog/media/gong-second-us-trip-3.png",
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMTVfMTYy/MDAxNzkxOTkzMzk4MzQz.2tbWkH_ssPKhQaFRqPSR_UAzCw7-kIviiTEEIONTEfEg.0eKt-Z-eWCy1-oCUtOReOMLN3rZIw6QsCITZYwRi1Aog.PNG/post4_03_jetlag.png",
+        "local_source": "C:\\Dev\\PawTrip4u_Blog\\Images\\post4_03_jetlag.png"
+      },
+      {
+        "file": "/pawlog/media/gong-second-us-trip-4.jpg",
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMTVfMTI3/MDAxNzkxOTkzNDM0NDY5.1HF72PLI-hAMsYFNZVH3CjGgVFw6izEXXWFkjGTq2u0g.N24Fv13kBiwIi4DOLcgkWbvGD4t6E-ez0t1S-bdLOs4g.JPEG/post4_04_stroller.jpg",
+        "local_source": "C:\\Dev\\PawTrip4u_Blog\\Images\\post4_04_stroller.jpg"
+      },
+      {
+        "file": "/pawlog/media/gong-second-us-trip-5.jpg",
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMTVfNzAg/MDAxNzkxOTkzNDM1NDg2.E45htFjE9HJQJbhls5VyFJ9xWLAA3KEMq2cJx9wlGwIg.JAJllDJQ2DuQbZquLp1NwmFiSnZj2aBBjE43CyyqHEcg.JPEG/post4_05_car.jpg",
+        "local_source": "C:\\Dev\\PawTrip4u_Blog\\Images\\post4_05_car.jpg"
+      }
+    ],
+    "paragraphs": 47,
+    "cover_source": "https://blogthumb.pstatic.net/MjAyNjEwMTVfMTYy/MDAxNzkxOTkzMzk4MzQz.2tbWkH_ssPKhQaFRqPSR_UAzCw7-kIviiTEEIONTEfEg.0eKt-Z-eWCy1-oCUtOReOMLN3rZIw6QsCITZYwRi1Aog.PNG/post4_03_jetlag.png?type=w2",
+    "text_replacements": [
+      {
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMTVfMTEx/MDAxNzkxOTkzMjcxMjk0.EG5F-8Bqk4BWhHYPS0LqxB8uHOlEO3Ek8OxBHwE7k74g.xbTRfbBnIW3_KmKV-EqcGAN5dJjKlm_lZEsunncjUt0g.PNG/image.png",
+        "draft": "C:/Dev/PawTrip4u_Blog/PawTrip_네번째글.html",
+        "text": "항체 검사 결과를 다시 쓰려면: 유효기간은 출국일이 아니라 채혈일부터 세요. 여행을 마치고 한국에 돌아오는 날까지 채혈일부터 2년이 지나지 않는지 꼭 계산해 보세요. 한 달 여행이라도 귀국일이 2년을 넘기면 다시 검사해야 해요.",
+        "reason": "안내문 스크린샷을 초안의 동일한 원문 안내 상자로 대체"
+      },
+      {
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMTVfMjE1/MDAxNzkxOTkzMzQ5OTUw.H6pxmkdpID4817GC8lJ5IpqPWfOY5r0_xQDuR5psXFYg.YMNFhWTz66-Qs0ccrlj1h-1YY06jpMobgtefWJWLhGYg.PNG/image.png",
+        "draft": "C:/Dev/PawTrip4u_Blog/PawTrip_네번째글.html",
+        "text": "비즈니스석을 생각하고 있다면: 같은 항공사의 비즈니스석이라도 기종과 좌석 구조에 따라 앞좌석 아래 공간이 있기도 하고 없기도 해요. 저는 두 번 다 비즈니스석이었지만 결과는 정반대였어요. 예약할 때 항공사에 \"이 편의 이 좌석에서 이착륙 때 캐리어를 내 발밑에 둘 수 있는지\"를 꼭 물어보세요. 기종이 바뀌는 경우도 있으니 출발 전에 한 번 더 확인하면 좋아요.",
+        "reason": "안내문 스크린샷을 초안의 동일한 원문 안내 상자로 대체"
+      },
+      {
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMTVfMjcw/MDAxNzkxOTkzNDYyMjgy.cH74ablPbgqwSnrIQOunNuD_Fjievsa5fytnOUC5Fb4g.Tkq9YBdCy8yIKkSHn3aPKJjoLXfJ7uIG2ZmCuzn7V9gg.PNG/image.png",
+        "draft": "C:/Dev/PawTrip4u_Blog/PawTrip_네번째글.html",
+        "text": "개모차를 가져간다면: 항공사마다 개모차를 위탁 수하물로 받는 방식과 요금이 달라요. 예약할 때 반려동물 운송 승인과 함께 미리 물어보세요. 분리형이라면 프레임과 가방을 따로 실을 수 있는지도 같이 확인하면 좋아요.",
+        "reason": "안내문 스크린샷을 초안의 동일한 원문 안내 상자로 대체"
+      }
+    ],
+    "intentional_omissions": [
+      "글 하단 My Dog 홈페이지 홍보 링크 카드"
+    ],
+    "verification": "네이버 게시본의 모든 비어 있지 않은 본문·표 셀·사진 캡션 문단을 공백 정규화하여 이전 본문과 대조. 소제목은 로컬 초안 h2/h3와 일치하는 문장만 분류."
   }
 ]
