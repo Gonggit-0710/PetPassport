@@ -1,5 +1,12 @@
 # PawTrip 작업 인수인계
 
+## 게임 개정 운영 배포·게시본 대조 완료 — 2026-10-13 / Codex
+
+- 배포 커밋 `e444b6f57fdd211580995f5dc59954ba42f473f1`. Codex가 요청 범위16개 파일 커밋, CLI 푸시는 인증 부재로 실패(인증 팝업 실행 안 함). 사용자가 GitHub Desktop 푸시 완료 보고, fetch 후 HEAD/origin/main 0/0 확인. Actions `38484958013` 및 Pages `38484957681` 모두 completed/success 확인.
+- 운영 직접 HTTP 대조: /games/와 /games/not-the-vacuum/ HTTP200, 각각 app-icon.png 0/‘원할 때만’0/‘only when’0, 새 아이콘 참조 각각3. 목록 스크린샷0/소개6, 지정alt 전부 일치. 새 아이콘200·122416바이트/SHA 지시서 일치. 스크린샷6장 전부200, 순서별252226/163154/200320/217907/183575/240018바이트, 원본SHA 일치.
+- 게임 방침200·게시본과 저장소 원문 LF 정규화 비교 일치·ko/en 유지, app-ads200/text/plain/59바이트 원문 일치. 실제 Chrome 운영 모바일에서 본문/favicon/OG 새아이콘·6스크린샷 decode·ko/en 방침 앵커 이동/스크립트 없음 확인. 로컬 check_release108개 통과, Python18개 통과.
+- 게시 대조 원자료 `C:\Dev\PetPassport\game-release-live-check.json`. 기획 창의 수동 Chrome 대조는 사용자 후속 작업이며 이 창에서 다른 채팅에 메시지 보내지 않음. 이 운영 결과 기록은 배포 커밋 이후 인계문서의 추가 로컬 수정이며 아직 커밋/푸시하지 않음.
+
 ## 게임 아이콘·소개·스크린샷 개정 — 2026-10-13 / Codex
 
 - 사용자 지시서 `C:\Dev\Not the Vacuum\release\pawtrip-games-handoff.md` 10-13 16:28 개정본 다시 읽음. 새 아이콘122416바이트/SHA34636cba9c6c487cfd99146fe663ee3a2da8b12cae0e332f737c8821a1a3e1e2 확인 후 app-icon-v2.png로 복사, 두 페이지의 본문/favicon/og:image 6곳 변경. 옛 파일은 외부 캐시/이전 참조 호환용으로 남아 있지만 새 두 페이지의 옛 이름 참조는0.
