@@ -413,7 +413,10 @@ def build():
     index += [{'t':p['title'],'u':f"/pawlog/{p['slug']}/",'g':'PawLog','x':p['excerpt']+' '+text_of(p['body'])} for p in blog_posts]
     with open(os.path.join(ROOT, 'search-index.json'), 'w', encoding='utf-8', newline='\n') as f: json.dump(index, f, ensure_ascii=False, separators=(',', ':'))
     urls = [('/', max(VERIFIED, data['meta']['verified']))] + [(f"/{p['slug']}/", p.get('verified', VERIFIED)) for p in all_pages] + [('/privacy.html', '2026-10-08')]
-    urls += [(path, '2026-10-12') for path in ['/games/', '/games/not-the-vacuum/', '/games/not-the-vacuum/privacy/']]
+    urls += [(path, '2026-10-12') for path in ['/games/', '/games/not-the-vacuum/']]
+    with open(os.path.join(ROOT, 'tools/game-policies.json'), encoding='utf-8') as f:
+        policy_release = json.load(f)
+    urls += [('/games/not-the-vacuum/privacy/', policy_release['published_date'])]
     urls += [('/pawlog/', max((p['date'] for p in blog_posts),default='2026-10-12'))] + [(f"/pawlog/{p['slug']}/",p['date']) for p in blog_posts]
     # Keep bookmarks and edit/travel deep links working on static GitHub Pages.
     legacy=os.path.join(ROOT,'mycard');os.makedirs(legacy,exist_ok=True)

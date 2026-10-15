@@ -1,5 +1,14 @@
 # PawTrip 작업 인수인계
 
+## 게임 개인정보처리방침 개정·이전판 게시 준비 — 2026-10-14 / Codex
+
+- 사용자 명시 게시 요청 및 승인 기록 2026-10-14 20:33에 따라 Firebase 플레이 통계 개정판과 2026-10-12 이전판 반영. 원문 두 파일 MD5 `1d0524ab4bd7c9e76a6be80f1113d8c4` / `4b9add50e8a8f96b98bd590927b74b11` 일치 확인. 게임 저장소 파일은 읽기만 수행.
+- `games/not-the-vacuum/privacy/index.html`은 승인 원문에서 실제 게시일(미국 서부 2026-10-14)에 맞춰 ‘최종 수정: 2026년 10월 15일’→‘최종 수정: 2026년 10월 14일’, ‘Last updated: October 15, 2026’→‘Last updated: October 14, 2026’ 두 곳만 변경. 시행일 2026-10-21 및 나머지 문장 유지. 이전판은 `games/not-the-vacuum/privacy/2026-10-12/index.html`로 그대로 복사.
+- `tools/prepare_site.py`의 games 재귀 복사가 이전판까지 포함함을 확인·주석 기록. `tools/game-policies.json`에 원본 MD5·게시일·시행일·배포본 LF 정규화 SHA256 저장. `tools/check_release.py`에 두 방침 존재/승인 해시/두 언어 앵커/스크립트 없음/상호 링크 각2개 검증 추가, 기존 test_games.py 원문 보존 검사를 두 파일로 확대. build_pages.py는 개정판 sitemap 날짜를 게시일 기록에서 읽도록 변경. 규정·PawLog·게임 소개는 수정하지 않음.
+- `sw.js`는 기존 v60에서 이미 `/games/` 전체를 캐시 처리에서 제외하므로 변경 불필요. 로컬 실제 Chrome에서 활성 v60 캐시에 가짜 이전 방침을 넣고 두 주소를 방문해 응답 fromServiceWorker=false·가짜 본문 미사용 확인 후 테스트 항목 제거. 두 방침 1440/390/320px #ko/#en 직접 이동·두 언어 표시·스크립트 없음·한국어/영어 이전판/현재판 링크 왕복 확인. 원문 대조: 개정판 날짜2곳 외 일치, 이전판 전체 일치.
+- 로컬 검증: Python19개·공개파일116개 check_release·기존 게임 브라우저 검사 통과. 외부 링크4종은 공식 페이지 열림 확인; 배포 후 실제 클릭 검증 예정. 검수 자료는 저장소 밖 `C:\Dev\PetPassport\policy-release-local.json` 및 policy-release-*.png.
+- 이 기록은 배포 직전 상태: 로컬 저장·검수 완료. 명령줄 푸시 인증 사용 불가로 로그인된 GitHub Desktop 푸시를 진행하며, 배포 커밋·실제 운영 대조 결과는 완료 후 별도 기록.
+
 ## PawLog 네 번째 포스팅 이전 — 2026-10-14 / Codex
 
 - 사용자 요청: 네이버 `https://blog.naver.com/pawtrip/224442008839`를 기존 1~3차 작성 지침에 맞춰 홈페이지에 반영. 공개 PostView 게시본과 로컬 `PawTrip_네번째글.html` 대조. 제목 ‘두 번째 미국행, 공이는 이륙하자마자 발 뻗고 잤어요’, 정식 주소 `/pawlog/gong-second-us-trip/`. 네이버 RSS의 게시 시각 `2026-10-15 01:01:26 +0900`에 따라 표시 게시일 2026-10-15 보존(미국 서부 현지 날짜 10-14).

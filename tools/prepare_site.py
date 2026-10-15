@@ -9,6 +9,7 @@ FILES = ['.nojekyll', 'CNAME', 'index.html', '404.html', 'privacy.html', 'base.c
          'features.css', 'rules.css', 'features.js', 'trip-plan.js', 'site-language.js', 'medical-card.js', 'wallet-config.js', 'mycard.js', 'nav.js', 'search.js', 'search-index.json',
          'data.json', 'airports.json', 'sitemap.xml', 'robots.txt', 'sw.js',
          'manifest.webmanifest', 'app-ads.txt']
+# Copy games recursively, including privacy/2026-10-12/ and future policy archives.
 DIRS = ['media', 'domestic', 'titer', 'cost', 'local', 'changes', 'games', 'blog', 'pawlog', 'mycard']
 
 

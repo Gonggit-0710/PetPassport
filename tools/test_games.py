@@ -6,17 +6,18 @@ import unittest
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parent.parent
-POLICY_SHA = '080d7671e73da38d5813c6b1e20c1c782a99556e5d39aec88e369fe33b327d5c'
 
 
 class GamesTest(unittest.TestCase):
     def test_final_policy_is_unchanged_and_both_languages_remain(self):
-        policy = ROOT / 'games/not-the-vacuum/privacy/index.html'
-        self.assertEqual(hashlib.sha256(policy.read_bytes().replace(b'\r\n', b'\n')).hexdigest(), POLICY_SHA)
-        text = policy.read_text(encoding='utf-8')
-        self.assertIn('<section id="ko" lang="ko">', text)
-        self.assertIn('<section id="en" lang="en">', text)
-        self.assertNotIn('<script', text.lower())
+        manifest = json.loads((ROOT / 'tools/game-policies.json').read_text(encoding='utf-8'))
+        for record in manifest['policies']:
+            policy = ROOT / record['path']
+            self.assertEqual(hashlib.sha256(policy.read_bytes().replace(b'\r\n', b'\n')).hexdigest(), record['sha256_lf'])
+            text = policy.read_text(encoding='utf-8')
+            self.assertIn('<section id="ko" lang="ko">', text)
+            self.assertIn('<section id="en" lang="en">', text)
+            self.assertNotIn('<script', text.lower())
 
     def test_game_pages_are_independent_and_use_supplied_art(self):
         for name in ['games/index.html', 'games/not-the-vacuum/index.html']:

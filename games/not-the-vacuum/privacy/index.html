@@ -32,28 +32,30 @@ section+section{margin-top:56px}
 
 <section id="ko" lang="ko">
 <h2 style="border-top:0">개인정보처리방침</h2>
-<p class="meta">시행일: 2026년 10월 12일 · 최종 수정: 2026년 10월 12일</p>
+<p class="meta">시행일: 2026년 10월 21일 · 최종 수정: 2026년 10월 14일</p>
 
 <p>Paw Trip(이하 "개발자")은 모바일 게임 "Not the Vacuum! (청소기는 싫어멍!)"(이하 "게임")을 제공하는 개인 개발자입니다. 이 방침은 게임을 이용할 때 어떤 정보가 어디에서 처리되는지 설명합니다.</p>
 
 <h3>1. 요약</h3>
 <ul>
 <li>게임에는 회원 가입이나 로그인 기능이 없고, 개발자는 이름·이메일·전화번호 같은 개인정보를 받지 않습니다.</li>
-<li>게임 기록은 이용자의 기기 안에만 저장되며 개발자의 서버로 보내지 않습니다. 개발자는 서버를 운영하지 않습니다.</li>
-<li>보상형 광고를 보여 주기 위해 Google AdMob을 사용합니다. 이 과정에서 Google이 광고 식별자 등 기기 정보를 처리합니다(아래 3항).</li>
+<li>게임 기록(간식 통, 업적 등)은 이용자의 기기에 저장됩니다. 개발자는 자체 서버를 운영하지 않습니다.</li>
+<li>게임을 더 낫게 만들기 위해 Google의 Firebase 애널리틱스로 플레이 통계(난이도, 판 결과, 플레이 시간 등)를 받습니다. 이름이나 연락처는 포함되지 않으며, 설정에서 끌 수 있습니다(아래 3-2항).</li>
+<li>보상형 광고를 보여 주기 위해 Google AdMob을 사용합니다. 이 과정에서 Google이 광고 식별자 등 기기 정보를 처리합니다(아래 3-1항).</li>
 </ul>
 
-<h3>2. 기기 안에만 저장되는 정보</h3>
-<p>게임 진행을 위해 다음 정보를 이용자의 기기 저장 공간에 저장합니다. 이 정보는 개발자에게 전송되지 않으며, 개발자가 볼 수 없습니다.</p>
+<h3>2. 기기 안에 저장되는 정보</h3>
+<p>게임 진행을 위해 다음 정보를 이용자의 기기 저장 공간에 저장합니다. 이 기록 자체는 개발자에게 전송되지 않습니다. 다만 3-2항의 플레이 통계는 별도로 전송됩니다.</p>
 <ul>
 <li>게임 기록: 간식 통, 업적, 캐릭터, 미션 진행, 난이도별 기록과 통계</li>
 <li>물(게임 안 에너지) 값과 오늘 본 광고 횟수</li>
 <li>이어하기 정보: 진행 중인 판의 상태</li>
-<li>설정: 언어, 소리 크기, 마지막으로 고른 난이도, 광고 동의 선택 상태 등</li>
+<li>설정: 언어, 소리 크기, 마지막으로 고른 난이도, 광고 동의 선택 상태, 플레이 통계 보내기 여부 등</li>
 </ul>
 <p>이 정보는 앱을 삭제하면 함께 삭제됩니다. 기기의 백업 기능(Android의 Google 백업, iPhone의 iCloud 백업)이 켜져 있으면 게임 기록과 설정이 이용자의 백업에 함께 저장될 수 있습니다. 진행 중인 판의 이어하기 정보는 백업에서 제외됩니다. 이 백업은 이용자의 Google 또는 Apple 계정에 보관되며, 개발자는 볼 수 없습니다.</p>
 
-<h3>3. 광고(Google AdMob)</h3>
+<h3>3. 광고와 플레이 통계</h3>
+<h3>3-1. 광고(Google AdMob)</h3>
 <p>게임은 이용자가 게임 안 보상(예: 물 보충)을 받으려고 직접 선택할 때만 보상형 광고를 보여 줍니다. 다만 광고를 바로 보여 줄 수 있도록 게임을 켤 때부터 광고를 미리 불러오므로, 광고를 보지 않아도 Google LLC의 AdMob(Google 모바일 광고 SDK)이 게임 안에서 다음 정보를 처리할 수 있습니다.</p>
 <ul>
 <li>기기 식별자: 광고 식별자(Android 광고 ID, iOS에서는 이용자가 추적을 허용한 경우의 광고 식별자 IDFA)와 앱 세트 ID</li>
@@ -68,8 +70,22 @@ section+section{margin-top:56px}
 <li><a href="https://policies.google.com/technologies/partner-sites">Google이 파트너 사이트·앱의 정보를 사용하는 방법</a></li>
 </ul>
 
+<h3>3-2. 플레이 통계(Google Firebase 애널리틱스)</h3>
+<p>개발자는 게임의 난이도와 안내(튜토리얼)를 고치고 기능이 실제로 쓰이는지 알기 위해 Google LLC의 Firebase 애널리틱스(Google 애널리틱스)를 사용합니다. 게임을 처음 켤 때부터 다음 정보가 Google로 전송됩니다.</p>
+<ul>
+<li>게임이 보내는 플레이 기록: 튜토리얼 단계별 진행과 건너뛰기, 판 시작과 끝(난이도, 결과, 걸린 시간, 연 칸의 비율, 찾은 간식 수 등), 물 부족 창과 광고 버튼 표시 및 결과, 미션·업적 달성, 화면 열기, 대표 캐릭터와 설정(언어 등) 변경</li>
+<li>Firebase가 자동으로 처리하는 정보: 앱 인스턴스 ID 등 Firebase가 만든 식별자, 앱 버전, 기기 종류, 운영체제, 언어, IP 주소로 추정한 대략적인 위치(국가·지역), 첫 실행·세션·사용 시간 같은 앱 사용 정보</li>
+<li>보내지 않는 정보: 이름, 이메일, 계정, 이용자가 입력한 글, 보드 배치. 광고 식별자는 Firebase로 보내지 않도록 설정합니다.</li>
+</ul>
+<p>개발자는 이 정보를 Google 애널리틱스 화면에서 통계로 봅니다. 개발자는 이 정보로 이용자가 누구인지 알아내려 하지 않으며, 광고 맞춤에 쓰거나 다른 Google 서비스(Google 신호, 광고 계정 등)와 연결하지 않도록 설정했습니다. 인터넷에 연결되어 있지 않으면 기기에 잠시 모았다가 연결될 때 보냅니다. Google의 처리는 Firebase 개인정보 보호 안내와 Google 개인정보처리방침을 따릅니다.</p>
+<ul>
+<li><a href="https://firebase.google.com/support/privacy">Firebase 개인정보 보호 안내</a></li>
+<li><a href="https://policies.google.com/privacy">Google 개인정보처리방침</a></li>
+</ul>
+
 <h3>4. 동의와 선택</h3>
 <ul>
+<li>설정 화면의 "플레이 통계 보내기"를 끄면 그때부터 3-2항의 정보를 보내지 않습니다. 끄기 전에 보낸 정보는 5항의 보유 기간이 지나면 삭제됩니다. 꺼도 게임 이용에는 영향이 없습니다.</li>
 <li>유럽경제지역(EEA)·영국·스위스 등 동의가 필요한 지역에서는 게임을 처음 켤 때 Google의 동의 화면이 표시됩니다. 설정 화면의 "개인정보 선택"에서 언제든 선택을 바꿀 수 있습니다.</li>
 <li>iOS에서는 게임이 앱 추적 허용 여부를 묻고, 허용하지 않으면 광고 식별자(IDFA)를 쓰지 않습니다. 설정 → 개인정보 보호 및 보안 → 추적에서 언제든 바꿀 수 있습니다.</li>
 <li>Android 기기 설정(Google → 광고)에서 광고 ID를 재설정하거나 삭제해 맞춤형 광고를 제한할 수 있습니다.</li>
@@ -80,30 +96,33 @@ section+section{margin-top:56px}
 <table>
 <tr><th>구분</th><th>항목</th><th>목적</th><th>보유 기간</th></tr>
 <tr><td>기기 저장</td><td>2항의 게임 기록·설정</td><td>게임 진행과 저장</td><td>앱 삭제 시까지(개발자는 받지 않음)</td></tr>
-<tr><td>Google AdMob</td><td>3항의 기기 식별자, IP 주소, 기기 정보, 앱 사용 정보, 진단 정보</td><td>광고 제공, 측정과 분석, 부정 방지</td><td>Google의 보유 기준에 따름</td></tr>
+<tr><td>Google AdMob</td><td>3-1항의 기기 식별자, IP 주소, 기기 정보, 앱 사용 정보, 진단 정보</td><td>광고 제공, 측정과 분석, 부정 방지</td><td>Google의 보유 기준에 따름</td></tr>
+<tr><td>Google Firebase 애널리틱스(처리 위탁)</td><td>3-2항의 플레이 기록, Firebase 식별자, 기기·앱 정보, 대략적인 위치(국가·지역)</td><td>게임 개선(난이도·튜토리얼), 기능 사용 통계</td><td>수집일로부터 2개월 뒤 삭제. 이용자를 알아볼 수 없는 합계 통계는 남을 수 있음</td></tr>
 </table>
 
 <h3>6. 제3자 제공과 처리 위탁</h3>
-<p>개발자는 이용자의 개인정보를 직접 수집하지 않으므로 제3자에게 제공하거나 판매하지 않습니다. 광고 제공을 위해 위 3항과 같이 Google LLC가 게임 안에서 정보를 처리합니다.</p>
+<p>개발자는 이용자의 정보를 판매하거나 제3자에게 제공하지 않습니다. 3-2항의 플레이 통계 처리는 Google LLC(Firebase 애널리틱스)에 맡깁니다(처리 위탁). 광고 제공을 위해 3-1항과 같이 Google LLC가 게임 안에서 정보를 처리합니다.</p>
 
 <h3>7. 국외 이전</h3>
 <table>
-<tr><th>이전받는 자</th><th>국가</th><th>항목</th><th>시기와 방법</th><th>목적</th></tr>
-<tr><td>Google LLC</td><td>미국 등 Google 데이터센터 소재국</td><td>3항의 정보</td><td>게임을 켤 때(광고 미리 불러오기)와 광고를 볼 때 네트워크로 전송</td><td>광고 제공, 측정과 분석, 부정 방지</td></tr>
+<tr><th>이전받는 자(연락처)</th><th>국가</th><th>항목</th><th>시기와 방법</th><th>목적</th><th>보유 기간</th></tr>
+<tr><td>Google LLC (<a href="https://support.google.com/policies/contact/general_privacy_form">개인정보 문의</a>)</td><td>미국 등 Google 데이터센터 소재국</td><td>3-1항의 정보</td><td>게임을 켤 때(광고 미리 불러오기)와 광고를 볼 때 네트워크로 전송</td><td>광고 제공, 측정과 분석, 부정 방지</td><td>Google의 보유 기준에 따름</td></tr>
+<tr><td>Google LLC (<a href="https://support.google.com/policies/contact/general_privacy_form">개인정보 문의</a>)</td><td>미국 등 Google 데이터센터 소재국</td><td>3-2항의 정보</td><td>게임을 켜 두는 동안 암호화된 연결로 전송(오프라인이면 연결될 때)</td><td>플레이 통계 분석</td><td>2개월</td></tr>
 </table>
-<p>게임은 켜질 때부터 광고를 미리 불러오므로, 광고를 보지 않아도 3항의 정보가 Google로 전송될 수 있습니다. 4항의 방법(동의 선택, 광고 ID 재설정·삭제, iOS 추적 거부)으로 일부를 제한할 수 있습니다.</p>
+<p>게임은 켜질 때부터 광고를 미리 불러오고 플레이 통계를 보내므로, 광고를 보지 않아도 3-1항과 3-2항의 정보가 Google로 전송될 수 있습니다. 3-2항의 전송은 설정의 "플레이 통계 보내기"를 끄면 멈추며 게임 이용에는 영향이 없습니다. 3-1항의 일부는 4항의 방법(동의 선택, 광고 ID 재설정·삭제, iOS 추적 거부)으로 제한할 수 있습니다.</p>
 
 <h3>8. 아동의 개인정보</h3>
-<p>이 게임은 13세 미만 아동을 대상으로 하지 않으며, 개발자는 아동의 개인정보를 알면서 수집하지 않습니다. 13세 미만 아동의 정보가 광고 과정에서 처리되었다고 생각되면 <a href="mailto:help@pawtrip.us">help@pawtrip.us</a>로 알려 주세요. 확인하는 대로 필요한 조치를 하겠습니다.</p>
+<p>이 게임은 13세 미만 아동을 대상으로 하지 않으며, 개발자는 아동의 개인정보를 알면서 수집하지 않습니다. 13세 미만 아동의 정보가 광고나 플레이 통계 과정에서 처리되었다고 생각되면 <a href="mailto:help@pawtrip.us">help@pawtrip.us</a>로 알려 주세요. 확인하는 대로 필요한 조치를 하겠습니다.</p>
 
 <h3>9. 이용자의 권리</h3>
-<p>개발자는 이용자를 식별할 수 있는 정보를 보관하지 않으므로, 게임 기록의 삭제는 앱 삭제로 할 수 있습니다. Google이 처리하는 정보에 대한 열람·삭제 등은 Google 계정 설정이나 Google에 요청할 수 있습니다. 그 밖의 문의는 아래 연락처로 보내 주세요.</p>
+<p>개발자는 이름·연락처처럼 이용자를 바로 알아볼 수 있는 정보를 보관하지 않습니다. 3-2항의 플레이 통계는 Firebase가 만든 식별자로 묶여 2개월 동안 보관된 뒤 삭제되며, 설정에서 언제든 보내기를 끌 수 있습니다. 게임 기록의 삭제는 앱 삭제로 할 수 있습니다. 플레이 통계의 열람·삭제·처리 정지를 원하면 아래 연락처로 요청해 주세요. 다만 개발자는 이용자가 누구인지 알 수 없어 특정 이용자의 기록을 찾지 못할 수 있습니다. Google이 처리하는 광고 정보는 Google 계정 설정이나 Google에 요청할 수 있습니다.</p>
 
 <h3>10. 안전성 확보</h3>
-<p>게임 기록은 기기의 앱 전용 저장 공간에 저장되어 다른 앱이 읽을 수 없습니다. 개발자는 별도 서버에 이용자 정보를 저장하지 않습니다.</p>
+<p>게임 기록은 기기의 앱 전용 저장 공간에 저장되어 다른 앱이 읽을 수 없습니다. 3-2항의 플레이 통계는 암호화된 연결(TLS)로 전송되며, Google 애널리틱스 화면은 개발자 계정으로만 볼 수 있습니다. 개발자는 자체 서버를 운영하지 않습니다.</p>
 
 <h3>11. 방침의 변경</h3>
 <p>방침이 바뀌면 이 페이지에 새 내용과 시행일을 게시합니다. 수집하는 정보가 늘어나는 등 중요한 변경은 게임 업데이트 안내나 이 페이지에서 미리 알립니다.</p>
+<p>변경 이력: 2026년 10월 12일 처음 시행(<a href="./2026-10-12/">이전 방침 보기</a>) / 2026년 10월 21일 플레이 통계(Firebase 애널리틱스) 추가</p>
 
 <h3>12. 연락처(개인정보 보호책임자)</h3>
 <p>Paw Trip · 이메일: <a href="mailto:help@pawtrip.us">help@pawtrip.us</a></p>
@@ -111,28 +130,30 @@ section+section{margin-top:56px}
 
 <section id="en" lang="en">
 <h2 style="border-top:0">Privacy Policy</h2>
-<p class="meta">Effective date: October 12, 2026 · Last updated: October 12, 2026</p>
+<p class="meta">Effective date: October 21, 2026 · Last updated: October 14, 2026</p>
 
 <p>Paw Trip ("we", "the developer") is an independent developer of the mobile game "Not the Vacuum!" ("the Game"). This policy explains what information is processed when you play the Game, and where.</p>
 
 <h3>1. Summary</h3>
 <ul>
 <li>The Game has no sign-up or login. We do not ask for your name, email, phone number, or similar personal information.</li>
-<li>Your game data stays on your device. We do not run a server and do not receive your game data.</li>
-<li>We use Google AdMob to show rewarded ads. Google processes device information such as the advertising ID to do this (see section 3).</li>
+<li>Your game records (treat jar, achievements, and so on) are stored on your device. We do not run our own server.</li>
+<li>To improve the Game, we receive play statistics (level, game results, play time, and similar) through Google Firebase Analytics. They do not include your name or contact details, and you can turn them off in Settings (see section 3-2).</li>
+<li>We use Google AdMob to show rewarded ads. Google processes device information such as the advertising ID to do this (see section 3-1).</li>
 </ul>
 
-<h3>2. Information stored only on your device</h3>
-<p>To save your progress, the Game stores the following on your device. It is not sent to us, and we cannot see it.</p>
+<h3>2. Information stored on your device</h3>
+<p>To save your progress, the Game stores the following on your device. These records themselves are not sent to us. Play statistics described in section 3-2 are sent separately.</p>
 <ul>
 <li>Game records: treat jar, achievements, characters, missions, best times and statistics</li>
 <li>Water (in-game energy) and the number of ads watched today</li>
 <li>Resume data for a game in progress</li>
-<li>Settings such as language, volume, last chosen level, and your ad consent choices</li>
+<li>Settings such as language, volume, last chosen level, your ad consent choices, and whether play statistics are sent</li>
 </ul>
 <p>This data is deleted when you uninstall the Game. If your device backup is turned on (Google backup on Android, iCloud backup on iPhone), your game data and settings may be included in your backup. Resume data for a game in progress is excluded from backups. That backup is stored in your Google or Apple account, and we cannot see it.</p>
 
-<h3>3. Advertising (Google AdMob)</h3>
+<h3>3. Advertising and play statistics</h3>
+<h3>3-1. Advertising (Google AdMob)</h3>
 <p>The Game shows a rewarded ad only when you choose to watch one to get an in-game reward (for example, to refill water). So that an ad is ready when you want one, the Game preloads ads when it starts. This means AdMob by Google LLC (the Google Mobile Ads SDK) may process the following within the Game even if you do not watch an ad:</p>
 <ul>
 <li>Device identifiers: your advertising identifier (Android Advertising ID; on iOS, the IDFA only if you allow tracking) and app set ID</li>
@@ -147,8 +168,22 @@ section+section{margin-top:56px}
 <li><a href="https://policies.google.com/technologies/partner-sites">How Google uses information from sites or apps that use its services</a></li>
 </ul>
 
+<h3>3-2. Play statistics (Google Firebase Analytics)</h3>
+<p>We use Firebase Analytics (Google Analytics) by Google LLC to tune difficulty and the tutorial and to learn which features are used. From the first time you open the Game, the following is sent to Google:</p>
+<ul>
+<li>Play events sent by the Game: tutorial steps completed or skipped; game start and end (level, result, duration, share of tiles opened, treats found, and similar); water-shortage and ad-button views and outcomes; missions and achievements completed; screens opened; buddy and settings (such as language) changes</li>
+<li>Information Firebase processes automatically: identifiers created by Firebase such as the app instance ID; app version; device model; operating system; language; approximate location (country or region) estimated from your IP address; app usage such as first open, sessions, and engagement time</li>
+<li>Not sent: your name, email, account, anything you type, or board layouts. We configure Firebase not to collect the advertising ID.</li>
+</ul>
+<p>We view this information as statistics in Google Analytics. We do not try to identify you from it, and we have configured it not to be used for ad personalization or linked with other Google services (such as Google signals or ads accounts). If you are offline, the information is held on your device and sent when you are back online. Google's processing is governed by Firebase privacy information and the Google Privacy Policy:</p>
+<ul>
+<li><a href="https://firebase.google.com/support/privacy">Privacy and Security in Firebase</a></li>
+<li><a href="https://policies.google.com/privacy">Google Privacy Policy</a></li>
+</ul>
+
 <h3>4. Consent and your choices</h3>
 <ul>
+<li>Turn off Send play statistics in Settings to stop sending the information in section 3-2 from then on. Information sent before is deleted after the retention period in section 5. Turning it off does not affect gameplay.</li>
 <li>In regions that require consent, such as the EEA, the UK, and Switzerland, Google's consent screen appears when you first open the Game. You can change your choice at any time under Settings &gt; Privacy Choices.</li>
 <li>On iOS, the Game asks whether to allow tracking. If you do not allow it, the IDFA is not used. You can change this at any time in Settings &gt; Privacy &amp; Security &gt; Tracking.</li>
 <li>On Android, you can reset or delete your advertising ID in Settings &gt; Google &gt; Ads to limit personalized ads.</li>
@@ -159,26 +194,28 @@ section+section{margin-top:56px}
 <table>
 <tr><th>Where</th><th>Data</th><th>Purpose</th><th>Retention</th></tr>
 <tr><td>On your device</td><td>Game records and settings (section 2)</td><td>Playing and saving the Game</td><td>Until you uninstall (never sent to us)</td></tr>
-<tr><td>Google AdMob</td><td>Device identifiers, IP address, device information, app activity, diagnostics (section 3)</td><td>Serving, measuring, and analyzing ads, fraud prevention</td><td>According to Google's retention practices</td></tr>
+<tr><td>Google AdMob</td><td>Device identifiers, IP address, device information, app activity, diagnostics (section 3-1)</td><td>Serving, measuring, and analyzing ads, fraud prevention</td><td>According to Google's retention practices</td></tr>
+<tr><td>Google Firebase Analytics (service provider)</td><td>Play events, Firebase identifiers, device and app information, approximate location (country or region) (section 3-2)</td><td>Improving the Game (difficulty, tutorial), feature usage statistics</td><td>Deleted 2 months after collection; aggregated statistics that cannot identify you may remain</td></tr>
 </table>
 
 <h3>6. Sharing</h3>
-<p>We do not collect your personal information ourselves, so we do not share or sell it. To provide ads, Google LLC processes information within the Game as described in section 3.</p>
+<p>We do not sell or share your information. We use Google LLC (Firebase Analytics) as a service provider to process the play statistics in section 3-2. To provide ads, Google LLC processes information within the Game as described in section 3-1.</p>
 
 <h3>7. International transfers</h3>
-<p>Information processed by Google may be transferred to and stored in the United States and other countries where Google operates data centers, when the Game starts (ad preloading) and when ads are shown. Because the Game preloads ads, the information in section 3 may be sent to Google even if you do not watch an ad. You can limit some of it using the options in section 4 (consent choices, resetting or deleting your advertising ID, and declining tracking on iOS).</p>
+<p>Information processed by Google may be transferred to and stored in the United States and other countries where Google operates data centers. Ad information (section 3-1) is sent when the Game starts (ad preloading) and when ads are shown, and is kept according to Google's retention practices. Play statistics (section 3-2) are sent over an encrypted connection while the Game is open (or when you are back online) and are kept for 2 months. Contact for Google: <a href="https://support.google.com/policies/contact/general_privacy_form">Google privacy contact form</a>. Because the Game preloads ads and sends play statistics from the start, this information may be sent to Google even if you do not watch an ad. You can stop play statistics by turning off Send play statistics in Settings, which does not affect gameplay, and limit some ad information using the options in section 4 (consent choices, resetting or deleting your advertising ID, and declining tracking on iOS).</p>
 
 <h3>8. Children</h3>
-<p>The Game is not directed at children under 13, and we do not knowingly collect personal information from children. If you believe information about a child under 13 has been processed through ads in the Game, please contact us at <a href="mailto:help@pawtrip.us">help@pawtrip.us</a> and we will take appropriate steps as soon as we can.</p>
+<p>The Game is not directed at children under 13, and we do not knowingly collect personal information from children. If you believe information about a child under 13 has been processed through ads or play statistics in the Game, please contact us at <a href="mailto:help@pawtrip.us">help@pawtrip.us</a> and we will take appropriate steps as soon as we can.</p>
 
 <h3>9. Your rights</h3>
-<p>We do not hold information that identifies you. You can delete your game data by uninstalling the Game. For information processed by Google, use your Google account settings or contact Google. For other questions, contact us below.</p>
+<p>We do not hold information such as your name or contact details that directly identifies you. Play statistics (section 3-2) are linked to an identifier created by Firebase and deleted after 2 months, and you can turn them off in Settings at any time. You can delete your game records by uninstalling the Game. To request access to, deletion of, or a stop to processing of play statistics, contact us below. Because we cannot tell who you are, we may not be able to find records for a specific person. For ad information processed by Google, use your Google account settings or contact Google.</p>
 
 <h3>10. Security</h3>
-<p>Game data is stored in the Game's private app storage, which other apps cannot read. We do not store your information on any server.</p>
+<p>Game records are stored in the Game's private app storage, which other apps cannot read. Play statistics are sent over an encrypted (TLS) connection, and Google Analytics can be viewed only through our account. We do not run our own server.</p>
 
 <h3>11. Changes</h3>
 <p>If this policy changes, we will post the new version and its effective date on this page. For significant changes, such as collecting new kinds of information, we will give notice in advance on this page or in a Game update.</p>
+<p>History: October 12, 2026, first version (<a href="./2026-10-12/">see the previous version</a>) / October 21, 2026, added play statistics (Firebase Analytics)</p>
 
 <h3>12. Contact</h3>
 <p>Paw Trip · Email: <a href="mailto:help@pawtrip.us">help@pawtrip.us</a></p>

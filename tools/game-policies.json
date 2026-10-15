@@ -1,0 +1,17 @@
+{
+  "approval": "2026-10-14 20:33",
+  "published_date": "2026-10-14",
+  "effective_date": "2026-10-21",
+  "policies": [
+    {
+      "path": "games/not-the-vacuum/privacy/index.html",
+      "source_md5": "1d0524ab4bd7c9e76a6be80f1113d8c4",
+      "sha256_lf": "1470ebc702b076946cb6359abaa509961e5033b2b692520702bb9326a42da76c"
+    },
+    {
+      "path": "games/not-the-vacuum/privacy/2026-10-12/index.html",
+      "source_md5": "4b9add50e8a8f96b98bd590927b74b11",
+      "sha256_lf": "3f99c30b70c3d389d78af40f91e1e375ba4f6b5e39fbc281dc2c585ad6d5b25c"
+    }
+  ]
+}

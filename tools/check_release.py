@@ -63,9 +63,21 @@ def check():
     legacy=(site/'mycard/index.html').read_text(encoding='utf-8')
     if 'noindex,follow' not in legacy or 'https://pawtrip.us/mydog/' not in legacy:
         raise ValueError('Legacy My Card route must redirect to My Dog')
-    policy = (site / 'games/not-the-vacuum/privacy/index.html').read_text(encoding='utf-8')
-    if 'id="ko"' not in policy or 'id="en"' not in policy or '<script' in policy.lower():
-        raise ValueError('Game policy must retain both anchors and have no scripts')
+    policies = json.loads((ROOT / 'tools/game-policies.json').read_text(encoding='utf-8'))
+    for record in policies['policies']:
+        path = site / record['path']
+        if not path.is_file():
+            raise ValueError(f'Missing game policy: {record["path"]}')
+        raw = path.read_bytes().replace(b'\r\n', b'\n')
+        if hashlib.sha256(raw).hexdigest() != record['sha256_lf']:
+            raise ValueError(f'Game policy differs from approved release: {record["path"]}')
+        policy = raw.decode('utf-8')
+        if 'id="ko"' not in policy or 'id="en"' not in policy or '<script' in policy.lower():
+            raise ValueError('Game policies must retain both anchors and have no scripts')
+    current = (site / 'games/not-the-vacuum/privacy/index.html').read_text(encoding='utf-8')
+    archived = (site / 'games/not-the-vacuum/privacy/2026-10-12/index.html').read_text(encoding='utf-8')
+    if current.count('href="./2026-10-12/"') != 2 or archived.count('href="../"') != 2:
+        raise ValueError('Both languages must link between current and archived game policies')
     if "endpoint:''" not in (site / 'wallet-config.js').read_text(encoding='utf-8'):
         raise ValueError('This release keeps Apple Wallet disabled until real-device verification')
     if (site / 'CNAME').read_text(encoding='utf-8').strip() != 'pawtrip.us':
