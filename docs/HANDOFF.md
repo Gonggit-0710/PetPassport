@@ -1,5 +1,12 @@
 # PawTrip 작업 인수인계
 
+## 운영자 이름 변경 운영 배포 확인 완료 — 2026-10-15 / Codex
+
+- 배포 커밋 `e9d23efc03f8058f31ed750e1f94a7a6623201d4` 푸시 완료. GitHub Actions `38806419788` 및 Pages `38806419388` 모두 completed/success. fetch 후 HEAD/origin/main 0/0.
+- 실제 `https://pawtrip.us/games/not-the-vacuum/privacy/` HTTP200, 한·영 최종 수정 2026-10-15/시행일2026-10-21, 승인 원문과 이름4곳 및 지정 날짜2곳 반영한 로컬 배포본 전체 LF 정규화 대조 일치(SHA ad40e23a1e901548a130acd2c963bad37cc6c605cf5416c13f4d9477eda08a59). 이전판 HTTP200·SHA 3f99c30b70c3d389d78af40f91e1e375ba4f6b5e39fbc281dc2c585ad6d5b25c 그대로.
+- 실제 운영 Chrome 1440/390/320px #ko/#en 직접 이동 통과, 11항 한·영 이전 방침 링크 및 이전판의 현재 방침 링크 왕복 통과. 활성 sw v60 캐시에 가짜 이전 방침을 넣어도 네트워크 응답 fromServiceWorker=false·가짜 본문 미사용 확인(검수 후 테스트 캐시 항목 제거). 홈페이지 sw.js 수정 불필요.
+- 게임 저장소 원문 MD5를 완료 시점에도 재확인하여 3a6a740213db0e374a0977cb30bcfd88 및 이전판 4b9add50e8a8f96b98bd590927b74b11 보존. 로컬 check_release116개·Python19개 통과. 운영 검수 자료 `C:\Dev\PetPassport\policy-release-live.json`. 이 완료 기록만 배포 후 추가한 로컬 문서 변경이며 아직 커밋·푸시하지 않음.
+
 ## 게임 개인정보처리방침 운영자 이름 변경 — 2026-10-15 / Codex
 
 - 사용자 2026-10-15 승인 게시 요청. 게임 저장소 원문 `C:\Dev\Not the Vacuum\release\privacy\index.html` MD5 `3a6a740213db0e374a0977cb30bcfd88` 확인. 홈페이지 기존 방침과 LF 정규화 대조하여 Paw Trip→PawTrip 한·영 첫 문단/12항 총4곳 외 차이 없음 확인.
