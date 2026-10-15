@@ -1,5 +1,13 @@
 # PawTrip 작업 인수인계
 
+## 사이트 브랜드 표기 통일 — 2026-10-15 / Codex
+
+- 사용자 조사 보고 승인 및 설명 문구 수정 요청에 따라 게임 목록·소개 9곳과 배포 문서 제목1곳을 반영. 게임 title/목록 소개/영역 이름은 PawTrip Games, 맨 위 브랜드·푸터는 PawTrip(기존 GAMES 배지 유지). 목록 description은 ‘PawTrip Games가 만든 게임 Not the Vacuum! (청소기는 싫어멍!) 소개, 지원 및 개인정보처리방침.’으로 나머지 문장 보존. 홈페이지 og:site_name PawTrip, 게임2페이지 og:site_name PawTrip Games 추가.
+- 파일: games/index.html, games/not-the-vacuum/index.html, index.html, docs/GAMES-DEPLOYMENT.md, sw.js(v60→v61), 생성 seo-dates.json 및 AGENTS.md 브랜드 규칙. _site 재생성. 기존 과거 승인 인용 docs/HANDOFF.md 및 tools/game-policies.json은 이력 보존. 이미지·URL·메일·코드 식별자·app-ads.txt·두 방침·게임 저장소 수정 없음. 최초 조사29곳의 전체 목록 및 이미지 이름은 저장소 밖 C:\Dev\PetPassport\brand-audit-2026-10-15.txt.
+- 배포 전 실제 운영/로컬 MD5 일치: 현재 방침 b900028d76a8ebfe1e3a7affde695e24, 이전판 4b9add50e8a8f96b98bd590927b74b11. 로컬 변경 후 동일 MD5 보존. 현재판 운영자 PawTrip 유지.
+- 검증: Python19개·check_release116개·기존 게임 브라우저 검사 통과. 실제 Chrome 1440/390/320px 게임 화면 넘침 없음, 홈페이지/게임2페이지 본문 및 HTML의 띄어 쓴 옛 표기0건·title/OG/상단/푸터 대조. 서비스 워커 v61 활성화 및 테스트로 넣은 v60 캐시 삭제 확인. 로컬 검수 C:\Dev\PetPassport\brand-release-local.json.
+- 이 기록은 배포 직전 상태. 승인 범위만 커밋·푸시하여 운영 배포 후 실제 메타·표기·두 방침 MD5·v61 캐시 갱신을 재확인하고 별도 완료 기록 예정.
+
 ## 운영자 이름 변경 운영 배포 확인 완료 — 2026-10-15 / Codex
 
 - 배포 커밋 `e9d23efc03f8058f31ed750e1f94a7a6623201d4` 푸시 완료. GitHub Actions `38806419788` 및 Pages `38806419388` 모두 completed/success. fetch 후 HEAD/origin/main 0/0.
