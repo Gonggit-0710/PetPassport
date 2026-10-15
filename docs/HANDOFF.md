@@ -1,5 +1,12 @@
 # PawTrip 작업 인수인계
 
+## 브랜드 통일 운영 배포 확인 완료 — 2026-10-15 / Codex
+
+- 배포 커밋 `3688089b53fe0c249b68186c51d059918dcde67f` 푸시 완료. Actions 38808846845 / Pages 38808846540 모두 completed/success. 운영 홈페이지 및 게임2페이지 HTTP200, HTML/화면의 띄어 쓴 옛 브랜드 표기0건. 게임 목록 title ‘PawTrip Games · 게임 소개와 지원’, og:title/og:site_name ‘PawTrip Games’, 상단 ‘PawTrip GAMES’, 푸터 ‘© PawTrip’. 소개 title ‘Not the Vacuum! · 청소기는 싫어멍! — PawTrip Games’, og:title ‘Not the Vacuum! · 청소기는 싫어멍!’, og:site_name ‘PawTrip Games’, 상단 ‘PawTrip GAMES’, 푸터 ‘© PawTrip · Not the Vacuum!’. 홈페이지 og:site_name PawTrip.
+- 배포 전후 운영 MD5 정확히 동일: 현재 방침 b900028d76a8ebfe1e3a7affde695e24 / 이전판 4b9add50e8a8f96b98bd590927b74b11. 현재 운영자 PawTrip 유지. 이미지·app-ads·게임 저장소 변경 없음.
+- 운영 실제 Chrome 서비스 워커 v61 및 기존 v60 캐시 삭제 확인. 1440/390/320px 글꼴 로딩과 반응형 크기 변경 완료 후 가로 넘침 없음. 첫 검수는 화면 크기 변경 직후 검사하여 일시적 넘침 판정이 났고, 검수 스크립트에 글꼴/2프레임 렌더 완료 대기를 추가한 뒤 통과. 홈페이지/게임 원본 코드는 추가 변경하지 않음. 검수 자료 C:\Dev\PetPassport\brand-release-live.json 및 brand-*-live.png.
+- 이 완료 기록은 배포 후 추가한 로컬 문서 변경이며 아직 커밋·푸시하지 않음.
+
 ## 사이트 브랜드 표기 통일 — 2026-10-15 / Codex
 
 - 사용자 조사 보고 승인 및 설명 문구 수정 요청에 따라 게임 목록·소개 9곳과 배포 문서 제목1곳을 반영. 게임 title/목록 소개/영역 이름은 PawTrip Games, 맨 위 브랜드·푸터는 PawTrip(기존 GAMES 배지 유지). 목록 description은 ‘PawTrip Games가 만든 게임 Not the Vacuum! (청소기는 싫어멍!) 소개, 지원 및 개인정보처리방침.’으로 나머지 문장 보존. 홈페이지 og:site_name PawTrip, 게임2페이지 og:site_name PawTrip Games 추가.
