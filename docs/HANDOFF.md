@@ -1,5 +1,12 @@
 # PawTrip 작업 인수인계
 
+## 게임 개인정보처리방침 운영자 이름 변경 — 2026-10-15 / Codex
+
+- 사용자 2026-10-15 승인 게시 요청. 게임 저장소 원문 `C:\Dev\Not the Vacuum\release\privacy\index.html` MD5 `3a6a740213db0e374a0977cb30bcfd88` 확인. 홈페이지 기존 방침과 LF 정규화 대조하여 Paw Trip→PawTrip 한·영 첫 문단/12항 총4곳 외 차이 없음 확인.
+- 홈페이지 `games/not-the-vacuum/privacy/index.html`에 복사 후 실제 게시일(미국 서부 2026-10-15)에 맞춰 최종 수정 날짜만 한국어 2026년 10월 15일/영어 October 15, 2026으로 변경. 시행일 2026-10-21 유지. `tools/game-policies.json` 승인 기록·게시일·원문 MD5·배포 SHA 갱신, 생성기로 seo-dates/sitemap 갱신. 게임 저장소 파일 및 홈페이지 이전판 `/privacy/2026-10-12/` 수정 없음.
+- 검증: Python19개·check_release 공개116개 통과. 실제 Chrome 1440/390/320px에서 두 방침 #ko/#en 직접 이동·두 언어 표시·현재/이전판 한·영 왕복 링크 통과. sw.js v60 기존 `/games/` 네트워크 우회 유지: 활성 캐시에 가짜 이전 본문을 넣어도 두 주소 응답 fromServiceWorker=false, 가짜 본문 미사용 확인. 이전판 정규화 SHA `3f99c30b70c3d389d78af40f91e1e375ba4f6b5e39fbc281dc2c585ad6d5b25c` 보존.
+- 이 기록은 배포 직전. 요청 범위만 커밋·푸시하여 운영 배포 후 실제 본문·앵커·이전판 링크·캐시 우회를 재확인하고 결과를 별도 기록. 작업용 검수 자료 `C:\Dev\PetPassport\policy-release-local.json`은 저장소/공개 묶음 밖.
+
 ## 게임 개인정보처리방침 개정·이전판 게시 준비 — 2026-10-14 / Codex
 
 - 사용자 명시 게시 요청 및 승인 기록 2026-10-14 20:33에 따라 Firebase 플레이 통계 개정판과 2026-10-12 이전판 반영. 원문 두 파일 MD5 `1d0524ab4bd7c9e76a6be80f1113d8c4` / `4b9add50e8a8f96b98bd590927b74b11` 일치 확인. 게임 저장소 파일은 읽기만 수행.

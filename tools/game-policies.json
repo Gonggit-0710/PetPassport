@@ -1,12 +1,12 @@
 {
-  "approval": "2026-10-14 20:33",
-  "published_date": "2026-10-14",
+  "approval": "2026-10-15 사용자 승인: Paw Trip → PawTrip, 4곳",
+  "published_date": "2026-10-15",
   "effective_date": "2026-10-21",
   "policies": [
     {
       "path": "games/not-the-vacuum/privacy/index.html",
-      "source_md5": "1d0524ab4bd7c9e76a6be80f1113d8c4",
-      "sha256_lf": "1470ebc702b076946cb6359abaa509961e5033b2b692520702bb9326a42da76c"
+      "source_md5": "3a6a740213db0e374a0977cb30bcfd88",
+      "sha256_lf": "ad40e23a1e901548a130acd2c963bad37cc6c605cf5416c13f4d9477eda08a59"
     },
     {
       "path": "games/not-the-vacuum/privacy/2026-10-12/index.html",
