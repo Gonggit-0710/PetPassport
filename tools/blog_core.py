@@ -110,7 +110,7 @@ def shell(title, description, path, body, cover='',post=None):
 <meta property="og:type" content="{'article' if post else 'website'}"><meta property="og:locale" content="ko_KR"><meta name="twitter:card" content="summary_large_image">{metadata}
 <link rel="icon" href="/media/icon-192.png"><link rel="stylesheet" href="/pawlog/blog.css?v=4">{analytics}</head><body>
 <a class="skip" href="#main">본문으로 건너뛰기</a><header><a class="brand" href="/" aria-label="PawTrip 홈"><img src="/media/logo-light.svg" alt="PawTrip"></a><nav aria-label="PawLog 메뉴"><a href="/pawlog/">PawLog</a><a href="/mydog/">My Dog</a></nav></header>
-<main id="main">{body}</main><footer><a href="/">PawTrip 여행 준비</a><span>© PawTrip · PawLog</span></footer></body></html>'''
+<main id="main">{body}</main><footer><a href="/">PawTrip 여행 준비</a><span>© GoGoGong · PawLog</span></footer></body></html>'''
 
 def build_blog():
     POSTS.mkdir(parents=True, exist_ok=True)
