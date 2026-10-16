@@ -1,12 +1,12 @@
 {
-  "approval": "2026-10-15 사용자 승인: Paw Trip → PawTrip, 4곳",
+  "approval": "2026-10-15 사용자 승인: 현재판 개발자 GoGoGong, 본문 4곳 변경",
   "published_date": "2026-10-15",
   "effective_date": "2026-10-21",
   "policies": [
     {
       "path": "games/not-the-vacuum/privacy/index.html",
       "source_md5": "3a6a740213db0e374a0977cb30bcfd88",
-      "sha256_lf": "ad40e23a1e901548a130acd2c963bad37cc6c605cf5416c13f4d9477eda08a59"
+      "sha256_lf": "63b60d77f2380936ab83d2a9a2b3f19e099eebf3cc3aebc4800145cfd37d8dd2"
     },
     {
       "path": "games/not-the-vacuum/privacy/2026-10-12/index.html",
