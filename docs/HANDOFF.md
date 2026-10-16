@@ -1,5 +1,56 @@
 # PawTrip 작업 인수인계
 
+## 게임 개발자 GoGoGong 변경 게시 완료 — 2026-10-15 / Codex
+
+- 사용자 최신 지시를 기존 브랜드 규칙보다 우선 적용. 게임 공개 문서 세 개의 표시·제목·메타를 GoGoGong으로 변경. 목록 제목은 한국어와 영어를 함께 표시. 공용 틀과 그림 파일은 변경하지 않음.
+- 배포 커밋 `f9e0418622f700c8e0088be8d287dda39df17c41`, 원격 반영 완료. 자동 배포 38836743271 및 38836743420 성공. 운영 세 게임 문서와 광고 판매자 파일 응답 모두 200, 로컬 승인본과 운영 본문 일치.
+- 방침은 지정된 네 문단의 개발자 이름만 변경. 운영 본문 태그 제거·문자 참조 복원·공백 정규화 후 한국어 4549자 `a77219dc59df6452`, 영어 8599자 `5aa722268a12ce70`. 지정값과 일치. 두 언어 앵커·날짜 줄·메일·주소 유지.
+- 이전 방침은 바이트 보존, 원본 해시 `4b9add50e8a8f96b98bd590927b74b11`. 광고 판매자 파일과 이미지 변경 없음. 게임 영역의 주소·메일을 제외한 옛 브랜드 표기 0개.
+- 커밋 파일: `games/index.html`, `games/not-the-vacuum/index.html`, `games/not-the-vacuum/privacy/index.html`, `tools/game-policies.json`, `seo-dates.json`. 내부 검증 명세는 현재판 승인 해시와 게임 세 주소의 내용 해시만 갱신. 여행 공개 파일 변경 0개.
+- 자동 검사 19개·공개 파일 116개 검사 통과. 컴퓨터와 모바일 1440·320·390·430픽셀에서 게임 화면·양쪽 방침 앵커·서비스워커 우회 검사 통과. 첫 자동 검사의 검색 변경일 안정성 항목은 게임 내용 해시 갱신 전 실패했고, 생성 후 재검사 통과.
+- 운영 검수 자료: `C:\Dev\PetPassport\gogogong-release-live.json`, 검수 스크립트 `C:\Dev\PetPassport\verify-gogogong.py`. 지정된 `release/pawtrip-games-handoff.md`는 수정하지 않음.
+- 이 인계 기록은 로컬 문서 변경이며 커밋·푸시하지 않음. 시작 전부터 있던 최신 요약 39줄 변경을 보존하여 제품 커밋에서 제외. 아래 이전 최신 요약의 게임 운영자·브랜드·현재판 해시는 이번 완료 기록으로 대체됨.
+
+
+## 새 창 시작용 최신 요약 — 2026-10-15 / Codex
+
+**다음 담당자는 이 요약과 `AGENTS.md`를 먼저 읽으세요. 아래 개별 작업 기록의 ‘배포 전/미커밋’ 상태는 당시 이력이며, 현재 상태는 이 요약을 우선합니다. 진행 메모와 보고는 모두 한국어로 작성합니다.**
+
+### 저장소·현재 상태
+
+- 홈페이지 작업 저장소는 `C:\Dev\PetPassport\PetPassport`, 브랜치 main. 블로그 초안·사진 폴더는 `C:\Dev\PawTrip4u_Blog`. 게임 원본 저장소 `C:\Dev\Not the Vacuum`은 요청 없이 수정하지 않습니다.
+- 이 요약 작성 직전 작업 폴더는 깨끗했고, HEAD `24a542c`(Update HANDOFF.md), fetch 후 origin/main과 차이 0/0. 브랜드 배포 커밋은 `3688089b53fe0c249b68186c51d059918dcde67f`. 그 뒤 완료 기록도 사용자가 커밋·푸시한 상태입니다. 이번 최신 요약 추가만 새 로컬 문서 변경이며 Codex는 아직 커밋·푸시하지 않았습니다.
+- 승인받은 개발·배포 작업은 완료했습니다. 배포 대기 제품 변경이나 실패한 검사 없음. 다음 작업의 구체적인 목표는 사용자가 새 창에서 지정해야 합니다. 아래 남은 확인 항목을 새 작업 승인으로 간주하지 않습니다.
+
+### 이번 창에서 완료한 일
+
+- PawLog 4번째 글 `/pawlog/gong-second-us-trip/` 반영·운영 게시 확인. 네이버 게시본 기준 문장·사진5장·대표 이미지(새벽4시 시차 장면) 보존, 실제 HTML 표2개/안내상자3개/소제목 h2 9개·h3 1개. 게시일은 네이버 한국시간 2026-10-15. 후속 글 작업은 `docs/PAWLOG-WRITING-GUIDE.md`를 따릅니다.
+- 게임 개인정보처리방침: Firebase 플레이 통계 개정 및 운영자 이름 PawTrip 변경 게시 완료. 현재판 `/games/not-the-vacuum/privacy/` 최종 수정 2026-10-15, 시행일 2026-10-21. 한·영 #ko/#en 직접 이동과 이전판/현재판 왕복 링크 확인 완료. 정책 자체에는 분석·광고·추적 스크립트를 넣지 않습니다.
+- 브랜드 통일 완료: 게임 목록·게임 소개 title/게임 영역 이름/og:site_name은 PawTrip Games. 상단 브랜드와 공통 푸터는 PawTrip, 기존 GAMES 배지 유지. 홈페이지 og:site_name PawTrip. 게임 목록 설명은 ‘PawTrip Games가 만든 게임…’. 홈페이지·게임2페이지의 띄어 쓴 옛 표기0건 운영 확인. 과거 인용 기록·이전 방침·그림 내부 글자는 보존.
+- 서비스 워커는 현재 `pawtrip-v61`. 실제 운영 Chrome에서 v61 활성화와 v60 캐시 제거 확인. `/games/` 전체는 서비스 워커 캐시 응답 대상에서 제외되어 두 방침도 네트워크로 읽습니다. 로고·이미지·app-ads·이메일·URL·코드 식별자 및 게임 저장소 변경 없음.
+- 최종 제품 검증: Python19개·check_release116개·기존 게임 브라우저 검사 통과, PC1440/모바일390·320px 확인. 배포 Actions38808846845 / Pages38808846540 모두 성공. 반응형 화면 검수는 글꼴 로딩과 크기 변경 렌더 완료 후 수행합니다.
+
+### 반드시 보존할 방침 해시
+
+| 공개 경로 | 운영 응답/로컬 파일 MD5(브랜드 배포 전후 동일) |
+|---|---|
+| `/games/not-the-vacuum/privacy/` | `b900028d76a8ebfe1e3a7affde695e24` |
+| `/games/not-the-vacuum/privacy/2026-10-12/` | `4b9add50e8a8f96b98bd590927b74b11` |
+
+- 현재판 운영자는 PawTrip. 이전판의 과거 운영자 표기를 포함해 이전판은 한 글자도 수정하지 않습니다. 승인 원본 MD5와 배포 파일 MD5는 날짜 변경 때문에 다를 수 있으므로 `tools/game-policies.json`의 source_md5/sha256_lf를 구분합니다.
+
+### GA 확인 수준과 남은 확인
+
+- 측정 ID `G-6G8CX7W76G`. PawLog 목록/각 글 생성기에 page_view 포함, pawtrip.us에서만 실행하며 localhost 미리보기는 제외.
+- 이 창에서 운영 PawLog 목록·4번째 글을 실제 방문하여 `/g/collect` page_view 요청과 Google HTTP204 응답, 올바른 제목·경로·측정 ID 확인 완료. GA 계정 보고서 내부에 실제 표시되는 것까지 확인한 것은 아닙니다.
+- 사용자가 ‘인기 페이지/화면’ 요약에 PawLog가 없다고 보고했습니다. 전송은 확인됐으나 요약 누락의 정확한 원인은 미확정. 필요하면 사용자가 보는 GA 속성의 측정 ID·실시간 페이지·기간/필터·페이지 및 화면의 pawlog 검색을 확인합니다. 일반 보고서 처리 지연과 상위 요약 표시를 실제 수집 실패로 단정하지 않습니다. 추측으로 GA 코드를 중복 추가하지 않습니다.
+
+### 새 창에서 이어가는 방법
+
+- 첫 단계는 git status, AGENTS.md, 이 최신 요약 확인. 같은 제품 작업을 다시 구현하거나 완료된 배포를 재실행하지 말고 사용자의 다음 요청 범위에서 진행합니다.
+- 변경 시 원본/생성물 일치, 로컬 저장/커밋/푸시/운영 배포 구분을 유지합니다. 기존 사용자 데이터와 다른 담당자의 변경을 보존합니다.
+- 검수 자료는 저장소 밖 `C:\Dev\PetPassport\brand-release-live.json`, `brand-policy-before.json`, `policy-release-live.json`, `brand-audit-2026-10-15.txt`와 PNG들에 있습니다. 공개 배포에는 포함하지 않습니다. 로컬 미리보기는 127.0.0.1:8766였으며 새 창에서는 실행 여부부터 확인합니다.
+
 ## 브랜드 통일 운영 배포 확인 완료 — 2026-10-15 / Codex
 
 - 배포 커밋 `3688089b53fe0c249b68186c51d059918dcde67f` 푸시 완료. Actions 38808846845 / Pages 38808846540 모두 completed/success. 운영 홈페이지 및 게임2페이지 HTTP200, HTML/화면의 띄어 쓴 옛 브랜드 표기0건. 게임 목록 title ‘PawTrip Games · 게임 소개와 지원’, og:title/og:site_name ‘PawTrip Games’, 상단 ‘PawTrip GAMES’, 푸터 ‘© PawTrip’. 소개 title ‘Not the Vacuum! · 청소기는 싫어멍! — PawTrip Games’, og:title ‘Not the Vacuum! · 청소기는 싫어멍!’, og:site_name ‘PawTrip Games’, 상단 ‘PawTrip GAMES’, 푸터 ‘© PawTrip · Not the Vacuum!’. 홈페이지 og:site_name PawTrip.
