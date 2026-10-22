@@ -154,5 +154,94 @@
       "글 하단 My Dog 홈페이지 홍보 링크 카드"
     ],
     "verification": "네이버 게시본의 모든 비어 있지 않은 본문·표 셀·사진 캡션 문단을 공백 정규화하여 이전 본문과 대조. 소제목은 로컬 초안 h2/h3와 일치하는 문장만 분류."
+  },
+  {
+    "slug": "gong-us-daily-life",
+    "source": "https://blog.naver.com/pawtrip/224450216322",
+    "date": "2026-10-22",
+    "published_at": "Thu, 22 Oct 2026 15:41:29 +0900",
+    "date_note": "네이버 게시일(한국 시간 2026-10-22) 보존. 미국 서부 현지 날짜는 2026-10-21.",
+    "photos": [
+      {
+        "file": "/pawlog/media/gong-us-daily-life-1.jpg",
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMjJfMTAy/MDAxNzkyNjUwNjgxOTEw.TIGiH3U7kRzs9LkuwDWEk-EYJGp-YyF8L8z2Gg6sz9Ag.2AWVodxMHHT8xxD9jHPX6JMElN0GuJqa6MXhQ7sIlmgg.JPEG/post5_01_patio.jpg",
+        "local_source": "C:\\Dev\\PawTrip4u_Blog\\Images\\post5_01_patio.jpg"
+      },
+      {
+        "file": "/pawlog/media/gong-us-daily-life-2.png",
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMjJfMTU4/MDAxNzkyNjUwODc0NzAx.EzXOpE0fUMjLlbI7xFvs0PzR6iMt1pRrOt8qoROP9oog.B8hx9RVCLr2kM4wGEisQesuPfIzeOaUF0whC5YX6UR8g.PNG/post5_02_menu.png",
+        "local_source": "C:\\Dev\\PawTrip4u_Blog\\Images\\post5_02_menu.png"
+      },
+      {
+        "file": "/pawlog/media/gong-us-daily-life-3.jpg",
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMjJfMTU0/MDAxNzkyNjUwOTc2Njg3.CUs1-SIxLVwYusiS8cEObAgA8VOdRaohZzarIasS668g.gNo-yJQKNjeHR675vOupxiebLZ7CyU_9yuIwP0-OBz0g.JPEG/post5_03_park.jpg",
+        "local_source": "C:\\Dev\\PawTrip4u_Blog\\Images\\post5_03_park.jpg"
+      },
+      {
+        "file": "/pawlog/media/gong-us-daily-life-4.jpg",
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMjJfMjEy/MDAxNzkyNjUxMDI0Nzcw.ZOZAvYMORVf0CzH-Njwti8lWvjm3dUqhWLDwK40TImYg.mydKpms-J3NlQcNVZcHgd7h2SXlii_fl4o0gqs3iDdAg.JPEG/post5_04_dogpark.jpg",
+        "local_source": "C:\\Dev\\PawTrip4u_Blog\\Images\\post5_04_dogpark.jpg"
+      },
+      {
+        "file": "/pawlog/media/gong-us-daily-life-5.png",
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMjJfMTY3/MDAxNzkyNjUxMDYyNzM2.3_0u6OTWUAY82W7zA0LreY_mUMz7hxHT-oM2CAH51x0g.4Je-tv3_XE8Hj8heHNtMGXNHe4BoKrPeyG3bdhO1Rrog.PNG/post5_05_ballchase.png",
+        "local_source": "C:\\Dev\\PawTrip4u_Blog\\Images\\post5_05_ballchase.png"
+      },
+      {
+        "file": "/pawlog/media/gong-us-daily-life-6.png",
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMjJfMjcx/MDAxNzkyNjUxMTIzNjg5.vqRiMNLWKGw4FOsNsff6G10AChVIOnd95P8aTlzaEjMg.nKWyZ-VM7OXoYPeUJ2RAwf8QiaCHGuNaSeRJ89el6Vsg.PNG/post5_06_checkout.png",
+        "local_source": "C:\\Dev\\PawTrip4u_Blog\\Images\\post5_06_checkout.png"
+      }
+    ],
+    "paragraphs": 39,
+    "cover_source": "https://blogthumb.pstatic.net/MjAyNjEwMjJfMTY3/MDAxNzkyNjUxMDYyNzM2.3_0u6OTWUAY82W7zA0LreY_mUMz7hxHT-oM2CAH51x0g.4Je-tv3_XE8Hj8heHNtMGXNHe4BoKrPeyG3bdhO1Rrog.PNG/post5_05_ballchase.png?type=w2",
+    "text_replacements": [
+      {
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMjJfNzUg/MDAxNzkyNjUwODMxNDMx.3LHDGs5cByPbuqP30iGfkc1PN0Usl86R68nyMTuNlLEg.pEIhyBJEl2zmU9VYPv_G6qgXSuWXGd3Qb4UV6HXu_UEg.PNG/image.png",
+        "draft": "C:/Dev/PawTrip4u_Blog/PawTrip_다섯번째글.html",
+        "text": [
+          "예약할 때 이렇게 말해보세요:\n\"We'll have a small dog with us. Could we get a table on the patio?\"\n(작은 강아지랑 같이 가요. 파티오 자리로 부탁드려요.)\n예약 앱이라면 요청 사항 칸에 \"Patio seating, with a small dog\" 정도로만 적어도 충분해요.",
+          "파티오에서 지켜야 할 것: 캘리포니아 법에서는 야외석 강아지 동반을 허용하되 조건을 붙여 두었어요. 강아지는 목줄을 하거나 캐리어 안에 있어야 하고, 의자나 벤치 위에 올리면 안 돼요. 공이가 아무리 작아도 의자 말고 바닥이나 개모차, 캐리어에 두세요. 그리고 야외석 동반 여부는 결국 식당 주인이 정하는 거라, 파티오가 있어도 안 되는 곳이 있을 수 있어요. 예약할 때 한 번 물어보면 확실해요."
+        ],
+        "reason": "안내문 스크린샷을 초안과 대조하여 동일 원문 안내 상자/목록으로 대체"
+      },
+      {
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMjJfMjA1/MDAxNzkyNjUwODk2NjMw.kMYHJAmRCQpNIZngN-GA-eAnZJESciOuh0Wag3dP7Gog.iaF-GZg7ob0qd2k12Bg1RBfofrSNo3oY1s-JOwWiAzYg.PNG/image.png",
+        "draft": "C:/Dev/PawTrip4u_Blog/PawTrip_다섯번째글.html",
+        "text": [
+          "참고: 지점마다 파티오 크기와 강아지 동반 자리 수가 다르고, 강아지 메뉴도 지점이나 시기에 따라 달라질 수 있어요. 가려는 지점에 미리 확인해 보세요. 사람 메뉴를 나눠줄 때는 양념이나 소금, 양파·마늘이 들어간 음식은 피해 주세요."
+        ],
+        "reason": "안내문 스크린샷을 초안과 대조하여 동일 원문 안내 상자/목록으로 대체"
+      },
+      {
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMjJfMjQ0/MDAxNzkyNjUwOTk3NjEz.VXRNXBa1I4aruzgB3fQX8C0lGasF4eYSCfY_5j25ywcg.J0IMJNBKPE2eVXS-eaVaqvGpaxXky85I3lmpOHLw0pAg.PNG/image.png",
+        "draft": "C:/Dev/PawTrip4u_Blog/PawTrip_다섯번째글.html",
+        "text": [
+          "미리 확인하는 방법:\n\n공원·해변 공식 홈페이지에서 \"dogs\", \"pets\", \"leash\"로 검색해 보세요. 규정 페이지가 따로 있는 경우가 많아요.\n같은 공원 안에서도 길(trail)마다 규칙이 다를 수 있어요. \"Dogs allowed on leash\"인지, \"No dogs\"인지 길별로 확인하세요.\n입구 표지판도 꼭 한 번 보세요. 계절이나 공사 때문에 임시로 막는 경우도 있어요.\n목줄 허용 공원이라도 배변 봉투는 필수예요. 미국은 치우지 않으면 벌금을 매기는 곳도 많아요."
+        ],
+        "reason": "안내문 스크린샷을 초안과 대조하여 동일 원문 안내 상자/목록으로 대체"
+      },
+      {
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMjJfMjUx/MDAxNzkyNjUxMDgyMzc2.DKP_mV74gialousMyQW6bDwF37EtnNE-q47TK0rYBisg.sLOCppWAZMeZMkv1bGuil1QsXVcrjJy9CJjCfzDh6Fcg.PNG/image.png",
+        "draft": "C:/Dev/PawTrip4u_Blog/PawTrip_다섯번째글.html",
+        "text": [
+          "도그 파크 갈 때 알아두면 좋은 것:\n\n큰 강아지와 작은 강아지 구역이 따로 나뉜 곳도 있어요. 공이처럼 작은 강아지라면 작은 강아지 구역이 있는 곳이 마음 편해요.\n처음 들어갈 때는 다른 강아지들이 우르르 몰려올 수 있어요. 문 앞에서 잠깐 분위기를 보고 들어가세요.\n물이 없는 곳도 있으니 휴대용 물병과 그릇을 챙기세요.\n접종이 다 된 강아지만 들어오게 하는 곳이 많아요. 해외여행을 준비하며 접종을 마쳤다면 문제없지만, 규칙 표지판은 한 번 읽어보세요."
+        ],
+        "reason": "안내문 스크린샷을 초안과 대조하여 동일 원문 안내 상자/목록으로 대체"
+      },
+      {
+        "source": "https://postfiles.pstatic.net/MjAyNjEwMjJfMjcx/MDAxNzkyNjUxMTQ3MDEz.2azn4bkNP-_zixnkIu9uIOiLzOlh0dKN_f1ymHjh9hYg.oNWe6LEWpVxEZBl4OU_0nBEyQS-35ab5Kl1Fxc2mN78g.PNG/image.png",
+        "draft": "C:/Dev/PawTrip4u_Blog/PawTrip_다섯번째글.html",
+        "text": [
+          "그렇다고 모든 마트가 되는 건 아니에요. 제가 운이 좋았던 거예요. 같은 체인이라도 지점마다, 직원마다 답이 다를 수 있어요. 그래서 저는 그 뒤로도 마트에 들어가기 전에는 항상 먼저 물어보고 들어가요. 영어로는 이렇게 물어보면 돼요.\n\"Is it okay to bring my dog inside?\"\n안 된다고 하면 웃으면서 돌아서면 돼요. 그리고 서비스견이 아닌데 서비스견이라고 하는 건 절대 안 돼요. 캘리포니아에서는 처벌받을 수 있어요."
+        ],
+        "reason": "안내문 스크린샷을 초안과 대조하여 동일 원문 안내 상자/목록으로 대체"
+      }
+    ],
+    "intentional_omissions": [
+      "글 하단 PawTrip 홈페이지 홍보 링크 카드",
+      "네이버 구분선·빈 문단·편집기 장식"
+    ],
+    "verification": "네이버의 비어 있지 않은 본문·표 셀·사진 캡션 75문단을 공백 정규화하여 대조 통과. 안내 스크린샷5개는 직접 확인하고 초안의 상자6개/목록2개로 대체. 초안의 Pacific Catch 링크 카드는 네이버 게시본에 없으므로 추가하지 않음."
   }
 ]
