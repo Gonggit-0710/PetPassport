@@ -392,7 +392,7 @@ def build():
     blog_posts = build_blog()
     with open(os.path.join(ROOT, 'data.json'), encoding='utf-8') as f:
         data = json.load(f)
-    update_home(data)
+    update_home(data, blog_posts)
     all_pages = PAGES + rule_pages(data)
     index = []
     for p in all_pages:

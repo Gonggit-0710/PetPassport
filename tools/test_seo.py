@@ -7,6 +7,9 @@ from pathlib import Path
 import unittest
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
+from tempfile import TemporaryDirectory
+from urllib.parse import urljoin, urlsplit
+from audit_indexing import audit
 
 ROOT=Path(__file__).resolve().parent.parent
 
@@ -57,5 +60,43 @@ class SEOTest(unittest.TestCase):
         before=(ROOT/'seo-dates.json').read_bytes()
         subprocess.run([sys.executable,str(ROOT/'tools/build_pages.py')],cwd=ROOT,check=True,capture_output=True)
         self.assertEqual((ROOT/'seo-dates.json').read_bytes(),before)
+
+    def test_travel_sitemap_is_reachable_without_javascript(self):
+        report = audit()
+        self.assertEqual(report['issue_count'], 0, report)
+        travel = {row['url'] for row in report['pages'] if '/games/' not in row['url']}
+        visited, pending = set(), ['https://pawtrip.us/']
+        while pending:
+            url = pending.pop()
+            if url in visited:
+                continue
+            visited.add(url)
+            path = urlsplit(url).path
+            file = ROOT / (path.lstrip('/')+'index.html' if path.endswith('/') else path.lstrip('/'))
+            for ref in Metadata(file.read_text(encoding='utf-8')).links:
+                target = urlsplit(urljoin(url, ref))._replace(query='', fragment='').geturl()
+                if target in travel and target not in visited:
+                    pending.append(target)
+        self.assertEqual(travel - visited, set())
+
+    def test_audit_detects_blocked_and_miscanonicalized_pages(self):
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'sitemap.xml').write_text('<urlset><url><loc>https://pawtrip.us/</loc></url></urlset>', encoding='utf-8')
+            (root/'robots.txt').write_text('User-agent: *\nDisallow: /\n', encoding='utf-8')
+            (root/'index.html').write_text('<title>검사</title><meta name="robots" content="noindex"><link rel="canonical" href="https://pawtrip.us/other/">', encoding='utf-8')
+            self.assertEqual(audit(root)['issue_count'], 3)
+
+    def test_blog_navigation_preserves_imported_story_and_dates(self):
+        from blog_core import posts
+        for post in posts():
+            source = (ROOT/'pawlog'/post['slug']/'index.html').read_text(encoding='utf-8')
+            self.assertIn('<div class="story">'+post['body']+'</div>', source)
+            self.assertIn('<time datetime="'+post['date']+'">', source)
+            navigation = re.search(r'<nav class="story-navigation"[^>]*>(.*?)</nav>', source, re.S).group(1)
+            self.assertTrue(Metadata(navigation).links)
+            for ref in Metadata(navigation).links:
+                self.assertNotEqual(ref, '/pawlog/'+post['slug']+'/')
+                self.assertTrue((ROOT/ref.lstrip('/')/'index.html').is_file())
 
 if __name__=='__main__':unittest.main()

@@ -108,7 +108,7 @@ def shell(title, description, path, body, cover='',post=None):
 <title>{esc(title)} · PawLog</title><meta name="description" content="{esc(description)}"><link rel="canonical" href="https://pawtrip.us{path}">
 <meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(description)}"><meta property="og:url" content="https://pawtrip.us{path}">{image}
 <meta property="og:type" content="{'article' if post else 'website'}"><meta property="og:locale" content="ko_KR"><meta name="twitter:card" content="summary_large_image">{metadata}
-<link rel="icon" href="/media/icon-192.png"><link rel="stylesheet" href="/pawlog/blog.css?v=4">{analytics}</head><body>
+<link rel="icon" href="/media/icon-192.png"><link rel="stylesheet" href="/pawlog/blog.css?v=5">{analytics}</head><body>
 <a class="skip" href="#main">본문으로 건너뛰기</a><header><a class="brand" href="/" aria-label="PawTrip 홈"><img src="/media/logo-light.svg" alt="PawTrip"></a><nav aria-label="PawLog 메뉴"><a href="/pawlog/">PawLog</a><a href="/mydog/">My Dog</a></nav></header>
 <main id="main">{body}</main><footer><a href="/">PawTrip 여행 준비</a><span>© GoGoGong · PawLog</span></footer></body></html>'''
 
@@ -116,12 +116,18 @@ def build_blog():
     POSTS.mkdir(parents=True, exist_ok=True)
     items = posts()
     cards = []
-    for p in items:
+    for index, p in enumerate(items):
         path = '/pawlog/' + p['slug'] + '/'
         target = ROOT / path.lstrip('/')
         target.mkdir(exist_ok=True)
         source = ''  # Keep provenance in the content record, not the public header.
-        body = f'<article><a class="back" href="/pawlog/">← PawLog 전체 이야기</a><p class="eyebrow">공이와 함께, 여행도 일상도.</p><h1>{esc(p["title"])}</h1><div class="meta"><time datetime="{p["date"]}">{p["date"]}</time>{source}</div><div class="story">{p["body"]}</div><aside class="next"><a href="/pawlog/">다른 이야기 읽기 →</a></aside></article>'
+        neighbors = []
+        for offset, label in [(1, '이전 이야기'), (-1, '다음 이야기')]:
+            if 0 <= index + offset < len(items):
+                neighbor = items[index + offset]
+                neighbors.append(f'<a href="/pawlog/{esc(neighbor["slug"])}/"><span>{label}</span><strong>{esc(neighbor["title"])}</strong></a>')
+        navigation = '<nav class="story-navigation" aria-label="이야기 이어 읽기">' + ''.join(neighbors) + '</nav>' if neighbors else ''
+        body = f'<article><a class="back" href="/pawlog/">← PawLog 전체 이야기</a><p class="eyebrow">공이와 함께, 여행도 일상도.</p><h1>{esc(p["title"])}</h1><div class="meta"><time datetime="{p["date"]}">{p["date"]}</time>{source}</div><div class="story">{p["body"]}</div>{navigation}<aside class="next"><a href="/pawlog/">다른 이야기 읽기 →</a></aside></article>'
         (target / 'index.html').write_text(shell(p['title'],p['excerpt'],path,body,p['cover'],p),encoding='utf-8')
         cover = f'<img src="{esc(p["cover"])}" alt="{esc(p["title"])}" loading="lazy">' if p['cover'] else '<div class="empty-cover">🐾 PawLog</div>'
         cards.append(f'<a class="post-card" href="{path}">{cover}<div><time>{p["date"]}</time><h2>{esc(p["title"])}</h2><p>{esc(p["excerpt"])}</p><span>이야기 읽기 →</span></div></a>')

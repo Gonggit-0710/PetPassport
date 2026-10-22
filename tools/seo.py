@@ -33,18 +33,21 @@ def static_menu():
         out+='<p class="rail-g">'+name+'</p><ol>'+''.join(f'<li><a class="rl" href="{path}"><span class="dot"></span>{label}</a></li>' for label,path in items)+'</ol>'
     return out+'<a class="pawlog-nav" href="/pawlog/"><b>PawLog<img class="pawlog-paw" src="/media/paw-coral.svg" alt="" aria-hidden="true" width="22" height="22"></b><span class="pawlog-description">공이와 함께, 여행도 일상도.</span></a>'
 
-def discovery(data):
+def discovery(data, blog_posts=None):
     groups=[('국가별 반려견 입국 준비',[(c['name'],f"/countries/{c['id']}/") for c in data['countries']]),('항공사별 반려동물 탑승 안내',[(a['name'],f"/airlines/{a['id']}/") for a in data['airlines']])]
-    out='<details class="seo-discovery"><summary>목적지·항공사별 준비 안내</summary>'
+    if blog_posts:
+        groups.append(('공이의 여행·일상 이야기', [(p['title'], f'/pawlog/{p["slug"]}/') for p in blog_posts[:3]]))
+    label = '여행 준비 안내와 공이의 이야기' if blog_posts else '목적지·항공사별 준비 안내'
+    out=f'<details class="seo-discovery"><summary>{label}</summary>'
     for name,items in groups:
         out+='<p><strong>'+name+'</strong></p><div class="links">'+''.join(f'<a href="{path}">{html.escape(label)}</a>' for label,path in items)+'</div>'
     return out+'</details>'
 
-def update_home(data):
+def update_home(data, blog_posts=None):
     path=ROOT/'index.html'
     source=path.read_text(encoding='utf-8')
     schema=ld({'@context':'https://schema.org','@graph':[organization(),{'@type':'WebSite','@id':SITE+'/#website','name':'PawTrip','alternateName':'포트립','url':SITE+'/','inLanguage':'ko','publisher':{'@id':SITE+'/#organization'}}]})
-    for name,content,anchor in [('metadata',schema,'</head>'),('discovery',discovery(data),'<footer class="foot">')]:
+    for name,content,anchor in [('metadata',schema,'</head>'),('discovery',discovery(data, blog_posts),'<footer class="foot">')]:
         block=f'<!-- seo:{name} -->{content}<!-- /seo:{name} -->'
         pattern=r'<!-- seo:'+name+r' -->.*?<!-- /seo:'+name+r' -->'
         if re.search(pattern,source,re.S):source=re.sub(pattern,lambda _:block,source,flags=re.S)
