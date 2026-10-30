@@ -13,6 +13,8 @@ class GamesTest(unittest.TestCase):
         manifest = json.loads((ROOT / 'tools/game-policies.json').read_text(encoding='utf-8'))
         for record in manifest['policies']:
             policy = ROOT / record['path']
+            if record.get('md5'):
+                self.assertEqual(hashlib.md5(policy.read_bytes()).hexdigest(), record['md5'])
             self.assertEqual(hashlib.sha256(policy.read_bytes().replace(b'\r\n', b'\n')).hexdigest(), record['sha256_lf'])
             text = policy.read_text(encoding='utf-8')
             self.assertIn('<section id="ko" lang="ko">', text)

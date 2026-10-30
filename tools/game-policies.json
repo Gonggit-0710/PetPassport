@@ -1,17 +1,24 @@
 {
-  "approval": "2026-10-15 사용자 승인: 현재판 개발자 GoGoGong, 본문 4곳 변경",
-  "published_date": "2026-10-15",
-  "effective_date": "2026-10-21",
+  "approval": "2026-10-30 사용자 승인: 11-02 시행판 사전 게시 준비, 날짜6곳/최종 수정일 보존, 원본 바이트 동일",
+  "published_date": "2026-10-30",
+  "effective_date": "2026-11-02",
   "policies": [
     {
       "path": "games/not-the-vacuum/privacy/index.html",
-      "source_md5": "3a6a740213db0e374a0977cb30bcfd88",
-      "sha256_lf": "63b60d77f2380936ab83d2a9a2b3f19e099eebf3cc3aebc4800145cfd37d8dd2"
+      "source_md5": "287567f94ef06eced90468f614aa1ddd",
+      "md5": "287567f94ef06eced90468f614aa1ddd",
+      "sha256_lf": "0528fa59e468b5303b6d0a63b7fb5ce282b82c10626b1c29f6c4bc09b70f086d"
     },
     {
       "path": "games/not-the-vacuum/privacy/2026-10-12/index.html",
       "source_md5": "4b9add50e8a8f96b98bd590927b74b11",
       "sha256_lf": "3f99c30b70c3d389d78af40f91e1e375ba4f6b5e39fbc281dc2c585ad6d5b25c"
+    },
+    {
+      "path": "games/not-the-vacuum/privacy/2026-10-21/index.html",
+      "source_md5": "1d0ba5360df42d78953e0afc04c2aa21",
+      "md5": "1d0ba5360df42d78953e0afc04c2aa21",
+      "sha256_lf": "b0e2d29dc2f6e0a2c36c0a3fcda4c482b6d5ce3fc316bec10a1dc88f9d001654"
     }
   ]
 }

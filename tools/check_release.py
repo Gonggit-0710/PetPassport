@@ -68,7 +68,10 @@ def check():
         path = site / record['path']
         if not path.is_file():
             raise ValueError(f'Missing game policy: {record["path"]}')
-        raw = path.read_bytes().replace(b'\r\n', b'\n')
+        exact = path.read_bytes()
+        if record.get('md5') and hashlib.md5(exact).hexdigest() != record['md5']:
+            raise ValueError(f'Game policy bytes differ from approved source: {record["path"]}')
+        raw = exact.replace(b'\r\n', b'\n')
         if hashlib.sha256(raw).hexdigest() != record['sha256_lf']:
             raise ValueError(f'Game policy differs from approved release: {record["path"]}')
         policy = raw.decode('utf-8')
@@ -76,7 +79,12 @@ def check():
             raise ValueError('Game policies must retain both anchors and have no scripts')
     current = (site / 'games/not-the-vacuum/privacy/index.html').read_text(encoding='utf-8')
     archived = (site / 'games/not-the-vacuum/privacy/2026-10-12/index.html').read_text(encoding='utf-8')
-    if current.count('href="./2026-10-12/"') != 2 or archived.count('href="../"') != 2:
+    archived_oct21 = (site / 'games/not-the-vacuum/privacy/2026-10-21/index.html').read_text(encoding='utf-8')
+    if (current.count('href="./2026-10-12/"') != 2
+            or current.count('href="./2026-10-21/"') != 2
+            or archived.count('href="../"') != 2
+            or archived_oct21.count('href="../"') != 2
+            or archived_oct21.count('href="../2026-10-12/"') != 2):
         raise ValueError('Both languages must link between current and archived game policies')
     if "endpoint:''" not in (site / 'wallet-config.js').read_text(encoding='utf-8'):
         raise ValueError('This release keeps Apple Wallet disabled until real-device verification')

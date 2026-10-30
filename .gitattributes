@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+# Approved policy copies use the source files' LF bytes, including on Windows.
+games/not-the-vacuum/privacy/index.html text eol=lf
+games/not-the-vacuum/privacy/2026-10-21/index.html text eol=lf
