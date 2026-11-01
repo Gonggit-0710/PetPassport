@@ -20,72 +20,72 @@
     "date": "2026-10-13"
   },
   "/changes/": {
-    "hash": "39afba10f28dd8ce0624e1fad2ac971c54dc9911e035c2e7854d8280d2ec9754",
-    "date": "2026-10-13"
+    "hash": "b53bd8c93a21f25c79cf94e4f4c10102218b83eb731f6e6289229479a119cd96",
+    "date": "2026-11-01"
   },
   "/countries/jp/": {
-    "hash": "a7367ed425efdb902c722af7f92cd6ecb63e21f0c448b515f843dcba197aaa8d",
-    "date": "2026-10-13"
+    "hash": "f5d6494d22d4302155ee3b7d26f090c83fd6825bdbd68207e0b0efa07538202d",
+    "date": "2026-11-01"
   },
   "/countries/us/": {
-    "hash": "5403a5c03bd7aa894afde41cd161913cacf0ebf393d89998c18d7e5a9c5d47b1",
-    "date": "2026-10-13"
+    "hash": "806e052318714d15a61c6930639b1ab74badf7fb28e7cb6baef3f8b3b44f2888",
+    "date": "2026-11-01"
   },
   "/countries/ca/": {
-    "hash": "cf8febde9ce49a6976332a476b448e86bcc04f17addbec409cdaff408746d10b",
-    "date": "2026-10-13"
+    "hash": "c96561c541f751c9415b3ac645363bd57924fb10634c609c7c28878988031d68",
+    "date": "2026-11-01"
   },
   "/countries/fr/": {
-    "hash": "75a5602e717e1e804b8aaf1051e1ff6d33d9d75212f8bf7e97fe83703c46ca6f",
-    "date": "2026-10-13"
+    "hash": "5e1e6c63d5b6cca9db55eaa665f8f2d674dd265ee8a633e7b5e733dccf1fd673",
+    "date": "2026-11-01"
   },
   "/countries/de/": {
-    "hash": "f4ffc1964b242f48c2dfac746993e9d14f0e1d483c92bf6c76a04ff3cb043dc4",
-    "date": "2026-10-13"
+    "hash": "554db0d6d2390b9b005bd0a2ad615bb5a0529f98c76b742b208e3223c9a4ae18",
+    "date": "2026-11-01"
   },
   "/countries/gb/": {
-    "hash": "ae681b0457b570dbda95038415d6296225e69747da106e323783ae7e0e16c33a",
-    "date": "2026-10-13"
+    "hash": "ebf0385461aea8ac1cb07f48ebc22baa6c53d23d0d1596c86dfa89387ea14e79",
+    "date": "2026-11-01"
   },
   "/countries/cn/": {
     "hash": "be62d60bae8308462fcd3daecd40d7c5bd0d5d341af0164c26bf75c4cf1818df",
     "date": "2026-10-13"
   },
   "/countries/sg/": {
-    "hash": "27a7943a51689a5c50adfbf26f118ba92ed10c4ee6420987c698df718bc2cfe5",
-    "date": "2026-10-13"
+    "hash": "f78cd358687b9f32e3f7094c24dd90b4b3c756266b5f7d84cc93c3b5b81c5074",
+    "date": "2026-11-01"
   },
   "/countries/au/": {
-    "hash": "dbc376adbc7d101cf9a1d58070aacbf0dbf49f46a157b74ce43c3b753c0e3e59",
-    "date": "2026-10-13"
+    "hash": "0d3684ab9e3b2f65ac5ac3edf91b0471b3fc7314296348d8cf95b1ea0914e611",
+    "date": "2026-11-01"
   },
   "/countries/th/": {
     "hash": "46fa141b328af5f03868facc030429a9d9fae4f469f35a3569fd9fe03babf2f7",
     "date": "2026-10-13"
   },
   "/countries/vn/": {
-    "hash": "7b6ad485739e7d63e482b53a848115b15dd09d420315429759b1f78323b0e606",
-    "date": "2026-10-13"
+    "hash": "34443f3f3f1892f972d733f44e8792e03cc6bf2aeaa1a750b95c9186db8da9dd",
+    "date": "2026-11-01"
   },
   "/countries/ph/": {
-    "hash": "df4d30f6193e6b393364f5c354e754d1a7a50777502a171cdc945f7a058f0304",
-    "date": "2026-10-13"
+    "hash": "6e8aa29962b0cc1528a585c350f4906573d8f18f6a11b424957baae467751eff",
+    "date": "2026-11-01"
   },
   "/airlines/ke/": {
-    "hash": "dee29f39e6e963ddbabc53a7355f3f28e44ba023c6b539f067708390ae0da198",
-    "date": "2026-10-13"
+    "hash": "424fc8e11a5a7a5870d0b90bacbc871d4a5a5a4491d4816fed139ee6f36753e8",
+    "date": "2026-11-01"
   },
   "/airlines/oz/": {
-    "hash": "82cd1bcfddf032b48e3530a897c728920928de6d5799dca294d0ccff5c244d5a",
-    "date": "2026-10-13"
+    "hash": "e01610a5779661480a880302e13fad33317e3d890a9bf32e988582d880cfd8a5",
+    "date": "2026-11-01"
   },
   "/airlines/7c/": {
-    "hash": "a4e57b0e7222ee13caf14a0315019cb054172d558aabf940c6e63188a6cff916",
-    "date": "2026-10-13"
+    "hash": "25b0940dfb2bf7df0c259702408cd5807a73c4bb363864ff4fbfcf7f2ffbe715",
+    "date": "2026-11-01"
   },
   "/airlines/tr/": {
-    "hash": "effb92bc2ff97e5024949e410088224e4e06e9cee71f7c47a31fa4d55947890d",
-    "date": "2026-10-13"
+    "hash": "0ede5d05fe1563ec85e12a3d6d32fb4334232089b4253e08c9a10f401e09968e",
+    "date": "2026-11-01"
   },
   "/airlines/yp/": {
     "hash": "103909fd18401c4918d845df55ed822c7d40b792f2be760f804f693d32c859e1",
@@ -96,20 +96,20 @@
     "date": "2026-10-13"
   },
   "/countries/": {
-    "hash": "56e8c073471a376e983fc42d30d49967377717b9807dc0254450fc74f3fa666d",
-    "date": "2026-10-13"
+    "hash": "9278a4905bcdb543f7e0649e3940563dfbf500f28ef518f379843310d2e2942e",
+    "date": "2026-11-01"
   },
   "/airlines/": {
-    "hash": "e6c7f2e2872763a2fee5e3385b9d6af1e0a0749d8529f885c72c8402f202f51e",
-    "date": "2026-10-13"
+    "hash": "0b49b9e883518b1fccba99f46077765234bb530c9679b4ee1838072e8ce7c3ea",
+    "date": "2026-11-01"
   },
   "/sos/": {
-    "hash": "333122561f13e61e0f27bf54cf364a28326f846486cbf63bb9ed634495c41564",
-    "date": "2026-10-13"
+    "hash": "d2d12d155b7173ccc1a5f06df80e67a5ec07820820a16cc586c0b9b488f7912d",
+    "date": "2026-11-01"
   },
   "/mydog/": {
-    "hash": "5a08a1f888b816887ad156482789ad14880b26b097dc1012916c75e3029775bd",
-    "date": "2026-10-13"
+    "hash": "a96ce78017c5a9299c6761990ed22730790be48951f38860d7698f5862647870",
+    "date": "2026-11-01"
   },
   "/privacy.html": {
     "hash": "04d51aafc5f9079c30178162f2bba11100375b0c46230d3ffeac5185f25d493f",
