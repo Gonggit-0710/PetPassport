@@ -1,5 +1,13 @@
 # PawTrip 작업 인수인계
 
+## 변경 이력 페이지 확인일 수정 — 2026-11-01 / Claude (클라우드 세션)
+
+- 문제: 사용자 제보. `/changes/` 페이지가 2026.11.01 변경 기록을 보여 주면서 확인일은 고정값 VERIFIED(2026-10-08)로 표시.
+- 수정: `tools/build_pages.py` changes 페이지 정의에 `verified=max(CHANGES 날짜)`를 지정. 이후 CHANGES에 새 날짜를 추가하면 자동으로 따라감. 국내 이동·항체가·현지 이동은 다시 확인하지 않았으므로 10-08 유지.
+- 남은 일: `/cost/`는 항공 요금(data.json, 11-01)과 검역 수수료·항체가 비용(10-08)이 섞여 있는데 확인일이 10-08 하나로 표시됨. 항목별 확인일 분리 표시 여부를 사용자 결정 대기.
+- 검증: build_pages(27페이지), Python unittest OK, prepare_site, check_release 통과. Playwright 390·1440px에서 상단·왼쪽 확인일 2026-11-01, 가로 넘침 0. /cost/·/domestic/은 10-08 유지 확인.
+- 상태: 클라우드 로컬 커밋, 사용자 push 대기.
+
 ## 11월 월초 규정 점검 반영 — 2026-11-01 / Claude (클라우드 세션)
 
 - 근거: 예약 작업 "펫패스포트 월간 규정 점검"(2026-11-01 08:51 PT 실행) 보고를 사용자가 붙여 줌. 예약 작업이 옛 주소의 9-29 데이터를 읽어, 보고의 "변경·누락" 중 상당수(호주 CIV, 제주 러시아·몽골, 아시아나 12-17 통합, EU 2026/705 근거)는 이미 10월에 반영돼 있었음. 베트남 "Form 3·48시간 전" 제안은 2차 자료이고 고시 01/2026 원문과 맞지 않아 반영하지 않음.
@@ -12,7 +20,7 @@
   - `tools/build_pages.py` CHANGES에 2026-11-01 항목 추가.
 - 반영하지 않음(1차 출처 미확인): EU·영국 항체가 검사기관을 검역본부 바이러스질병과(김천)로 한정(데일리벳 2026-04-21 보도만 있음, EU 승인 목록 2020/528에 김천 실험실 등재는 확인), 호주 Leishmania 검사 세부(2차 자료), 태국 격리 14일설(출처 모순).
 - 검증: build_pages(27페이지·검색 176), Python unittest 22개 OK, prepare_site, check_release(공개 125개) 통과. Node 브라우저 테스트는 PAWTRIP_TEST_BROWSER + 127.0.0.1:8766 서버로 analytics·medical_card·mobile_brand·site_language·trip_plan·wallet_flow 통과. blog_browser·trip_mycard는 브라우저 경로가 Windows로 고정돼 클라우드에서 미실행, games_browser는 변경 전 코드에서도 같은 시간초과(이번 변경과 무관). Playwright로 fr·au(390px), ph(1440px), jp(320px), changes(390px) 화면과 가로 넘침 0 확인.
-- 상태: 클라우드 복제본에 로컬 커밋만 함. 이 세션은 GitHub push 권한이 없어 push·배포 미실행. 사용자 PC 저장소에 반영 후 push 필요.
+- 상태: 사용자가 맥에서 새로 clone 후 패치 적용·push(a2b15dc, 2026-11-01). 사용자가 운영 사이트 메인 확인일 2026-11-01 표시 확인. 윈도우 PC 저장소(C:\Dev\PetPassport\PetPassport)는 아직 pull 전 — 다음 작업 전 Pull 필수.
 - 예약 작업 수정(사용자 A안 승인, 2026-11-01): 이름 'PawTrip 월간 규정 점검', 데이터는 raw main → pawtrip.us/data.json 순서로 읽고 옛 github.io 주소 금지, 이미 반영된 내용은 누락으로 보고하지 않음, requirements 수정안은 배열 끝 추가만, 결과는 Notion 'PawTrip 규정 점검 보고'(비공개 초안 페이지) 아래 'PawTrip 규정 점검 YYYY-MM' 하위 페이지로 저장(실패 시 Google Drive). 일정(매월 1일 08:51 PT)·자동 승인 설정은 그대로. 다음 세션은 Notion 페이지를 읽어 반영하면 됨.
 - 남은 일: (1) EU·영국 검사기관 한정 여부를 검역본부 원문으로 확인, (2) 필리핀 2027 상세 지침 확인 후 난이도·준비일 재검토(1월 전), (3) 진에어·에어프레미아·귀국 검역 원문 확인, (4) 12월 1일 첫 실행 뒤 Notion 하위 페이지가 실제로 만들어지는지 확인.
 

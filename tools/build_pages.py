@@ -367,7 +367,8 @@ PAGES = [
   dict(slug='local', tab='local', group='규정 · 현지 이동', title='도착 후 현지 이동: 일본 JR·지하철, 미국 Amtrak·국립공원',
        desc='일본 JR·신칸센·도에이 지하철과 미국 Amtrak, 국립공원의 반려견 동반 규칙(크기·무게·요금·리드줄)을 공식 규정으로 정리했습니다.',
        lead='목적지에 도착한 뒤 기차·지하철·공원에서 지켜야 할 규칙입니다. 운영 기관이 직접 공개한 규칙만 실었습니다.', body=local_body),
-  dict(slug='changes', tab='changes', group='기준과 출처', title='규정 변경 이력',
+  # 변경 이력 페이지 확인일은 가장 최근 변경 기록 날짜를 따른다 (고정 VERIFIED를 쓰면 새 기록과 날짜가 어긋남)
+  dict(slug='changes', tab='changes', group='기준과 출처', title='규정 변경 이력', verified=max(d for d, _ in CHANGES),
        desc='PawTrip이 반영한 국가별 입국 규정·항공사 규정 변경 내역을 날짜별로 기록합니다.',
        lead='무엇이, 언제, 어떤 근거로 바뀌었는지 기록합니다.', body=changes_body),
 ]
